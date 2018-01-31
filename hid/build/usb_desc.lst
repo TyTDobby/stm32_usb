@@ -1,0 +1,265 @@
+ARM GAS  /tmp/cc0AnK8s.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"usb_desc.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.global	descHIDReport
+  20              		.global	descStringInterface
+  21              		.global	descStringConfig
+  22              		.global	descStringSerialNumber
+  23              		.global	descStringMFC
+  24              		.global	descStringProduct
+  25              		.global	descStringLangID
+  26              		.global	descConfiguration
+  27              		.global	descDeviceQualifier
+  28              		.global	descDevice
+  29              		.section	.data.descStringInterface,"aw",%progbits
+  30              		.align	2
+  33              	descStringInterface:
+  34 0000 16       		.byte	22
+  35 0001 03       		.byte	3
+  36 0002 43       		.byte	67
+  37 0003 75       		.byte	117
+  38 0004 73       		.byte	115
+  39 0005 74       		.byte	116
+  40 0006 6F       		.byte	111
+  41 0007 6D       		.byte	109
+  42 0008 20       		.byte	32
+  43 0009 48       		.byte	72
+  44 000a 49       		.byte	73
+  45 000b 44       		.byte	68
+  46 000c 20       		.byte	32
+  47 000d 49       		.byte	73
+  48 000e 6E       		.byte	110
+  49 000f 74       		.byte	116
+  50 0010 65       		.byte	101
+  51 0011 72       		.byte	114
+  52 0012 66       		.byte	102
+  53 0013 61       		.byte	97
+  54 0014 63       		.byte	99
+  55 0015 65       		.byte	101
+  56              		.section	.data.descStringLangID,"aw",%progbits
+  57              		.align	2
+  60              	descStringLangID:
+  61 0000 04       		.byte	4
+ARM GAS  /tmp/cc0AnK8s.s 			page 2
+
+
+  62 0001 03       		.byte	3
+  63 0002 09       		.byte	9
+  64 0003 04       		.byte	4
+  65              		.section	.data.descStringMFC,"aw",%progbits
+  66              		.align	2
+  69              	descStringMFC:
+  70 0000 0E       		.byte	14
+  71 0001 03       		.byte	3
+  72 0002 53       		.byte	83
+  73 0003 54       		.byte	84
+  74 0004 4D       		.byte	77
+  75 0005 33       		.byte	51
+  76 0006 32       		.byte	50
+  77 0007 20       		.byte	32
+  78 0008 44       		.byte	68
+  79 0009 65       		.byte	101
+  80 000a 76       		.byte	118
+  81 000b 69       		.byte	105
+  82 000c 63       		.byte	99
+  83 000d 65       		.byte	101
+  84              		.section	.data.descConfiguration,"aw",%progbits
+  85              		.align	2
+  88              	descConfiguration:
+  89 0000 09       		.byte	9
+  90 0001 02       		.byte	2
+  91 0002 29       		.byte	41
+  92 0003 00       		.byte	0
+  93 0004 01       		.byte	1
+  94 0005 01       		.byte	1
+  95 0006 00       		.byte	0
+  96 0007 C0       		.byte	-64
+  97 0008 32       		.byte	50
+  98 0009 09       		.byte	9
+  99 000a 04       		.byte	4
+ 100 000b 00       		.byte	0
+ 101 000c 00       		.byte	0
+ 102 000d 02       		.byte	2
+ 103 000e 03       		.byte	3
+ 104 000f 00       		.byte	0
+ 105 0010 00       		.byte	0
+ 106 0011 00       		.byte	0
+ 107 0012 09       		.byte	9
+ 108 0013 21       		.byte	33
+ 109 0014 11       		.byte	17
+ 110 0015 01       		.byte	1
+ 111 0016 00       		.byte	0
+ 112 0017 01       		.byte	1
+ 113 0018 22       		.byte	34
+ 114 0019 02       		.byte	2
+ 115 001a 00       		.byte	0
+ 116 001b 07       		.byte	7
+ 117 001c 05       		.byte	5
+ 118 001d 01       		.byte	1
+ 119 001e 03       		.byte	3
+ 120 001f 08       		.byte	8
+ 121 0020 00       		.byte	0
+ 122 0021 20       		.byte	32
+ARM GAS  /tmp/cc0AnK8s.s 			page 3
+
+
+ 123 0022 07       		.byte	7
+ 124 0023 05       		.byte	5
+ 125 0024 02       		.byte	2
+ 126 0025 03       		.byte	3
+ 127 0026 08       		.byte	8
+ 128 0027 00       		.byte	0
+ 129 0028 20       		.byte	32
+ 130              		.section	.data.descHIDReport,"aw",%progbits
+ 131              		.align	2
+ 134              	descHIDReport:
+ 135 0000 00       		.byte	0
+ 136 0001 C0       		.byte	-64
+ 137              		.section	.data.descStringProduct,"aw",%progbits
+ 138              		.align	2
+ 141              	descStringProduct:
+ 142 0000 04       		.byte	4
+ 143 0001 03       		.byte	3
+ 144 0002 53       		.byte	83
+ 145 0003 54       		.byte	84
+ 146 0004 4D       		.byte	77
+ 147 0005 33       		.byte	51
+ 148 0006 32       		.byte	50
+ 149 0007 20       		.byte	32
+ 150 0008 43       		.byte	67
+ 151 0009 75       		.byte	117
+ 152 000a 73       		.byte	115
+ 153 000b 74       		.byte	116
+ 154 000c 6F       		.byte	111
+ 155 000d 6D       		.byte	109
+ 156 000e 20       		.byte	32
+ 157 000f 48       		.byte	72
+ 158 0010 49       		.byte	73
+ 159 0011 44       		.byte	68
+ 160              		.section	.data.descStringSerialNumber,"aw",%progbits
+ 161              		.align	2
+ 164              	descStringSerialNumber:
+ 165 0000 0E       		.byte	14
+ 166 0001 03       		.byte	3
+ 167 0002 30       		.byte	48
+ 168 0003 30       		.byte	48
+ 169 0004 30       		.byte	48
+ 170 0005 30       		.byte	48
+ 171 0006 30       		.byte	48
+ 172 0007 30       		.byte	48
+ 173 0008 30       		.byte	48
+ 174 0009 30       		.byte	48
+ 175 000a 30       		.byte	48
+ 176 000b 30       		.byte	48
+ 177 000c 31       		.byte	49
+ 178 000d 41       		.byte	65
+ 179              		.section	.data.descDeviceQualifier,"aw",%progbits
+ 180              		.align	2
+ 183              	descDeviceQualifier:
+ 184 0000 0A       		.byte	10
+ 185 0001 0A       		.byte	10
+ 186 0002 00       		.byte	0
+ 187 0003 02       		.byte	2
+ARM GAS  /tmp/cc0AnK8s.s 			page 4
+
+
+ 188 0004 00       		.byte	0
+ 189 0005 00       		.byte	0
+ 190 0006 00       		.byte	0
+ 191 0007 40       		.byte	64
+ 192 0008 01       		.byte	1
+ 193 0009 00       		.byte	0
+ 194              		.section	.data.descStringConfig,"aw",%progbits
+ 195              		.align	2
+ 198              	descStringConfig:
+ 199 0000 13       		.byte	19
+ 200 0001 03       		.byte	3
+ 201 0002 43       		.byte	67
+ 202 0003 75       		.byte	117
+ 203 0004 73       		.byte	115
+ 204 0005 74       		.byte	116
+ 205 0006 6F       		.byte	111
+ 206 0007 6D       		.byte	109
+ 207 0008 20       		.byte	32
+ 208 0009 48       		.byte	72
+ 209 000a 49       		.byte	73
+ 210 000b 44       		.byte	68
+ 211 000c 20       		.byte	32
+ 212 000d 43       		.byte	67
+ 213 000e 6F       		.byte	111
+ 214 000f 6E       		.byte	110
+ 215 0010 66       		.byte	102
+ 216 0011 69       		.byte	105
+ 217 0012 67       		.byte	103
+ 218              		.section	.data.descDevice,"aw",%progbits
+ 219              		.align	2
+ 222              	descDevice:
+ 223 0000 12       		.byte	18
+ 224 0001 01       		.byte	1
+ 225 0002 00       		.byte	0
+ 226 0003 02       		.byte	2
+ 227 0004 00       		.byte	0
+ 228 0005 00       		.byte	0
+ 229 0006 00       		.byte	0
+ 230 0007 40       		.byte	64
+ 231 0008 83       		.byte	-125
+ 232 0009 04       		.byte	4
+ 233 000a 50       		.byte	80
+ 234 000b 57       		.byte	87
+ 235 000c 00       		.byte	0
+ 236 000d 02       		.byte	2
+ 237 000e 01       		.byte	1
+ 238 000f 02       		.byte	2
+ 239 0010 03       		.byte	3
+ 240 0011 01       		.byte	1
+ 241              		.text
+ 242              	.Letext0:
+ 243              		.file 1 "/usr/include/newlib/machine/_default_types.h"
+ 244              		.file 2 "/usr/include/newlib/sys/_stdint.h"
+ 245              		.file 3 "library/usb/../cmsis/inc/core_cm3.h"
+ 246              		.file 4 "library/usb/usb_desc.c"
+ARM GAS  /tmp/cc0AnK8s.s 			page 5
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 usb_desc.c
+     /tmp/cc0AnK8s.s:134    .data.descHIDReport:0000000000000000 descHIDReport
+     /tmp/cc0AnK8s.s:33     .data.descStringInterface:0000000000000000 descStringInterface
+     /tmp/cc0AnK8s.s:198    .data.descStringConfig:0000000000000000 descStringConfig
+     /tmp/cc0AnK8s.s:164    .data.descStringSerialNumber:0000000000000000 descStringSerialNumber
+     /tmp/cc0AnK8s.s:69     .data.descStringMFC:0000000000000000 descStringMFC
+     /tmp/cc0AnK8s.s:141    .data.descStringProduct:0000000000000000 descStringProduct
+     /tmp/cc0AnK8s.s:60     .data.descStringLangID:0000000000000000 descStringLangID
+     /tmp/cc0AnK8s.s:88     .data.descConfiguration:0000000000000000 descConfiguration
+     /tmp/cc0AnK8s.s:183    .data.descDeviceQualifier:0000000000000000 descDeviceQualifier
+     /tmp/cc0AnK8s.s:222    .data.descDevice:0000000000000000 descDevice
+     /tmp/cc0AnK8s.s:30     .data.descStringInterface:0000000000000000 $d
+     /tmp/cc0AnK8s.s:57     .data.descStringLangID:0000000000000000 $d
+     /tmp/cc0AnK8s.s:66     .data.descStringMFC:0000000000000000 $d
+     /tmp/cc0AnK8s.s:85     .data.descConfiguration:0000000000000000 $d
+     /tmp/cc0AnK8s.s:131    .data.descHIDReport:0000000000000000 $d
+     /tmp/cc0AnK8s.s:138    .data.descStringProduct:0000000000000000 $d
+     /tmp/cc0AnK8s.s:161    .data.descStringSerialNumber:0000000000000000 $d
+     /tmp/cc0AnK8s.s:180    .data.descDeviceQualifier:0000000000000000 $d
+     /tmp/cc0AnK8s.s:195    .data.descStringConfig:0000000000000000 $d
+     /tmp/cc0AnK8s.s:219    .data.descDevice:0000000000000000 $d
+
+NO UNDEFINED SYMBOLS

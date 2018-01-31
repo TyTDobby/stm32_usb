@@ -1,0 +1,2799 @@
+ARM GAS  /tmp/ccdboO4f.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"usb.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.USBReset,"ax",%progbits
+  20              		.align	2
+  21              		.global	USBReset
+  22              		.thumb
+  23              		.thumb_func
+  25              	USBReset:
+  26              	.LFB29:
+  27              		.file 1 "library/usb/usb.c"
+   1:library/usb/usb.c **** #include "usb.h"
+   2:library/usb/usb.c **** 
+   3:library/usb/usb.c **** extern uint8_t descDevice[USB_DESC_SIZE_DEVICE];
+   4:library/usb/usb.c **** extern uint8_t descDeviceQualifier[USB_DESC_SIZE_DEVICE_QUALIFIER];
+   5:library/usb/usb.c **** extern uint8_t descConfiguration[USB_DESC_SIZE_CONFIGURATION];
+   6:library/usb/usb.c **** extern uint8_t descStringLangID[USB_STR_SIZE_LANGID];
+   7:library/usb/usb.c **** extern uint8_t descStringProduct[USB_STR_SIZE_PRODUCT];
+   8:library/usb/usb.c **** extern uint8_t descStringMFC[USB_STR_SIZE_MFC];
+   9:library/usb/usb.c **** extern uint8_t descStringSerialNumber[USB_STR_SIZE_SERIALNUMBER];
+  10:library/usb/usb.c **** extern uint8_t descStringConfig[USB_STR_SIZE_CONFIG];
+  11:library/usb/usb.c **** extern uint8_t descStringInterface[USB_STR_SIZE_INTERFACE];
+  12:library/usb/usb.c **** extern uint8_t descHIDReport[USB_DESC_SIZE_HID_REPORT];
+  13:library/usb/usb.c **** 
+  14:library/usb/usb.c **** uint8_t devAddress = 0;
+  15:library/usb/usb.c **** USB_SETUP_PACKET SetupPacket;
+  16:library/usb/usb.c **** uint8_t *bufferSetup[12];
+  17:library/usb/usb.c **** 
+  18:library/usb/usb.c **** void USBReset(void){
+  28              		.loc 1 18 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  33 0000 10B4     		push	{r4}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 4
+  36              		.cfi_offset 4, -4
+  19:library/usb/usb.c ****     
+  20:library/usb/usb.c ****     USB->ISTR = 0x0;
+  37              		.loc 1 20 0
+  38 0002 1D4B     		ldr	r3, .L3
+ARM GAS  /tmp/ccdboO4f.s 			page 2
+
+
+  39 0004 0022     		movs	r2, #0
+  40 0006 A3F84420 		strh	r2, [r3, #68]	@ movhi
+  21:library/usb/usb.c **** 
+  22:library/usb/usb.c ****     USB->BTABLE = BTABLE_ADDRESS; /* Set a address table buffer in memory USB */
+  41              		.loc 1 22 0
+  42 000a A3F85020 		strh	r2, [r3, #80]	@ movhi
+  23:library/usb/usb.c ****     
+  24:library/usb/usb.c ****     USB->CNTR = USB_CNTR_RESETM | USB_CNTR_SUSPM | USB_CNTR_WKUPM | USB_CNTR_CTRM;
+  43              		.loc 1 24 0
+  44 000e 4FF41C42 		mov	r2, #39936
+  45 0012 A3F84020 		strh	r2, [r3, #64]	@ movhi
+  25:library/usb/usb.c ****     
+  26:library/usb/usb.c ****     /* Set a address buffer */
+  27:library/usb/usb.c ****     USB_ADDR0_RX = USB_EP0_RX;
+  46              		.loc 1 27 0
+  47 0016 8022     		movs	r2, #128
+  48 0018 1849     		ldr	r1, .L3+4
+  49 001a 0A60     		str	r2, [r1]
+  28:library/usb/usb.c ****     USB_ADDR0_TX = USB_EP0_TX;
+  50              		.loc 1 28 0
+  51 001c 0839     		subs	r1, r1, #8
+  52 001e 0A60     		str	r2, [r1]
+  29:library/usb/usb.c ****     USB_COUNT0_TX = 0x40;
+  53              		.loc 1 29 0
+  54 0020 4020     		movs	r0, #64
+  55 0022 0431     		adds	r1, r1, #4
+  56 0024 0860     		str	r0, [r1]
+  30:library/usb/usb.c ****     USB_COUNT0_RX = 0x8400;
+  57              		.loc 1 30 0
+  58 0026 4FF40441 		mov	r1, #33792
+  59 002a 154C     		ldr	r4, .L3+8
+  60 002c 2160     		str	r1, [r4]
+  31:library/usb/usb.c **** 
+  32:library/usb/usb.c ****     USB_ADDR1_RX = USB_EP1_RX;
+  61              		.loc 1 32 0
+  62 002e 0C34     		adds	r4, r4, #12
+  63 0030 2260     		str	r2, [r4]
+  33:library/usb/usb.c ****     USB_ADDR1_TX = USB_EP1_TX;
+  64              		.loc 1 33 0
+  65 0032 083C     		subs	r4, r4, #8
+  66 0034 2260     		str	r2, [r4]
+  34:library/usb/usb.c ****     USB_COUNT1_TX = 0x40;
+  67              		.loc 1 34 0
+  68 0036 0434     		adds	r4, r4, #4
+  69 0038 2060     		str	r0, [r4]
+  35:library/usb/usb.c ****     USB_COUNT1_RX = 0x8400;
+  70              		.loc 1 35 0
+  71 003a 0834     		adds	r4, r4, #8
+  72 003c 2160     		str	r1, [r4]
+  36:library/usb/usb.c **** 
+  37:library/usb/usb.c ****     USB_ADDR2_RX = USB_EP2_RX;
+  73              		.loc 1 37 0
+  74 003e 0C34     		adds	r4, r4, #12
+  75 0040 2260     		str	r2, [r4]
+  38:library/usb/usb.c ****     USB_ADDR2_TX = USB_EP2_TX;
+  76              		.loc 1 38 0
+  77 0042 083C     		subs	r4, r4, #8
+ARM GAS  /tmp/ccdboO4f.s 			page 3
+
+
+  78 0044 2260     		str	r2, [r4]
+  39:library/usb/usb.c ****     USB_COUNT2_TX = 0x40;
+  79              		.loc 1 39 0
+  80 0046 0434     		adds	r4, r4, #4
+  81 0048 2060     		str	r0, [r4]
+  40:library/usb/usb.c ****     USB_COUNT2_RX = 0x8400;
+  82              		.loc 1 40 0
+  83 004a 0E48     		ldr	r0, .L3+12
+  84 004c 0160     		str	r1, [r0]
+  41:library/usb/usb.c **** 
+  42:library/usb/usb.c ****     /* Endpoints 0; Type: CONTROL; RX: VALID; TX: NAK */
+  43:library/usb/usb.c ****     USB->EP0R = USB_EP_CONTROL | USB_EP_RX_VALID | USB_EP_TX_NAK | USB_EP_AE_0;
+  85              		.loc 1 43 0
+  86 004e 43F22021 		movw	r1, #12832
+  87 0052 1980     		strh	r1, [r3]	@ movhi
+  44:library/usb/usb.c ****     /* Endpoints 1; Type: BULK; RX: VALID; TX: NAK */
+  45:library/usb/usb.c ****     USB->EP1R = USB_EP_BULK | USB_EP_RX_VALID | USB_EP_TX_NAK | USB_HID_EPOUT_ADDR;
+  88              		.loc 1 45 0
+  89 0054 43F22201 		movw	r1, #12322
+  90 0058 9980     		strh	r1, [r3, #4]	@ movhi
+  46:library/usb/usb.c ****     /* Endpoints 2; Type: BULK; RX: NAK; TX: VALID */
+  47:library/usb/usb.c ****     USB->EP2R = USB_EP_BULK | USB_EP_RX_NAK | USB_EP_TX_VALID | USB_HID_EPIN_ADDR;
+  91              		.loc 1 47 0
+  92 005a 42F23101 		movw	r1, #8241
+  93 005e 1981     		strh	r1, [r3, #8]	@ movhi
+  48:library/usb/usb.c **** 
+  49:library/usb/usb.c ****     USB->DADDR = USB_DADDR_EF;   /* Activation device */
+  94              		.loc 1 49 0
+  95 0060 A3F84C20 		strh	r2, [r3, #76]	@ movhi
+  50:library/usb/usb.c **** 
+  51:library/usb/usb.c ****     USB->ISTR &= ~USB_ISTR_RESET;
+  96              		.loc 1 51 0
+  97 0064 B3F84420 		ldrh	r2, [r3, #68]
+  98 0068 92B2     		uxth	r2, r2
+  99 006a 22F48062 		bic	r2, r2, #1024
+ 100 006e 92B2     		uxth	r2, r2
+ 101 0070 A3F84420 		strh	r2, [r3, #68]	@ movhi
+  52:library/usb/usb.c **** }
+ 102              		.loc 1 52 0
+ 103 0074 10BC     		pop	{r4}
+ 104              	.LCFI1:
+ 105              		.cfi_restore 4
+ 106              		.cfi_def_cfa_offset 0
+ 107 0076 7047     		bx	lr
+ 108              	.L4:
+ 109              		.align	2
+ 110              	.L3:
+ 111 0078 005C0040 		.word	1073765376
+ 112 007c 08600040 		.word	1073766408
+ 113 0080 0C600040 		.word	1073766412
+ 114 0084 2C600040 		.word	1073766444
+ 115              		.cfi_endproc
+ 116              	.LFE29:
+ 118              		.section	.text.USBZeroLengthPacket,"ax",%progbits
+ 119              		.align	2
+ 120              		.global	USBZeroLengthPacket
+ 121              		.thumb
+ARM GAS  /tmp/ccdboO4f.s 			page 4
+
+
+ 122              		.thumb_func
+ 124              	USBZeroLengthPacket:
+ 125              	.LFB30:
+  53:library/usb/usb.c **** 
+  54:library/usb/usb.c **** void USBZeroLengthPacket(void){
+ 126              		.loc 1 54 0
+ 127              		.cfi_startproc
+ 128              		@ args = 0, pretend = 0, frame = 0
+ 129              		@ frame_needed = 0, uses_anonymous_args = 0
+ 130              		@ link register save eliminated.
+  55:library/usb/usb.c ****     USB_COUNT0_TX = 0x0;
+ 131              		.loc 1 55 0
+ 132 0000 0022     		movs	r2, #0
+ 133 0002 074B     		ldr	r3, .L7
+ 134 0004 1A60     		str	r2, [r3]
+  56:library/usb/usb.c ****     USB->EP0R = USB_EP_TX_VALID | USB_EP_CONTROL;
+ 135              		.loc 1 56 0
+ 136 0006 4FF40C72 		mov	r2, #560
+ 137 000a A3F20443 		subw	r3, r3, #1028
+ 138 000e 1A80     		strh	r2, [r3]	@ movhi
+ 139              	.L6:
+  57:library/usb/usb.c ****     while(!(USB->EP0R & USB_EP_CTR_TX)){}  
+ 140              		.loc 1 57 0 discriminator 1
+ 141 0010 044B     		ldr	r3, .L7+4
+ 142 0012 1B88     		ldrh	r3, [r3]
+ 143 0014 03F08003 		and	r3, r3, #128
+ 144 0018 9BB2     		uxth	r3, r3
+ 145 001a 002B     		cmp	r3, #0
+ 146 001c F8D0     		beq	.L6
+  58:library/usb/usb.c **** }
+ 147              		.loc 1 58 0
+ 148 001e 7047     		bx	lr
+ 149              	.L8:
+ 150              		.align	2
+ 151              	.L7:
+ 152 0020 04600040 		.word	1073766404
+ 153 0024 005C0040 		.word	1073765376
+ 154              		.cfi_endproc
+ 155              	.LFE30:
+ 157              		.section	.text.USBRequest,"ax",%progbits
+ 158              		.align	2
+ 159              		.global	USBRequest
+ 160              		.thumb
+ 161              		.thumb_func
+ 163              	USBRequest:
+ 164              	.LFB31:
+  59:library/usb/usb.c **** 
+  60:library/usb/usb.c **** void USBRequest(USB_SETUP_PACKET *req, uint8_t *pdata){
+ 165              		.loc 1 60 0
+ 166              		.cfi_startproc
+ 167              		@ args = 0, pretend = 0, frame = 0
+ 168              		@ frame_needed = 0, uses_anonymous_args = 0
+ 169              		@ link register save eliminated.
+ 170              	.LVL0:
+  61:library/usb/usb.c ****     req->bmRequestType     = *pdata;
+ 171              		.loc 1 61 0
+ 172 0000 0B78     		ldrb	r3, [r1]	@ zero_extendqisi2
+ARM GAS  /tmp/ccdboO4f.s 			page 5
+
+
+ 173 0002 0370     		strb	r3, [r0]
+  62:library/usb/usb.c ****     req->bRequest          = *(pdata + 1);
+ 174              		.loc 1 62 0
+ 175 0004 4B78     		ldrb	r3, [r1, #1]	@ zero_extendqisi2
+ 176 0006 4370     		strb	r3, [r0, #1]
+  63:library/usb/usb.c ****     req->wValue.low        = *(pdata + 2);
+ 177              		.loc 1 63 0
+ 178 0008 8B78     		ldrb	r3, [r1, #2]	@ zero_extendqisi2
+ 179 000a C370     		strb	r3, [r0, #3]
+  64:library/usb/usb.c ****     req->wValue.high       = *(pdata + 3);
+ 180              		.loc 1 64 0
+ 181 000c CB78     		ldrb	r3, [r1, #3]	@ zero_extendqisi2
+ 182 000e 8370     		strb	r3, [r0, #2]
+  65:library/usb/usb.c ****     req->wIndex.low        = *(pdata + 4);
+ 183              		.loc 1 65 0
+ 184 0010 0B79     		ldrb	r3, [r1, #4]	@ zero_extendqisi2
+ 185 0012 4371     		strb	r3, [r0, #5]
+  66:library/usb/usb.c ****     req->wIndex.high       = *(pdata + 5);
+ 186              		.loc 1 66 0
+ 187 0014 4B79     		ldrb	r3, [r1, #5]	@ zero_extendqisi2
+ 188 0016 0371     		strb	r3, [r0, #4]
+  67:library/usb/usb.c ****     req->wLength.low       = *(pdata + 6);
+ 189              		.loc 1 67 0
+ 190 0018 8B79     		ldrb	r3, [r1, #6]	@ zero_extendqisi2
+ 191 001a C371     		strb	r3, [r0, #7]
+  68:library/usb/usb.c ****     req->wLength.high      = *(pdata + 7);
+ 192              		.loc 1 68 0
+ 193 001c CB79     		ldrb	r3, [r1, #7]	@ zero_extendqisi2
+ 194 001e 8371     		strb	r3, [r0, #6]
+ 195 0020 7047     		bx	lr
+ 196              		.cfi_endproc
+ 197              	.LFE31:
+ 199 0022 00BF     		.section	.text.USBReadPMA,"ax",%progbits
+ 200              		.align	2
+ 201              		.global	USBReadPMA
+ 202              		.thumb
+ 203              		.thumb_func
+ 205              	USBReadPMA:
+ 206              	.LFB32:
+  69:library/usb/usb.c **** }
+  70:library/usb/usb.c **** 
+  71:library/usb/usb.c **** void USBReadPMA(uint16_t *buff, uint16_t offset, uint16_t numBytes) {
+ 207              		.loc 1 71 0
+ 208              		.cfi_startproc
+ 209              		@ args = 0, pretend = 0, frame = 0
+ 210              		@ frame_needed = 0, uses_anonymous_args = 0
+ 211              		@ link register save eliminated.
+ 212              	.LVL1:
+  72:library/usb/usb.c ****     uint32_t nBytes = (numBytes + 1) >> 1;
+ 213              		.loc 1 72 0
+ 214 0000 0132     		adds	r2, r2, #1
+ 215              	.LVL2:
+ 216 0002 5210     		asrs	r2, r2, #1
+ 217              	.LVL3:
+  73:library/usb/usb.c ****     uint32_t *addrRx = (uint32_t *)(offset * 2 + USB_PMAADDR);
+ 218              		.loc 1 73 0
+ 219 0004 4900     		lsls	r1, r1, #1
+ARM GAS  /tmp/ccdboO4f.s 			page 6
+
+
+ 220              	.LVL4:
+ 221 0006 01F18041 		add	r1, r1, #1073741824
+ 222 000a 01F5C041 		add	r1, r1, #24576
+ 223              	.LVL5:
+  74:library/usb/usb.c ****     while(nBytes--) {
+ 224              		.loc 1 74 0
+ 225 000e 04E0     		b	.L11
+ 226              	.LVL6:
+ 227              	.L12:
+  75:library/usb/usb.c ****         *buff++ = *addrRx++;
+ 228              		.loc 1 75 0
+ 229 0010 0A68     		ldr	r2, [r1]
+ 230 0012 0280     		strh	r2, [r0]	@ movhi
+  74:library/usb/usb.c ****     while(nBytes--) {
+ 231              		.loc 1 74 0
+ 232 0014 1A46     		mov	r2, r3
+ 233              		.loc 1 75 0
+ 234 0016 0431     		adds	r1, r1, #4
+ 235              	.LVL7:
+ 236 0018 0230     		adds	r0, r0, #2
+ 237              	.LVL8:
+ 238              	.L11:
+  74:library/usb/usb.c ****     while(nBytes--) {
+ 239              		.loc 1 74 0
+ 240 001a 531E     		subs	r3, r2, #1
+ 241              	.LVL9:
+ 242 001c 002A     		cmp	r2, #0
+ 243 001e F7D1     		bne	.L12
+  76:library/usb/usb.c ****     }
+  77:library/usb/usb.c **** }
+ 244              		.loc 1 77 0
+ 245 0020 7047     		bx	lr
+ 246              		.cfi_endproc
+ 247              	.LFE32:
+ 249 0022 00BF     		.section	.text.USBWritePMA,"ax",%progbits
+ 250              		.align	2
+ 251              		.global	USBWritePMA
+ 252              		.thumb
+ 253              		.thumb_func
+ 255              	USBWritePMA:
+ 256              	.LFB33:
+  78:library/usb/usb.c **** void USBWritePMA(uint16_t *buff, uint16_t offset, uint16_t numBytes){
+ 257              		.loc 1 78 0
+ 258              		.cfi_startproc
+ 259              		@ args = 0, pretend = 0, frame = 0
+ 260              		@ frame_needed = 0, uses_anonymous_args = 0
+ 261              		@ link register save eliminated.
+ 262              	.LVL10:
+  79:library/usb/usb.c ****     uint32_t nBytes = (numBytes + 1) >> 1;
+ 263              		.loc 1 79 0
+ 264 0000 0132     		adds	r2, r2, #1
+ 265              	.LVL11:
+ 266 0002 5210     		asrs	r2, r2, #1
+ 267              	.LVL12:
+  80:library/usb/usb.c ****     uint32_t *addrTx = (uint32_t *)(offset * 2 + USB_PMAADDR);
+ 268              		.loc 1 80 0
+ 269 0004 4900     		lsls	r1, r1, #1
+ARM GAS  /tmp/ccdboO4f.s 			page 7
+
+
+ 270              	.LVL13:
+ 271 0006 01F18041 		add	r1, r1, #1073741824
+ 272 000a 01F5C041 		add	r1, r1, #24576
+ 273              	.LVL14:
+  81:library/usb/usb.c ****     while(nBytes--) {
+ 274              		.loc 1 81 0
+ 275 000e 04E0     		b	.L14
+ 276              	.LVL15:
+ 277              	.L15:
+  82:library/usb/usb.c ****         *addrTx++ = *buff++;
+ 278              		.loc 1 82 0
+ 279 0010 0288     		ldrh	r2, [r0]
+ 280 0012 0A60     		str	r2, [r1]
+  81:library/usb/usb.c ****     while(nBytes--) {
+ 281              		.loc 1 81 0
+ 282 0014 1A46     		mov	r2, r3
+ 283              		.loc 1 82 0
+ 284 0016 0431     		adds	r1, r1, #4
+ 285              	.LVL16:
+ 286 0018 0230     		adds	r0, r0, #2
+ 287              	.LVL17:
+ 288              	.L14:
+  81:library/usb/usb.c ****     while(nBytes--) {
+ 289              		.loc 1 81 0
+ 290 001a 531E     		subs	r3, r2, #1
+ 291              	.LVL18:
+ 292 001c 002A     		cmp	r2, #0
+ 293 001e F7D1     		bne	.L15
+  83:library/usb/usb.c ****     }
+  84:library/usb/usb.c **** }
+ 294              		.loc 1 84 0
+ 295 0020 7047     		bx	lr
+ 296              		.cfi_endproc
+ 297              	.LFE33:
+ 299 0022 00BF     		.section	.text.USBSetup,"ax",%progbits
+ 300              		.align	2
+ 301              		.global	USBSetup
+ 302              		.thumb
+ 303              		.thumb_func
+ 305              	USBSetup:
+ 306              	.LFB34:
+  85:library/usb/usb.c **** 
+  86:library/usb/usb.c **** void USBSetup(void){
+ 307              		.loc 1 86 0
+ 308              		.cfi_startproc
+ 309              		@ args = 0, pretend = 0, frame = 0
+ 310              		@ frame_needed = 0, uses_anonymous_args = 0
+ 311 0000 38B5     		push	{r3, r4, r5, lr}
+ 312              	.LCFI2:
+ 313              		.cfi_def_cfa_offset 16
+ 314              		.cfi_offset 3, -16
+ 315              		.cfi_offset 4, -12
+ 316              		.cfi_offset 5, -8
+ 317              		.cfi_offset 14, -4
+  87:library/usb/usb.c ****     USB->ISTR &= ~USB_ISTR_CTR;
+ 318              		.loc 1 87 0
+ 319 0002 8B4B     		ldr	r3, .L38
+ARM GAS  /tmp/ccdboO4f.s 			page 8
+
+
+ 320 0004 B3F84420 		ldrh	r2, [r3, #68]
+ 321 0008 C2F30E02 		ubfx	r2, r2, #0, #15
+ 322 000c A3F84420 		strh	r2, [r3, #68]	@ movhi
+  88:library/usb/usb.c ****     USB->EP0R &= ~USB_EP_CTR_RX;
+ 323              		.loc 1 88 0
+ 324 0010 1A88     		ldrh	r2, [r3]
+ 325 0012 C2F30E02 		ubfx	r2, r2, #0, #15
+ 326 0016 1A80     		strh	r2, [r3]	@ movhi
+  89:library/usb/usb.c ****     USB->EP0R |= USB_EP_DTOG_TX;
+ 327              		.loc 1 89 0
+ 328 0018 1A88     		ldrh	r2, [r3]
+ 329 001a 92B2     		uxth	r2, r2
+ 330 001c 42F04002 		orr	r2, r2, #64
+ 331 0020 1A80     		strh	r2, [r3]	@ movhi
+  90:library/usb/usb.c ****     USBReadPMA((uint16_t *)bufferSetup, USB_EP0_RX, 8);
+ 332              		.loc 1 90 0
+ 333 0022 844D     		ldr	r5, .L38+4
+ 334 0024 0822     		movs	r2, #8
+ 335 0026 8021     		movs	r1, #128
+ 336 0028 2846     		mov	r0, r5
+ 337 002a FFF7FEFF 		bl	USBReadPMA
+ 338              	.LVL19:
+  91:library/usb/usb.c ****     USBRequest(&SetupPacket, (uint8_t *)bufferSetup);
+ 339              		.loc 1 91 0
+ 340 002e 824C     		ldr	r4, .L38+8
+ 341 0030 2946     		mov	r1, r5
+ 342 0032 2046     		mov	r0, r4
+ 343 0034 FFF7FEFF 		bl	USBRequest
+ 344              	.LVL20:
+  92:library/usb/usb.c ****     if(SetupPacket.bmRequestType == 0x00){
+ 345              		.loc 1 92 0
+ 346 0038 2378     		ldrb	r3, [r4]	@ zero_extendqisi2
+ 347 003a A3B9     		cbnz	r3, .L17
+  93:library/usb/usb.c ****     	if(SetupPacket.bRequest == USB_REQ_SET_ADDRESS){
+ 348              		.loc 1 93 0
+ 349 003c 6378     		ldrb	r3, [r4, #1]	@ zero_extendqisi2
+ 350 003e 052B     		cmp	r3, #5
+ 351 0040 0BD1     		bne	.L18
+  94:library/usb/usb.c ****           	devAddress = SetupPacket.wValue.low;
+ 352              		.loc 1 94 0
+ 353 0042 E378     		ldrb	r3, [r4, #3]	@ zero_extendqisi2
+ 354 0044 7D4C     		ldr	r4, .L38+12
+ 355 0046 2370     		strb	r3, [r4]
+  95:library/usb/usb.c ****            	USBZeroLengthPacket();
+ 356              		.loc 1 95 0
+ 357 0048 FFF7FEFF 		bl	USBZeroLengthPacket
+ 358              	.LVL21:
+  96:library/usb/usb.c ****            	USB->DADDR = devAddress | USB_DADDR_EF;
+ 359              		.loc 1 96 0
+ 360 004c 2378     		ldrb	r3, [r4]	@ zero_extendqisi2
+ 361 004e 43F08003 		orr	r3, r3, #128
+ 362 0052 774A     		ldr	r2, .L38
+ 363 0054 A2F84C30 		strh	r3, [r2, #76]	@ movhi
+ 364 0058 E5E0     		b	.L19
+ 365              	.L18:
+  97:library/usb/usb.c ****     	}else if(SetupPacket.bRequest == USB_REQ_SET_CONFIGURATION){
+ 366              		.loc 1 97 0
+ARM GAS  /tmp/ccdboO4f.s 			page 9
+
+
+ 367 005a 092B     		cmp	r3, #9
+ 368 005c 40F0E380 		bne	.L19
+  98:library/usb/usb.c ****     		USBZeroLengthPacket();
+ 369              		.loc 1 98 0
+ 370 0060 FFF7FEFF 		bl	USBZeroLengthPacket
+ 371              	.LVL22:
+ 372 0064 DFE0     		b	.L19
+ 373              	.L17:
+  99:library/usb/usb.c ****     	}
+ 100:library/usb/usb.c ****     }else if(SetupPacket.bmRequestType == 0x21){
+ 374              		.loc 1 100 0
+ 375 0066 212B     		cmp	r3, #33
+ 376 0068 00F0DD80 		beq	.L19
+ 101:library/usb/usb.c **** 
+ 102:library/usb/usb.c ****     }else if(SetupPacket.bmRequestType == 0x80){
+ 377              		.loc 1 102 0
+ 378 006c 802B     		cmp	r3, #128
+ 379 006e 40F0DA80 		bne	.L19
+ 103:library/usb/usb.c ****     	if(SetupPacket.bRequest == USB_REQ_GET_DESCRIPTOR){
+ 380              		.loc 1 103 0
+ 381 0072 714B     		ldr	r3, .L38+8
+ 382 0074 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 383 0076 062B     		cmp	r3, #6
+ 384 0078 40F0D580 		bne	.L19
+ 104:library/usb/usb.c ****     		if(SetupPacket.wValue.high == USB_DESC_TYPE_DEVICE){
+ 385              		.loc 1 104 0
+ 386 007c 6E4B     		ldr	r3, .L38+8
+ 387 007e 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 388 0080 012B     		cmp	r3, #1
+ 389 0082 14D1     		bne	.L20
+ 105:library/usb/usb.c ****     			USBWritePMA((uint16_t *)descDevice, USB_EP0_TX, USB_DESC_SIZE_DEVICE);
+ 390              		.loc 1 105 0
+ 391 0084 1222     		movs	r2, #18
+ 392 0086 8021     		movs	r1, #128
+ 393 0088 6D48     		ldr	r0, .L38+16
+ 394 008a FFF7FEFF 		bl	USBWritePMA
+ 395              	.LVL23:
+ 106:library/usb/usb.c ****     			USB_COUNT0_TX = USB_DESC_SIZE_DEVICE;
+ 396              		.loc 1 106 0
+ 397 008e 1222     		movs	r2, #18
+ 398 0090 6C4B     		ldr	r3, .L38+20
+ 399 0092 1A60     		str	r2, [r3]
+ 107:library/usb/usb.c ****     			USB->EP0R = USB_EP_TX_VALID | USB_EP_CONTROL;
+ 400              		.loc 1 107 0
+ 401 0094 4FF40C72 		mov	r2, #560
+ 402 0098 A3F20443 		subw	r3, r3, #1028
+ 403 009c 1A80     		strh	r2, [r3]	@ movhi
+ 404              	.L21:
+ 108:library/usb/usb.c ****     			while(!(USB->EP0R & USB_EP_CTR_TX)){} 
+ 405              		.loc 1 108 0 discriminator 1
+ 406 009e 644B     		ldr	r3, .L38
+ 407 00a0 1B88     		ldrh	r3, [r3]
+ 408 00a2 03F08003 		and	r3, r3, #128
+ 409 00a6 9BB2     		uxth	r3, r3
+ 410 00a8 002B     		cmp	r3, #0
+ 411 00aa F8D0     		beq	.L21
+ 412 00ac BBE0     		b	.L19
+ARM GAS  /tmp/ccdboO4f.s 			page 10
+
+
+ 413              	.L20:
+ 109:library/usb/usb.c ****     		}else if(SetupPacket.wValue.high == USB_DESC_TYPE_DEVICE_QUALIFIER){
+ 414              		.loc 1 109 0
+ 415 00ae 062B     		cmp	r3, #6
+ 416 00b0 14D1     		bne	.L22
+ 110:library/usb/usb.c ****     			USBWritePMA((uint16_t *)descDeviceQualifier, USB_EP0_TX, USB_DESC_SIZE_DEVICE_QUALIFIER);
+ 417              		.loc 1 110 0
+ 418 00b2 0A22     		movs	r2, #10
+ 419 00b4 8021     		movs	r1, #128
+ 420 00b6 6448     		ldr	r0, .L38+24
+ 421 00b8 FFF7FEFF 		bl	USBWritePMA
+ 422              	.LVL24:
+ 111:library/usb/usb.c ****     			USB_COUNT0_TX = USB_DESC_SIZE_DEVICE_QUALIFIER;
+ 423              		.loc 1 111 0
+ 424 00bc 0A22     		movs	r2, #10
+ 425 00be 614B     		ldr	r3, .L38+20
+ 426 00c0 1A60     		str	r2, [r3]
+ 112:library/usb/usb.c ****     			USB->EP0R = USB_EP_TX_VALID | USB_EP_CONTROL;
+ 427              		.loc 1 112 0
+ 428 00c2 4FF40C72 		mov	r2, #560
+ 429 00c6 A3F20443 		subw	r3, r3, #1028
+ 430 00ca 1A80     		strh	r2, [r3]	@ movhi
+ 431              	.L23:
+ 113:library/usb/usb.c ****     			while(!(USB->EP0R & USB_EP_CTR_TX)){} 
+ 432              		.loc 1 113 0 discriminator 1
+ 433 00cc 584B     		ldr	r3, .L38
+ 434 00ce 1B88     		ldrh	r3, [r3]
+ 435 00d0 03F08003 		and	r3, r3, #128
+ 436 00d4 9BB2     		uxth	r3, r3
+ 437 00d6 002B     		cmp	r3, #0
+ 438 00d8 F8D0     		beq	.L23
+ 439 00da A4E0     		b	.L19
+ 440              	.L22:
+ 114:library/usb/usb.c ****     		}else if(SetupPacket.wValue.high == USB_DESC_TYPE_CONFIGURATION){
+ 441              		.loc 1 114 0
+ 442 00dc 022B     		cmp	r3, #2
+ 443 00de 15D1     		bne	.L24
+ 115:library/usb/usb.c ****     			
+ 116:library/usb/usb.c ****     			USBWritePMA((uint16_t *)descConfiguration, USB_EP0_TX, SetupPacket.wLength.low);
+ 444              		.loc 1 116 0
+ 445 00e0 554C     		ldr	r4, .L38+8
+ 446 00e2 E279     		ldrb	r2, [r4, #7]	@ zero_extendqisi2
+ 447 00e4 8021     		movs	r1, #128
+ 448 00e6 5948     		ldr	r0, .L38+28
+ 449 00e8 FFF7FEFF 		bl	USBWritePMA
+ 450              	.LVL25:
+ 117:library/usb/usb.c ****     			USB_COUNT0_TX = SetupPacket.wLength.low;
+ 451              		.loc 1 117 0
+ 452 00ec E279     		ldrb	r2, [r4, #7]	@ zero_extendqisi2
+ 453 00ee 554B     		ldr	r3, .L38+20
+ 454 00f0 1A60     		str	r2, [r3]
+ 118:library/usb/usb.c ****     			USB->EP0R = USB_EP_TX_VALID | USB_EP_CONTROL;
+ 455              		.loc 1 118 0
+ 456 00f2 4FF40C72 		mov	r2, #560
+ 457 00f6 A3F20443 		subw	r3, r3, #1028
+ 458 00fa 1A80     		strh	r2, [r3]	@ movhi
+ 459              	.L25:
+ARM GAS  /tmp/ccdboO4f.s 			page 11
+
+
+ 119:library/usb/usb.c ****     			while(!(USB->EP0R & USB_EP_CTR_TX)){} 
+ 460              		.loc 1 119 0 discriminator 1
+ 461 00fc 4C4B     		ldr	r3, .L38
+ 462 00fe 1B88     		ldrh	r3, [r3]
+ 463 0100 03F08003 		and	r3, r3, #128
+ 464 0104 9BB2     		uxth	r3, r3
+ 465 0106 002B     		cmp	r3, #0
+ 466 0108 F8D0     		beq	.L25
+ 467 010a 8CE0     		b	.L19
+ 468              	.L24:
+ 120:library/usb/usb.c **** 
+ 121:library/usb/usb.c ****     		}else if(SetupPacket.wValue.high == USB_DESC_TYPE_STRING){
+ 469              		.loc 1 121 0
+ 470 010c 032B     		cmp	r3, #3
+ 471 010e 40F08A80 		bne	.L19
+ 122:library/usb/usb.c ****     			if(SetupPacket.wValue.low == USB_IDX_LANGID_STR){
+ 472              		.loc 1 122 0
+ 473 0112 494B     		ldr	r3, .L38+8
+ 474 0114 DB78     		ldrb	r3, [r3, #3]	@ zero_extendqisi2
+ 475 0116 A3B9     		cbnz	r3, .L26
+ 123:library/usb/usb.c ****     				USBWritePMA((uint16_t *)descStringLangID, USB_EP0_TX, USB_STR_SIZE_LANGID);
+ 476              		.loc 1 123 0
+ 477 0118 0422     		movs	r2, #4
+ 478 011a 8021     		movs	r1, #128
+ 479 011c 4C48     		ldr	r0, .L38+32
+ 480 011e FFF7FEFF 		bl	USBWritePMA
+ 481              	.LVL26:
+ 124:library/usb/usb.c ****     				USB_COUNT0_TX = USB_STR_SIZE_LANGID;
+ 482              		.loc 1 124 0
+ 483 0122 0422     		movs	r2, #4
+ 484 0124 474B     		ldr	r3, .L38+20
+ 485 0126 1A60     		str	r2, [r3]
+ 125:library/usb/usb.c ****     				USB->EP0R = USB_EP_TX_VALID | USB_EP_CONTROL;
+ 486              		.loc 1 125 0
+ 487 0128 4FF40C72 		mov	r2, #560
+ 488 012c A3F20443 		subw	r3, r3, #1028
+ 489 0130 1A80     		strh	r2, [r3]	@ movhi
+ 490              	.L27:
+ 126:library/usb/usb.c ****     				while(!(USB->EP0R & USB_EP_CTR_TX)){}
+ 491              		.loc 1 126 0 discriminator 1
+ 492 0132 3F4B     		ldr	r3, .L38
+ 493 0134 1B88     		ldrh	r3, [r3]
+ 494 0136 03F08003 		and	r3, r3, #128
+ 495 013a 9BB2     		uxth	r3, r3
+ 496 013c 002B     		cmp	r3, #0
+ 497 013e F8D0     		beq	.L27
+ 498 0140 71E0     		b	.L19
+ 499              	.L26:
+ 127:library/usb/usb.c ****     			}else if(SetupPacket.wValue.low == USB_IDX_MFC_STR){
+ 500              		.loc 1 127 0
+ 501 0142 012B     		cmp	r3, #1
+ 502 0144 14D1     		bne	.L28
+ 128:library/usb/usb.c ****     				USBWritePMA((uint16_t *)descStringMFC, USB_EP0_TX, USB_STR_SIZE_MFC);
+ 503              		.loc 1 128 0
+ 504 0146 0E22     		movs	r2, #14
+ 505 0148 8021     		movs	r1, #128
+ 506 014a 4248     		ldr	r0, .L38+36
+ARM GAS  /tmp/ccdboO4f.s 			page 12
+
+
+ 507 014c FFF7FEFF 		bl	USBWritePMA
+ 508              	.LVL27:
+ 129:library/usb/usb.c ****     				USB_COUNT0_TX = USB_STR_SIZE_MFC;
+ 509              		.loc 1 129 0
+ 510 0150 0E22     		movs	r2, #14
+ 511 0152 3C4B     		ldr	r3, .L38+20
+ 512 0154 1A60     		str	r2, [r3]
+ 130:library/usb/usb.c ****     				USB->EP0R = USB_EP_TX_VALID | USB_EP_CONTROL;
+ 513              		.loc 1 130 0
+ 514 0156 4FF40C72 		mov	r2, #560
+ 515 015a A3F20443 		subw	r3, r3, #1028
+ 516 015e 1A80     		strh	r2, [r3]	@ movhi
+ 517              	.L29:
+ 131:library/usb/usb.c ****     				while(!(USB->EP0R & USB_EP_CTR_TX)){}
+ 518              		.loc 1 131 0 discriminator 1
+ 519 0160 334B     		ldr	r3, .L38
+ 520 0162 1B88     		ldrh	r3, [r3]
+ 521 0164 03F08003 		and	r3, r3, #128
+ 522 0168 9BB2     		uxth	r3, r3
+ 523 016a 002B     		cmp	r3, #0
+ 524 016c F8D0     		beq	.L29
+ 525 016e 5AE0     		b	.L19
+ 526              	.L28:
+ 132:library/usb/usb.c ****     			}else if(SetupPacket.wValue.low == USB_IDX_PRODUCT_STR){
+ 527              		.loc 1 132 0
+ 528 0170 022B     		cmp	r3, #2
+ 529 0172 14D1     		bne	.L30
+ 133:library/usb/usb.c ****     				USBWritePMA((uint16_t *)descStringProduct, USB_EP0_TX, USB_STR_SIZE_PRODUCT);
+ 530              		.loc 1 133 0
+ 531 0174 1222     		movs	r2, #18
+ 532 0176 8021     		movs	r1, #128
+ 533 0178 3748     		ldr	r0, .L38+40
+ 534 017a FFF7FEFF 		bl	USBWritePMA
+ 535              	.LVL28:
+ 134:library/usb/usb.c ****     				USB_COUNT0_TX = USB_STR_SIZE_PRODUCT;
+ 536              		.loc 1 134 0
+ 537 017e 1222     		movs	r2, #18
+ 538 0180 304B     		ldr	r3, .L38+20
+ 539 0182 1A60     		str	r2, [r3]
+ 135:library/usb/usb.c ****     				USB->EP0R = USB_EP_TX_VALID | USB_EP_CONTROL;
+ 540              		.loc 1 135 0
+ 541 0184 4FF40C72 		mov	r2, #560
+ 542 0188 A3F20443 		subw	r3, r3, #1028
+ 543 018c 1A80     		strh	r2, [r3]	@ movhi
+ 544              	.L31:
+ 136:library/usb/usb.c ****     				while(!(USB->EP0R & USB_EP_CTR_TX)){}
+ 545              		.loc 1 136 0 discriminator 1
+ 546 018e 284B     		ldr	r3, .L38
+ 547 0190 1B88     		ldrh	r3, [r3]
+ 548 0192 03F08003 		and	r3, r3, #128
+ 549 0196 9BB2     		uxth	r3, r3
+ 550 0198 002B     		cmp	r3, #0
+ 551 019a F8D0     		beq	.L31
+ 552 019c 43E0     		b	.L19
+ 553              	.L30:
+ 137:library/usb/usb.c ****     			}else if(SetupPacket.wValue.low == USB_IDX_SERIAL_STR){
+ 554              		.loc 1 137 0
+ARM GAS  /tmp/ccdboO4f.s 			page 13
+
+
+ 555 019e 032B     		cmp	r3, #3
+ 556 01a0 14D1     		bne	.L32
+ 138:library/usb/usb.c ****     				USBWritePMA((uint16_t *)descStringSerialNumber, USB_EP0_TX, USB_STR_SIZE_SERIALNUMBER);
+ 557              		.loc 1 138 0
+ 558 01a2 0E22     		movs	r2, #14
+ 559 01a4 8021     		movs	r1, #128
+ 560 01a6 2D48     		ldr	r0, .L38+44
+ 561 01a8 FFF7FEFF 		bl	USBWritePMA
+ 562              	.LVL29:
+ 139:library/usb/usb.c ****     				USB_COUNT0_TX = USB_STR_SIZE_SERIALNUMBER;
+ 563              		.loc 1 139 0
+ 564 01ac 0E22     		movs	r2, #14
+ 565 01ae 254B     		ldr	r3, .L38+20
+ 566 01b0 1A60     		str	r2, [r3]
+ 140:library/usb/usb.c ****     				USB->EP0R = USB_EP_TX_VALID | USB_EP_CONTROL;
+ 567              		.loc 1 140 0
+ 568 01b2 4FF40C72 		mov	r2, #560
+ 569 01b6 A3F20443 		subw	r3, r3, #1028
+ 570 01ba 1A80     		strh	r2, [r3]	@ movhi
+ 571              	.L33:
+ 141:library/usb/usb.c ****     				while(!(USB->EP0R & USB_EP_CTR_TX)){}
+ 572              		.loc 1 141 0 discriminator 1
+ 573 01bc 1C4B     		ldr	r3, .L38
+ 574 01be 1B88     		ldrh	r3, [r3]
+ 575 01c0 03F08003 		and	r3, r3, #128
+ 576 01c4 9BB2     		uxth	r3, r3
+ 577 01c6 002B     		cmp	r3, #0
+ 578 01c8 F8D0     		beq	.L33
+ 579 01ca 2CE0     		b	.L19
+ 580              	.L32:
+ 142:library/usb/usb.c ****     			}else if(SetupPacket.wValue.low == USB_IDX_CONFIG_STR){
+ 581              		.loc 1 142 0
+ 582 01cc 042B     		cmp	r3, #4
+ 583 01ce 14D1     		bne	.L34
+ 143:library/usb/usb.c ****     				USBWritePMA((uint16_t *)descStringConfig, USB_EP0_TX, USB_STR_SIZE_CONFIG);
+ 584              		.loc 1 143 0
+ 585 01d0 1322     		movs	r2, #19
+ 586 01d2 8021     		movs	r1, #128
+ 587 01d4 2248     		ldr	r0, .L38+48
+ 588 01d6 FFF7FEFF 		bl	USBWritePMA
+ 589              	.LVL30:
+ 144:library/usb/usb.c ****     				USB_COUNT0_TX = USB_STR_SIZE_CONFIG;
+ 590              		.loc 1 144 0
+ 591 01da 1322     		movs	r2, #19
+ 592 01dc 194B     		ldr	r3, .L38+20
+ 593 01de 1A60     		str	r2, [r3]
+ 145:library/usb/usb.c ****     				USB->EP0R = USB_EP_TX_VALID | USB_EP_CONTROL;
+ 594              		.loc 1 145 0
+ 595 01e0 4FF40C72 		mov	r2, #560
+ 596 01e4 A3F20443 		subw	r3, r3, #1028
+ 597 01e8 1A80     		strh	r2, [r3]	@ movhi
+ 598              	.L35:
+ 146:library/usb/usb.c ****     				while(!(USB->EP0R & USB_EP_CTR_TX)){}
+ 599              		.loc 1 146 0 discriminator 1
+ 600 01ea 114B     		ldr	r3, .L38
+ 601 01ec 1B88     		ldrh	r3, [r3]
+ 602 01ee 03F08003 		and	r3, r3, #128
+ARM GAS  /tmp/ccdboO4f.s 			page 14
+
+
+ 603 01f2 9BB2     		uxth	r3, r3
+ 604 01f4 002B     		cmp	r3, #0
+ 605 01f6 F8D0     		beq	.L35
+ 606 01f8 15E0     		b	.L19
+ 607              	.L34:
+ 147:library/usb/usb.c ****     			}else if(SetupPacket.wValue.low == USB_IDX_INTERFACE_STR){
+ 608              		.loc 1 147 0
+ 609 01fa 052B     		cmp	r3, #5
+ 610 01fc 13D1     		bne	.L19
+ 148:library/usb/usb.c ****     				USBWritePMA((uint16_t *)descStringInterface, USB_EP0_TX, USB_STR_SIZE_INTERFACE);
+ 611              		.loc 1 148 0
+ 612 01fe 1622     		movs	r2, #22
+ 613 0200 8021     		movs	r1, #128
+ 614 0202 1848     		ldr	r0, .L38+52
+ 615 0204 FFF7FEFF 		bl	USBWritePMA
+ 616              	.LVL31:
+ 149:library/usb/usb.c ****     				USB_COUNT0_TX = USB_STR_SIZE_INTERFACE;
+ 617              		.loc 1 149 0
+ 618 0208 1622     		movs	r2, #22
+ 619 020a 0E4B     		ldr	r3, .L38+20
+ 620 020c 1A60     		str	r2, [r3]
+ 150:library/usb/usb.c ****     				USB->EP0R = USB_EP_TX_VALID | USB_EP_CONTROL;
+ 621              		.loc 1 150 0
+ 622 020e 4FF40C72 		mov	r2, #560
+ 623 0212 A3F20443 		subw	r3, r3, #1028
+ 624 0216 1A80     		strh	r2, [r3]	@ movhi
+ 625              	.L36:
+ 151:library/usb/usb.c ****     				while(!(USB->EP0R & USB_EP_CTR_TX)){}
+ 626              		.loc 1 151 0 discriminator 1
+ 627 0218 054B     		ldr	r3, .L38
+ 628 021a 1B88     		ldrh	r3, [r3]
+ 629 021c 03F08003 		and	r3, r3, #128
+ 630 0220 9BB2     		uxth	r3, r3
+ 631 0222 002B     		cmp	r3, #0
+ 632 0224 F8D0     		beq	.L36
+ 633              	.L19:
+ 152:library/usb/usb.c ****     			}
+ 153:library/usb/usb.c ****     		}
+ 154:library/usb/usb.c **** 		}
+ 155:library/usb/usb.c **** 	}else if(SetupPacket.bmRequestType == 0x81){
+ 156:library/usb/usb.c **** 
+ 157:library/usb/usb.c **** 	}
+ 158:library/usb/usb.c **** 	USB->EP0R = USB_EP_CONTROL | USB_EP_RX_VALID;
+ 634              		.loc 1 158 0
+ 635 0226 4FF44852 		mov	r2, #12800
+ 636 022a 014B     		ldr	r3, .L38
+ 637 022c 1A80     		strh	r2, [r3]	@ movhi
+ 638 022e 38BD     		pop	{r3, r4, r5, pc}
+ 639              	.L39:
+ 640              		.align	2
+ 641              	.L38:
+ 642 0230 005C0040 		.word	1073765376
+ 643 0234 00000000 		.word	bufferSetup
+ 644 0238 00000000 		.word	SetupPacket
+ 645 023c 00000000 		.word	.LANCHOR0
+ 646 0240 00000000 		.word	descDevice
+ 647 0244 04600040 		.word	1073766404
+ARM GAS  /tmp/ccdboO4f.s 			page 15
+
+
+ 648 0248 00000000 		.word	descDeviceQualifier
+ 649 024c 00000000 		.word	descConfiguration
+ 650 0250 00000000 		.word	descStringLangID
+ 651 0254 00000000 		.word	descStringMFC
+ 652 0258 00000000 		.word	descStringProduct
+ 653 025c 00000000 		.word	descStringSerialNumber
+ 654 0260 00000000 		.word	descStringConfig
+ 655 0264 00000000 		.word	descStringInterface
+ 656              		.cfi_endproc
+ 657              	.LFE34:
+ 659              		.section	.text.USBConfig,"ax",%progbits
+ 660              		.align	2
+ 661              		.global	USBConfig
+ 662              		.thumb
+ 663              		.thumb_func
+ 665              	USBConfig:
+ 666              	.LFB35:
+ 159:library/usb/usb.c **** }
+ 160:library/usb/usb.c **** 
+ 161:library/usb/usb.c **** 
+ 162:library/usb/usb.c **** /* Public functoin */
+ 163:library/usb/usb.c **** 
+ 164:library/usb/usb.c **** /*
+ 165:library/usb/usb.c ****  * Name: usb_config
+ 166:library/usb/usb.c ****  * Description: USB Configuration
+ 167:library/usb/usb.c ****  * Parametrs: none
+ 168:library/usb/usb.c ****  */
+ 169:library/usb/usb.c **** void USBConfig(void){
+ 667              		.loc 1 169 0
+ 668              		.cfi_startproc
+ 669              		@ args = 0, pretend = 0, frame = 0
+ 670              		@ frame_needed = 0, uses_anonymous_args = 0
+ 671              		@ link register save eliminated.
+ 170:library/usb/usb.c ****     RCC->APB1ENR |= RCC_APB1ENR_USBEN; /* USB clock enable */
+ 672              		.loc 1 170 0
+ 673 0000 114A     		ldr	r2, .L41
+ 674 0002 D369     		ldr	r3, [r2, #28]
+ 675 0004 43F40003 		orr	r3, r3, #8388608
+ 676 0008 D361     		str	r3, [r2, #28]
+ 171:library/usb/usb.c **** 
+ 172:library/usb/usb.c **** 	USB->CNTR = USB_CNTR_FRES;/* CNTR_FRES = 1 */
+ 677              		.loc 1 172 0
+ 678 000a 104B     		ldr	r3, .L41+4
+ 679 000c 0122     		movs	r2, #1
+ 680 000e A3F84020 		strh	r2, [r3, #64]	@ movhi
+ 173:library/usb/usb.c ****      
+ 174:library/usb/usb.c ****     USB->CNTR = 0; /* CNTR_FRES = 0 */
+ 681              		.loc 1 174 0
+ 682 0012 0021     		movs	r1, #0
+ 683 0014 A3F84010 		strh	r1, [r3, #64]	@ movhi
+ 175:library/usb/usb.c **** 
+ 176:library/usb/usb.c **** 	USB->CNTR |= USB_CNTR_PDWN; 
+ 684              		.loc 1 176 0
+ 685 0018 B3F84020 		ldrh	r2, [r3, #64]
+ 686 001c 92B2     		uxth	r2, r2
+ 687 001e 42F00202 		orr	r2, r2, #2
+ 688 0022 A3F84020 		strh	r2, [r3, #64]	@ movhi
+ARM GAS  /tmp/ccdboO4f.s 			page 16
+
+
+ 177:library/usb/usb.c **** 
+ 178:library/usb/usb.c **** 	/* Reset driver */
+ 179:library/usb/usb.c **** 	USB->CNTR = 0x0;
+ 689              		.loc 1 179 0
+ 690 0026 A3F84010 		strh	r1, [r3, #64]	@ movhi
+ 180:library/usb/usb.c **** 
+ 181:library/usb/usb.c ****     /* Reset registr flag interrput */
+ 182:library/usb/usb.c **** 	USB->ISTR = 0x0;
+ 691              		.loc 1 182 0
+ 692 002a A3F84410 		strh	r1, [r3, #68]	@ movhi
+ 183:library/usb/usb.c **** 
+ 184:library/usb/usb.c ****     /* Allow interrput */
+ 185:library/usb/usb.c ****     //USB->CNTR |= USB_CNTR_RESETM | USB_CNTR_SUSPM | USB_CNTR_WKUPM | USB_CNTR_SOFM | USB_CNTR_ESO
+ 186:library/usb/usb.c **** 	USB->CNTR = USB_CNTR_RESETM | USB_CNTR_SUSPM | USB_CNTR_WKUPM | USB_CNTR_CTRM;
+ 693              		.loc 1 186 0
+ 694 002e 4FF41C42 		mov	r2, #39936
+ 695 0032 A3F84020 		strh	r2, [r3, #64]	@ movhi
+ 696              	.LVL32:
+ 697              	.LBB6:
+ 698              	.LBB7:
+ 699              		.file 2 "library/usb/../cmsis/inc/core_cm3.h"
+   1:library/usb/../cmsis/inc/core_cm3.h **** /**************************************************************************//**
+   2:library/usb/../cmsis/inc/core_cm3.h ****  * @file     core_cm3.h
+   3:library/usb/../cmsis/inc/core_cm3.h ****  * @brief    CMSIS Cortex-M3 Core Peripheral Access Layer Header File
+   4:library/usb/../cmsis/inc/core_cm3.h ****  * @version  V1.30
+   5:library/usb/../cmsis/inc/core_cm3.h ****  * @date     30. October 2009
+   6:library/usb/../cmsis/inc/core_cm3.h ****  *
+   7:library/usb/../cmsis/inc/core_cm3.h ****  * @note
+   8:library/usb/../cmsis/inc/core_cm3.h ****  * Copyright (C) 2009 ARM Limited. All rights reserved.
+   9:library/usb/../cmsis/inc/core_cm3.h ****  *
+  10:library/usb/../cmsis/inc/core_cm3.h ****  * @par
+  11:library/usb/../cmsis/inc/core_cm3.h ****  * ARM Limited (ARM) is supplying this software for use with Cortex-M 
+  12:library/usb/../cmsis/inc/core_cm3.h ****  * processor based microcontrollers.  This file can be freely distributed 
+  13:library/usb/../cmsis/inc/core_cm3.h ****  * within development tools that are supporting such ARM based processors. 
+  14:library/usb/../cmsis/inc/core_cm3.h ****  *
+  15:library/usb/../cmsis/inc/core_cm3.h ****  * @par
+  16:library/usb/../cmsis/inc/core_cm3.h ****  * THIS SOFTWARE IS PROVIDED "AS IS".  NO WARRANTIES, WHETHER EXPRESS, IMPLIED
+  17:library/usb/../cmsis/inc/core_cm3.h ****  * OR STATUTORY, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF
+  18:library/usb/../cmsis/inc/core_cm3.h ****  * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE APPLY TO THIS SOFTWARE.
+  19:library/usb/../cmsis/inc/core_cm3.h ****  * ARM SHALL NOT, IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL, OR
+  20:library/usb/../cmsis/inc/core_cm3.h ****  * CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
+  21:library/usb/../cmsis/inc/core_cm3.h ****  *
+  22:library/usb/../cmsis/inc/core_cm3.h ****  ******************************************************************************/
+  23:library/usb/../cmsis/inc/core_cm3.h **** 
+  24:library/usb/../cmsis/inc/core_cm3.h **** #ifndef __CM3_CORE_H__
+  25:library/usb/../cmsis/inc/core_cm3.h **** #define __CM3_CORE_H__
+  26:library/usb/../cmsis/inc/core_cm3.h **** 
+  27:library/usb/../cmsis/inc/core_cm3.h **** /** @addtogroup CMSIS_CM3_core_LintCinfiguration CMSIS CM3 Core Lint Configuration
+  28:library/usb/../cmsis/inc/core_cm3.h ****  *
+  29:library/usb/../cmsis/inc/core_cm3.h ****  * List of Lint messages which will be suppressed and not shown:
+  30:library/usb/../cmsis/inc/core_cm3.h ****  *   - Error 10: \n
+  31:library/usb/../cmsis/inc/core_cm3.h ****  *     register uint32_t __regBasePri         __asm("basepri"); \n
+  32:library/usb/../cmsis/inc/core_cm3.h ****  *     Error 10: Expecting ';'
+  33:library/usb/../cmsis/inc/core_cm3.h ****  * .
+  34:library/usb/../cmsis/inc/core_cm3.h ****  *   - Error 530: \n
+  35:library/usb/../cmsis/inc/core_cm3.h ****  *     return(__regBasePri); \n
+  36:library/usb/../cmsis/inc/core_cm3.h ****  *     Warning 530: Symbol '__regBasePri' (line 264) not initialized
+ARM GAS  /tmp/ccdboO4f.s 			page 17
+
+
+  37:library/usb/../cmsis/inc/core_cm3.h ****  * . 
+  38:library/usb/../cmsis/inc/core_cm3.h ****  *   - Error 550: \n
+  39:library/usb/../cmsis/inc/core_cm3.h ****  *     __regBasePri = (basePri & 0x1ff); \n
+  40:library/usb/../cmsis/inc/core_cm3.h ****  *     Warning 550: Symbol '__regBasePri' (line 271) not accessed
+  41:library/usb/../cmsis/inc/core_cm3.h ****  * .
+  42:library/usb/../cmsis/inc/core_cm3.h ****  *   - Error 754: \n
+  43:library/usb/../cmsis/inc/core_cm3.h ****  *     uint32_t RESERVED0[24]; \n
+  44:library/usb/../cmsis/inc/core_cm3.h ****  *     Info 754: local structure member '<some, not used in the HAL>' (line 109, file ./cm3_core.h)
+  45:library/usb/../cmsis/inc/core_cm3.h ****  * .
+  46:library/usb/../cmsis/inc/core_cm3.h ****  *   - Error 750: \n
+  47:library/usb/../cmsis/inc/core_cm3.h ****  *     #define __CM3_CORE_H__ \n
+  48:library/usb/../cmsis/inc/core_cm3.h ****  *     Info 750: local macro '__CM3_CORE_H__' (line 43, file./cm3_core.h) not referenced
+  49:library/usb/../cmsis/inc/core_cm3.h ****  * .
+  50:library/usb/../cmsis/inc/core_cm3.h ****  *   - Error 528: \n
+  51:library/usb/../cmsis/inc/core_cm3.h ****  *     static __INLINE void NVIC_DisableIRQ(uint32_t IRQn) \n
+  52:library/usb/../cmsis/inc/core_cm3.h ****  *     Warning 528: Symbol 'NVIC_DisableIRQ(unsigned int)' (line 419, file ./cm3_core.h) not refere
+  53:library/usb/../cmsis/inc/core_cm3.h ****  * .
+  54:library/usb/../cmsis/inc/core_cm3.h ****  *   - Error 751: \n
+  55:library/usb/../cmsis/inc/core_cm3.h ****  *     } InterruptType_Type; \n
+  56:library/usb/../cmsis/inc/core_cm3.h ****  *     Info 751: local typedef 'InterruptType_Type' (line 170, file ./cm3_core.h) not referenced
+  57:library/usb/../cmsis/inc/core_cm3.h ****  * .
+  58:library/usb/../cmsis/inc/core_cm3.h ****  * Note:  To re-enable a Message, insert a space before 'lint' *
+  59:library/usb/../cmsis/inc/core_cm3.h ****  *
+  60:library/usb/../cmsis/inc/core_cm3.h ****  */
+  61:library/usb/../cmsis/inc/core_cm3.h **** 
+  62:library/usb/../cmsis/inc/core_cm3.h **** /*lint -save */
+  63:library/usb/../cmsis/inc/core_cm3.h **** /*lint -e10  */
+  64:library/usb/../cmsis/inc/core_cm3.h **** /*lint -e530 */
+  65:library/usb/../cmsis/inc/core_cm3.h **** /*lint -e550 */
+  66:library/usb/../cmsis/inc/core_cm3.h **** /*lint -e754 */
+  67:library/usb/../cmsis/inc/core_cm3.h **** /*lint -e750 */
+  68:library/usb/../cmsis/inc/core_cm3.h **** /*lint -e528 */
+  69:library/usb/../cmsis/inc/core_cm3.h **** /*lint -e751 */
+  70:library/usb/../cmsis/inc/core_cm3.h **** 
+  71:library/usb/../cmsis/inc/core_cm3.h **** 
+  72:library/usb/../cmsis/inc/core_cm3.h **** /** @addtogroup CMSIS_CM3_core_definitions CM3 Core Definitions
+  73:library/usb/../cmsis/inc/core_cm3.h ****   This file defines all structures and symbols for CMSIS core:
+  74:library/usb/../cmsis/inc/core_cm3.h ****     - CMSIS version number
+  75:library/usb/../cmsis/inc/core_cm3.h ****     - Cortex-M core registers and bitfields
+  76:library/usb/../cmsis/inc/core_cm3.h ****     - Cortex-M core peripheral base address
+  77:library/usb/../cmsis/inc/core_cm3.h ****   @{
+  78:library/usb/../cmsis/inc/core_cm3.h ****  */
+  79:library/usb/../cmsis/inc/core_cm3.h **** 
+  80:library/usb/../cmsis/inc/core_cm3.h **** #ifdef __cplusplus
+  81:library/usb/../cmsis/inc/core_cm3.h ****  extern "C" {
+  82:library/usb/../cmsis/inc/core_cm3.h **** #endif 
+  83:library/usb/../cmsis/inc/core_cm3.h **** 
+  84:library/usb/../cmsis/inc/core_cm3.h **** #define __CM3_CMSIS_VERSION_MAIN  (0x01)                                                       /*!<
+  85:library/usb/../cmsis/inc/core_cm3.h **** #define __CM3_CMSIS_VERSION_SUB   (0x30)                                                       /*!<
+  86:library/usb/../cmsis/inc/core_cm3.h **** #define __CM3_CMSIS_VERSION       ((__CM3_CMSIS_VERSION_MAIN << 16) | __CM3_CMSIS_VERSION_SUB) /*!<
+  87:library/usb/../cmsis/inc/core_cm3.h **** 
+  88:library/usb/../cmsis/inc/core_cm3.h **** #define __CORTEX_M                (0x03)                                                       /*!<
+  89:library/usb/../cmsis/inc/core_cm3.h **** 
+  90:library/usb/../cmsis/inc/core_cm3.h **** #include <stdint.h>                           /* Include standard types */
+  91:library/usb/../cmsis/inc/core_cm3.h **** 
+  92:library/usb/../cmsis/inc/core_cm3.h **** #if defined (__ICCARM__)
+  93:library/usb/../cmsis/inc/core_cm3.h ****   #include <intrinsics.h>                     /* IAR Intrinsics   */
+ARM GAS  /tmp/ccdboO4f.s 			page 18
+
+
+  94:library/usb/../cmsis/inc/core_cm3.h **** #endif
+  95:library/usb/../cmsis/inc/core_cm3.h **** 
+  96:library/usb/../cmsis/inc/core_cm3.h **** 
+  97:library/usb/../cmsis/inc/core_cm3.h **** #ifndef __NVIC_PRIO_BITS
+  98:library/usb/../cmsis/inc/core_cm3.h ****   #define __NVIC_PRIO_BITS    4               /*!< standard definition for NVIC Priority Bits */
+  99:library/usb/../cmsis/inc/core_cm3.h **** #endif
+ 100:library/usb/../cmsis/inc/core_cm3.h **** 
+ 101:library/usb/../cmsis/inc/core_cm3.h **** 
+ 102:library/usb/../cmsis/inc/core_cm3.h **** 
+ 103:library/usb/../cmsis/inc/core_cm3.h **** 
+ 104:library/usb/../cmsis/inc/core_cm3.h **** /**
+ 105:library/usb/../cmsis/inc/core_cm3.h ****  * IO definitions
+ 106:library/usb/../cmsis/inc/core_cm3.h ****  *
+ 107:library/usb/../cmsis/inc/core_cm3.h ****  * define access restrictions to peripheral registers
+ 108:library/usb/../cmsis/inc/core_cm3.h ****  */
+ 109:library/usb/../cmsis/inc/core_cm3.h **** 
+ 110:library/usb/../cmsis/inc/core_cm3.h **** #ifdef __cplusplus
+ 111:library/usb/../cmsis/inc/core_cm3.h ****   #define     __I     volatile                /*!< defines 'read only' permissions      */
+ 112:library/usb/../cmsis/inc/core_cm3.h **** #else
+ 113:library/usb/../cmsis/inc/core_cm3.h ****   #define     __I     volatile const          /*!< defines 'read only' permissions      */
+ 114:library/usb/../cmsis/inc/core_cm3.h **** #endif
+ 115:library/usb/../cmsis/inc/core_cm3.h **** #define     __O     volatile                  /*!< defines 'write only' permissions     */
+ 116:library/usb/../cmsis/inc/core_cm3.h **** #define     __IO    volatile                  /*!< defines 'read / write' permissions   */
+ 117:library/usb/../cmsis/inc/core_cm3.h **** 
+ 118:library/usb/../cmsis/inc/core_cm3.h **** 
+ 119:library/usb/../cmsis/inc/core_cm3.h **** 
+ 120:library/usb/../cmsis/inc/core_cm3.h **** /*******************************************************************************
+ 121:library/usb/../cmsis/inc/core_cm3.h ****  *                 Register Abstraction
+ 122:library/usb/../cmsis/inc/core_cm3.h ****  ******************************************************************************/
+ 123:library/usb/../cmsis/inc/core_cm3.h **** /** @addtogroup CMSIS_CM3_core_register CMSIS CM3 Core Register
+ 124:library/usb/../cmsis/inc/core_cm3.h ****  @{
+ 125:library/usb/../cmsis/inc/core_cm3.h **** */
+ 126:library/usb/../cmsis/inc/core_cm3.h **** 
+ 127:library/usb/../cmsis/inc/core_cm3.h **** 
+ 128:library/usb/../cmsis/inc/core_cm3.h **** /** @addtogroup CMSIS_CM3_NVIC CMSIS CM3 NVIC
+ 129:library/usb/../cmsis/inc/core_cm3.h ****   memory mapped structure for Nested Vectored Interrupt Controller (NVIC)
+ 130:library/usb/../cmsis/inc/core_cm3.h ****   @{
+ 131:library/usb/../cmsis/inc/core_cm3.h ****  */
+ 132:library/usb/../cmsis/inc/core_cm3.h **** typedef struct
+ 133:library/usb/../cmsis/inc/core_cm3.h **** {
+ 134:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t ISER[8];                      /*!< Offset: 0x000  Interrupt Set Enable Register    
+ 135:library/usb/../cmsis/inc/core_cm3.h ****        uint32_t RESERVED0[24];                                   
+ 136:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t ICER[8];                      /*!< Offset: 0x080  Interrupt Clear Enable Register  
+ 137:library/usb/../cmsis/inc/core_cm3.h ****        uint32_t RSERVED1[24];                                    
+ 138:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t ISPR[8];                      /*!< Offset: 0x100  Interrupt Set Pending Register   
+ 139:library/usb/../cmsis/inc/core_cm3.h ****        uint32_t RESERVED2[24];                                   
+ 140:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t ICPR[8];                      /*!< Offset: 0x180  Interrupt Clear Pending Register 
+ 141:library/usb/../cmsis/inc/core_cm3.h ****        uint32_t RESERVED3[24];                                   
+ 142:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t IABR[8];                      /*!< Offset: 0x200  Interrupt Active bit Register    
+ 143:library/usb/../cmsis/inc/core_cm3.h ****        uint32_t RESERVED4[56];                                   
+ 144:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint8_t  IP[240];                      /*!< Offset: 0x300  Interrupt Priority Register (8Bit
+ 145:library/usb/../cmsis/inc/core_cm3.h ****        uint32_t RESERVED5[644];                                  
+ 146:library/usb/../cmsis/inc/core_cm3.h ****   __O  uint32_t STIR;                         /*!< Offset: 0xE00  Software Trigger Interrupt Regist
+ 147:library/usb/../cmsis/inc/core_cm3.h **** }  NVIC_Type;                                               
+ 148:library/usb/../cmsis/inc/core_cm3.h **** /*@}*/ /* end of group CMSIS_CM3_NVIC */
+ 149:library/usb/../cmsis/inc/core_cm3.h **** 
+ 150:library/usb/../cmsis/inc/core_cm3.h **** 
+ARM GAS  /tmp/ccdboO4f.s 			page 19
+
+
+ 151:library/usb/../cmsis/inc/core_cm3.h **** /** @addtogroup CMSIS_CM3_SCB CMSIS CM3 SCB
+ 152:library/usb/../cmsis/inc/core_cm3.h ****   memory mapped structure for System Control Block (SCB)
+ 153:library/usb/../cmsis/inc/core_cm3.h ****   @{
+ 154:library/usb/../cmsis/inc/core_cm3.h ****  */
+ 155:library/usb/../cmsis/inc/core_cm3.h **** typedef struct
+ 156:library/usb/../cmsis/inc/core_cm3.h **** {
+ 157:library/usb/../cmsis/inc/core_cm3.h ****   __I  uint32_t CPUID;                        /*!< Offset: 0x00  CPU ID Base Register              
+ 158:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t ICSR;                         /*!< Offset: 0x04  Interrupt Control State Register  
+ 159:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t VTOR;                         /*!< Offset: 0x08  Vector Table Offset Register      
+ 160:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t AIRCR;                        /*!< Offset: 0x0C  Application Interrupt / Reset Cont
+ 161:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t SCR;                          /*!< Offset: 0x10  System Control Register           
+ 162:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t CCR;                          /*!< Offset: 0x14  Configuration Control Register    
+ 163:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint8_t  SHP[12];                      /*!< Offset: 0x18  System Handlers Priority Registers
+ 164:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t SHCSR;                        /*!< Offset: 0x24  System Handler Control and State R
+ 165:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t CFSR;                         /*!< Offset: 0x28  Configurable Fault Status Register
+ 166:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t HFSR;                         /*!< Offset: 0x2C  Hard Fault Status Register        
+ 167:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t DFSR;                         /*!< Offset: 0x30  Debug Fault Status Register       
+ 168:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t MMFAR;                        /*!< Offset: 0x34  Mem Manage Address Register       
+ 169:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t BFAR;                         /*!< Offset: 0x38  Bus Fault Address Register        
+ 170:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t AFSR;                         /*!< Offset: 0x3C  Auxiliary Fault Status Register   
+ 171:library/usb/../cmsis/inc/core_cm3.h ****   __I  uint32_t PFR[2];                       /*!< Offset: 0x40  Processor Feature Register        
+ 172:library/usb/../cmsis/inc/core_cm3.h ****   __I  uint32_t DFR;                          /*!< Offset: 0x48  Debug Feature Register            
+ 173:library/usb/../cmsis/inc/core_cm3.h ****   __I  uint32_t ADR;                          /*!< Offset: 0x4C  Auxiliary Feature Register        
+ 174:library/usb/../cmsis/inc/core_cm3.h ****   __I  uint32_t MMFR[4];                      /*!< Offset: 0x50  Memory Model Feature Register     
+ 175:library/usb/../cmsis/inc/core_cm3.h ****   __I  uint32_t ISAR[5];                      /*!< Offset: 0x60  ISA Feature Register              
+ 176:library/usb/../cmsis/inc/core_cm3.h **** } SCB_Type;                                                
+ 177:library/usb/../cmsis/inc/core_cm3.h **** 
+ 178:library/usb/../cmsis/inc/core_cm3.h **** /* SCB CPUID Register Definitions */
+ 179:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_CPUID_IMPLEMENTER_Pos          24                                             /*!< SCB 
+ 180:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_CPUID_IMPLEMENTER_Msk          (0xFFul << SCB_CPUID_IMPLEMENTER_Pos)          /*!< SCB 
+ 181:library/usb/../cmsis/inc/core_cm3.h **** 
+ 182:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_CPUID_VARIANT_Pos              20                                             /*!< SCB 
+ 183:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_CPUID_VARIANT_Msk              (0xFul << SCB_CPUID_VARIANT_Pos)               /*!< SCB 
+ 184:library/usb/../cmsis/inc/core_cm3.h **** 
+ 185:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_CPUID_PARTNO_Pos                4                                             /*!< SCB 
+ 186:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_CPUID_PARTNO_Msk               (0xFFFul << SCB_CPUID_PARTNO_Pos)              /*!< SCB 
+ 187:library/usb/../cmsis/inc/core_cm3.h **** 
+ 188:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_CPUID_REVISION_Pos              0                                             /*!< SCB 
+ 189:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_CPUID_REVISION_Msk             (0xFul << SCB_CPUID_REVISION_Pos)              /*!< SCB 
+ 190:library/usb/../cmsis/inc/core_cm3.h **** 
+ 191:library/usb/../cmsis/inc/core_cm3.h **** /* SCB Interrupt Control State Register Definitions */
+ 192:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_ICSR_NMIPENDSET_Pos            31                                             /*!< SCB 
+ 193:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_ICSR_NMIPENDSET_Msk            (1ul << SCB_ICSR_NMIPENDSET_Pos)               /*!< SCB 
+ 194:library/usb/../cmsis/inc/core_cm3.h **** 
+ 195:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_ICSR_PENDSVSET_Pos             28                                             /*!< SCB 
+ 196:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_ICSR_PENDSVSET_Msk             (1ul << SCB_ICSR_PENDSVSET_Pos)                /*!< SCB 
+ 197:library/usb/../cmsis/inc/core_cm3.h **** 
+ 198:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_ICSR_PENDSVCLR_Pos             27                                             /*!< SCB 
+ 199:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_ICSR_PENDSVCLR_Msk             (1ul << SCB_ICSR_PENDSVCLR_Pos)                /*!< SCB 
+ 200:library/usb/../cmsis/inc/core_cm3.h **** 
+ 201:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_ICSR_PENDSTSET_Pos             26                                             /*!< SCB 
+ 202:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_ICSR_PENDSTSET_Msk             (1ul << SCB_ICSR_PENDSTSET_Pos)                /*!< SCB 
+ 203:library/usb/../cmsis/inc/core_cm3.h **** 
+ 204:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_ICSR_PENDSTCLR_Pos             25                                             /*!< SCB 
+ 205:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_ICSR_PENDSTCLR_Msk             (1ul << SCB_ICSR_PENDSTCLR_Pos)                /*!< SCB 
+ 206:library/usb/../cmsis/inc/core_cm3.h **** 
+ 207:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_ICSR_ISRPREEMPT_Pos            23                                             /*!< SCB 
+ARM GAS  /tmp/ccdboO4f.s 			page 20
+
+
+ 208:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_ICSR_ISRPREEMPT_Msk            (1ul << SCB_ICSR_ISRPREEMPT_Pos)               /*!< SCB 
+ 209:library/usb/../cmsis/inc/core_cm3.h **** 
+ 210:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_ICSR_ISRPENDING_Pos            22                                             /*!< SCB 
+ 211:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_ICSR_ISRPENDING_Msk            (1ul << SCB_ICSR_ISRPENDING_Pos)               /*!< SCB 
+ 212:library/usb/../cmsis/inc/core_cm3.h **** 
+ 213:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_ICSR_VECTPENDING_Pos           12                                             /*!< SCB 
+ 214:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_ICSR_VECTPENDING_Msk           (0x1FFul << SCB_ICSR_VECTPENDING_Pos)          /*!< SCB 
+ 215:library/usb/../cmsis/inc/core_cm3.h **** 
+ 216:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_ICSR_RETTOBASE_Pos             11                                             /*!< SCB 
+ 217:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_ICSR_RETTOBASE_Msk             (1ul << SCB_ICSR_RETTOBASE_Pos)                /*!< SCB 
+ 218:library/usb/../cmsis/inc/core_cm3.h **** 
+ 219:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_ICSR_VECTACTIVE_Pos             0                                             /*!< SCB 
+ 220:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_ICSR_VECTACTIVE_Msk            (0x1FFul << SCB_ICSR_VECTACTIVE_Pos)           /*!< SCB 
+ 221:library/usb/../cmsis/inc/core_cm3.h **** 
+ 222:library/usb/../cmsis/inc/core_cm3.h **** /* SCB Interrupt Control State Register Definitions */
+ 223:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_VTOR_TBLBASE_Pos               29                                             /*!< SCB 
+ 224:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_VTOR_TBLBASE_Msk               (0x1FFul << SCB_VTOR_TBLBASE_Pos)              /*!< SCB 
+ 225:library/usb/../cmsis/inc/core_cm3.h **** 
+ 226:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_VTOR_TBLOFF_Pos                 7                                             /*!< SCB 
+ 227:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_VTOR_TBLOFF_Msk                (0x3FFFFFul << SCB_VTOR_TBLOFF_Pos)            /*!< SCB 
+ 228:library/usb/../cmsis/inc/core_cm3.h **** 
+ 229:library/usb/../cmsis/inc/core_cm3.h **** /* SCB Application Interrupt and Reset Control Register Definitions */
+ 230:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_AIRCR_VECTKEY_Pos              16                                             /*!< SCB 
+ 231:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_AIRCR_VECTKEY_Msk              (0xFFFFul << SCB_AIRCR_VECTKEY_Pos)            /*!< SCB 
+ 232:library/usb/../cmsis/inc/core_cm3.h **** 
+ 233:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_AIRCR_VECTKEYSTAT_Pos          16                                             /*!< SCB 
+ 234:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_AIRCR_VECTKEYSTAT_Msk          (0xFFFFul << SCB_AIRCR_VECTKEYSTAT_Pos)        /*!< SCB 
+ 235:library/usb/../cmsis/inc/core_cm3.h **** 
+ 236:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_AIRCR_ENDIANESS_Pos            15                                             /*!< SCB 
+ 237:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_AIRCR_ENDIANESS_Msk            (1ul << SCB_AIRCR_ENDIANESS_Pos)               /*!< SCB 
+ 238:library/usb/../cmsis/inc/core_cm3.h **** 
+ 239:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_AIRCR_PRIGROUP_Pos              8                                             /*!< SCB 
+ 240:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_AIRCR_PRIGROUP_Msk             (7ul << SCB_AIRCR_PRIGROUP_Pos)                /*!< SCB 
+ 241:library/usb/../cmsis/inc/core_cm3.h **** 
+ 242:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_AIRCR_SYSRESETREQ_Pos           2                                             /*!< SCB 
+ 243:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_AIRCR_SYSRESETREQ_Msk          (1ul << SCB_AIRCR_SYSRESETREQ_Pos)             /*!< SCB 
+ 244:library/usb/../cmsis/inc/core_cm3.h **** 
+ 245:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_AIRCR_VECTCLRACTIVE_Pos         1                                             /*!< SCB 
+ 246:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_AIRCR_VECTCLRACTIVE_Msk        (1ul << SCB_AIRCR_VECTCLRACTIVE_Pos)           /*!< SCB 
+ 247:library/usb/../cmsis/inc/core_cm3.h **** 
+ 248:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_AIRCR_VECTRESET_Pos             0                                             /*!< SCB 
+ 249:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_AIRCR_VECTRESET_Msk            (1ul << SCB_AIRCR_VECTRESET_Pos)               /*!< SCB 
+ 250:library/usb/../cmsis/inc/core_cm3.h **** 
+ 251:library/usb/../cmsis/inc/core_cm3.h **** /* SCB System Control Register Definitions */
+ 252:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_SCR_SEVONPEND_Pos               4                                             /*!< SCB 
+ 253:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_SCR_SEVONPEND_Msk              (1ul << SCB_SCR_SEVONPEND_Pos)                 /*!< SCB 
+ 254:library/usb/../cmsis/inc/core_cm3.h **** 
+ 255:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_SCR_SLEEPDEEP_Pos               2                                             /*!< SCB 
+ 256:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_SCR_SLEEPDEEP_Msk              (1ul << SCB_SCR_SLEEPDEEP_Pos)                 /*!< SCB 
+ 257:library/usb/../cmsis/inc/core_cm3.h **** 
+ 258:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_SCR_SLEEPONEXIT_Pos             1                                             /*!< SCB 
+ 259:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_SCR_SLEEPONEXIT_Msk            (1ul << SCB_SCR_SLEEPONEXIT_Pos)               /*!< SCB 
+ 260:library/usb/../cmsis/inc/core_cm3.h **** 
+ 261:library/usb/../cmsis/inc/core_cm3.h **** /* SCB Configuration Control Register Definitions */
+ 262:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_CCR_STKALIGN_Pos                9                                             /*!< SCB 
+ 263:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_CCR_STKALIGN_Msk               (1ul << SCB_CCR_STKALIGN_Pos)                  /*!< SCB 
+ 264:library/usb/../cmsis/inc/core_cm3.h **** 
+ARM GAS  /tmp/ccdboO4f.s 			page 21
+
+
+ 265:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_CCR_BFHFNMIGN_Pos               8                                             /*!< SCB 
+ 266:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_CCR_BFHFNMIGN_Msk              (1ul << SCB_CCR_BFHFNMIGN_Pos)                 /*!< SCB 
+ 267:library/usb/../cmsis/inc/core_cm3.h **** 
+ 268:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_CCR_DIV_0_TRP_Pos               4                                             /*!< SCB 
+ 269:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_CCR_DIV_0_TRP_Msk              (1ul << SCB_CCR_DIV_0_TRP_Pos)                 /*!< SCB 
+ 270:library/usb/../cmsis/inc/core_cm3.h **** 
+ 271:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_CCR_UNALIGN_TRP_Pos             3                                             /*!< SCB 
+ 272:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_CCR_UNALIGN_TRP_Msk            (1ul << SCB_CCR_UNALIGN_TRP_Pos)               /*!< SCB 
+ 273:library/usb/../cmsis/inc/core_cm3.h **** 
+ 274:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_CCR_USERSETMPEND_Pos            1                                             /*!< SCB 
+ 275:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_CCR_USERSETMPEND_Msk           (1ul << SCB_CCR_USERSETMPEND_Pos)              /*!< SCB 
+ 276:library/usb/../cmsis/inc/core_cm3.h **** 
+ 277:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_CCR_NONBASETHRDENA_Pos          0                                             /*!< SCB 
+ 278:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_CCR_NONBASETHRDENA_Msk         (1ul << SCB_CCR_NONBASETHRDENA_Pos)            /*!< SCB 
+ 279:library/usb/../cmsis/inc/core_cm3.h **** 
+ 280:library/usb/../cmsis/inc/core_cm3.h **** /* SCB System Handler Control and State Register Definitions */
+ 281:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_SHCSR_USGFAULTENA_Pos          18                                             /*!< SCB 
+ 282:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_SHCSR_USGFAULTENA_Msk          (1ul << SCB_SHCSR_USGFAULTENA_Pos)             /*!< SCB 
+ 283:library/usb/../cmsis/inc/core_cm3.h **** 
+ 284:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_SHCSR_BUSFAULTENA_Pos          17                                             /*!< SCB 
+ 285:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_SHCSR_BUSFAULTENA_Msk          (1ul << SCB_SHCSR_BUSFAULTENA_Pos)             /*!< SCB 
+ 286:library/usb/../cmsis/inc/core_cm3.h **** 
+ 287:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_SHCSR_MEMFAULTENA_Pos          16                                             /*!< SCB 
+ 288:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_SHCSR_MEMFAULTENA_Msk          (1ul << SCB_SHCSR_MEMFAULTENA_Pos)             /*!< SCB 
+ 289:library/usb/../cmsis/inc/core_cm3.h **** 
+ 290:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_SHCSR_SVCALLPENDED_Pos         15                                             /*!< SCB 
+ 291:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_SHCSR_SVCALLPENDED_Msk         (1ul << SCB_SHCSR_SVCALLPENDED_Pos)            /*!< SCB 
+ 292:library/usb/../cmsis/inc/core_cm3.h **** 
+ 293:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_SHCSR_BUSFAULTPENDED_Pos       14                                             /*!< SCB 
+ 294:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_SHCSR_BUSFAULTPENDED_Msk       (1ul << SCB_SHCSR_BUSFAULTPENDED_Pos)          /*!< SCB 
+ 295:library/usb/../cmsis/inc/core_cm3.h **** 
+ 296:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_SHCSR_MEMFAULTPENDED_Pos       13                                             /*!< SCB 
+ 297:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_SHCSR_MEMFAULTPENDED_Msk       (1ul << SCB_SHCSR_MEMFAULTPENDED_Pos)          /*!< SCB 
+ 298:library/usb/../cmsis/inc/core_cm3.h **** 
+ 299:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_SHCSR_USGFAULTPENDED_Pos       12                                             /*!< SCB 
+ 300:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_SHCSR_USGFAULTPENDED_Msk       (1ul << SCB_SHCSR_USGFAULTPENDED_Pos)          /*!< SCB 
+ 301:library/usb/../cmsis/inc/core_cm3.h **** 
+ 302:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_SHCSR_SYSTICKACT_Pos           11                                             /*!< SCB 
+ 303:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_SHCSR_SYSTICKACT_Msk           (1ul << SCB_SHCSR_SYSTICKACT_Pos)              /*!< SCB 
+ 304:library/usb/../cmsis/inc/core_cm3.h **** 
+ 305:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_SHCSR_PENDSVACT_Pos            10                                             /*!< SCB 
+ 306:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_SHCSR_PENDSVACT_Msk            (1ul << SCB_SHCSR_PENDSVACT_Pos)               /*!< SCB 
+ 307:library/usb/../cmsis/inc/core_cm3.h **** 
+ 308:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_SHCSR_MONITORACT_Pos            8                                             /*!< SCB 
+ 309:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_SHCSR_MONITORACT_Msk           (1ul << SCB_SHCSR_MONITORACT_Pos)              /*!< SCB 
+ 310:library/usb/../cmsis/inc/core_cm3.h **** 
+ 311:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_SHCSR_SVCALLACT_Pos             7                                             /*!< SCB 
+ 312:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_SHCSR_SVCALLACT_Msk            (1ul << SCB_SHCSR_SVCALLACT_Pos)               /*!< SCB 
+ 313:library/usb/../cmsis/inc/core_cm3.h ****                                      
+ 314:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_SHCSR_USGFAULTACT_Pos           3                                             /*!< SCB 
+ 315:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_SHCSR_USGFAULTACT_Msk          (1ul << SCB_SHCSR_USGFAULTACT_Pos)             /*!< SCB 
+ 316:library/usb/../cmsis/inc/core_cm3.h **** 
+ 317:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_SHCSR_BUSFAULTACT_Pos           1                                             /*!< SCB 
+ 318:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_SHCSR_BUSFAULTACT_Msk          (1ul << SCB_SHCSR_BUSFAULTACT_Pos)             /*!< SCB 
+ 319:library/usb/../cmsis/inc/core_cm3.h **** 
+ 320:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_SHCSR_MEMFAULTACT_Pos           0                                             /*!< SCB 
+ 321:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_SHCSR_MEMFAULTACT_Msk          (1ul << SCB_SHCSR_MEMFAULTACT_Pos)             /*!< SCB 
+ARM GAS  /tmp/ccdboO4f.s 			page 22
+
+
+ 322:library/usb/../cmsis/inc/core_cm3.h **** 
+ 323:library/usb/../cmsis/inc/core_cm3.h **** /* SCB Configurable Fault Status Registers Definitions */
+ 324:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_CFSR_USGFAULTSR_Pos            16                                             /*!< SCB 
+ 325:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_CFSR_USGFAULTSR_Msk            (0xFFFFul << SCB_CFSR_USGFAULTSR_Pos)          /*!< SCB 
+ 326:library/usb/../cmsis/inc/core_cm3.h **** 
+ 327:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_CFSR_BUSFAULTSR_Pos             8                                             /*!< SCB 
+ 328:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_CFSR_BUSFAULTSR_Msk            (0xFFul << SCB_CFSR_BUSFAULTSR_Pos)            /*!< SCB 
+ 329:library/usb/../cmsis/inc/core_cm3.h **** 
+ 330:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_CFSR_MEMFAULTSR_Pos             0                                             /*!< SCB 
+ 331:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_CFSR_MEMFAULTSR_Msk            (0xFFul << SCB_CFSR_MEMFAULTSR_Pos)            /*!< SCB 
+ 332:library/usb/../cmsis/inc/core_cm3.h **** 
+ 333:library/usb/../cmsis/inc/core_cm3.h **** /* SCB Hard Fault Status Registers Definitions */
+ 334:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_HFSR_DEBUGEVT_Pos              31                                             /*!< SCB 
+ 335:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_HFSR_DEBUGEVT_Msk              (1ul << SCB_HFSR_DEBUGEVT_Pos)                 /*!< SCB 
+ 336:library/usb/../cmsis/inc/core_cm3.h **** 
+ 337:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_HFSR_FORCED_Pos                30                                             /*!< SCB 
+ 338:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_HFSR_FORCED_Msk                (1ul << SCB_HFSR_FORCED_Pos)                   /*!< SCB 
+ 339:library/usb/../cmsis/inc/core_cm3.h **** 
+ 340:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_HFSR_VECTTBL_Pos                1                                             /*!< SCB 
+ 341:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_HFSR_VECTTBL_Msk               (1ul << SCB_HFSR_VECTTBL_Pos)                  /*!< SCB 
+ 342:library/usb/../cmsis/inc/core_cm3.h **** 
+ 343:library/usb/../cmsis/inc/core_cm3.h **** /* SCB Debug Fault Status Register Definitions */
+ 344:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_DFSR_EXTERNAL_Pos               4                                             /*!< SCB 
+ 345:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_DFSR_EXTERNAL_Msk              (1ul << SCB_DFSR_EXTERNAL_Pos)                 /*!< SCB 
+ 346:library/usb/../cmsis/inc/core_cm3.h **** 
+ 347:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_DFSR_VCATCH_Pos                 3                                             /*!< SCB 
+ 348:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_DFSR_VCATCH_Msk                (1ul << SCB_DFSR_VCATCH_Pos)                   /*!< SCB 
+ 349:library/usb/../cmsis/inc/core_cm3.h **** 
+ 350:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_DFSR_DWTTRAP_Pos                2                                             /*!< SCB 
+ 351:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_DFSR_DWTTRAP_Msk               (1ul << SCB_DFSR_DWTTRAP_Pos)                  /*!< SCB 
+ 352:library/usb/../cmsis/inc/core_cm3.h **** 
+ 353:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_DFSR_BKPT_Pos                   1                                             /*!< SCB 
+ 354:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_DFSR_BKPT_Msk                  (1ul << SCB_DFSR_BKPT_Pos)                     /*!< SCB 
+ 355:library/usb/../cmsis/inc/core_cm3.h **** 
+ 356:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_DFSR_HALTED_Pos                 0                                             /*!< SCB 
+ 357:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_DFSR_HALTED_Msk                (1ul << SCB_DFSR_HALTED_Pos)                   /*!< SCB 
+ 358:library/usb/../cmsis/inc/core_cm3.h **** /*@}*/ /* end of group CMSIS_CM3_SCB */
+ 359:library/usb/../cmsis/inc/core_cm3.h **** 
+ 360:library/usb/../cmsis/inc/core_cm3.h **** 
+ 361:library/usb/../cmsis/inc/core_cm3.h **** /** @addtogroup CMSIS_CM3_SysTick CMSIS CM3 SysTick
+ 362:library/usb/../cmsis/inc/core_cm3.h ****   memory mapped structure for SysTick
+ 363:library/usb/../cmsis/inc/core_cm3.h ****   @{
+ 364:library/usb/../cmsis/inc/core_cm3.h ****  */
+ 365:library/usb/../cmsis/inc/core_cm3.h **** typedef struct
+ 366:library/usb/../cmsis/inc/core_cm3.h **** {
+ 367:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t CTRL;                         /*!< Offset: 0x00  SysTick Control and Status Registe
+ 368:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t LOAD;                         /*!< Offset: 0x04  SysTick Reload Value Register     
+ 369:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t VAL;                          /*!< Offset: 0x08  SysTick Current Value Register    
+ 370:library/usb/../cmsis/inc/core_cm3.h ****   __I  uint32_t CALIB;                        /*!< Offset: 0x0C  SysTick Calibration Register      
+ 371:library/usb/../cmsis/inc/core_cm3.h **** } SysTick_Type;
+ 372:library/usb/../cmsis/inc/core_cm3.h **** 
+ 373:library/usb/../cmsis/inc/core_cm3.h **** /* SysTick Control / Status Register Definitions */
+ 374:library/usb/../cmsis/inc/core_cm3.h **** #define SysTick_CTRL_COUNTFLAG_Pos         16                                             /*!< SysT
+ 375:library/usb/../cmsis/inc/core_cm3.h **** #define SysTick_CTRL_COUNTFLAG_Msk         (1ul << SysTick_CTRL_COUNTFLAG_Pos)            /*!< SysT
+ 376:library/usb/../cmsis/inc/core_cm3.h **** 
+ 377:library/usb/../cmsis/inc/core_cm3.h **** #define SysTick_CTRL_CLKSOURCE_Pos          2                                             /*!< SysT
+ 378:library/usb/../cmsis/inc/core_cm3.h **** #define SysTick_CTRL_CLKSOURCE_Msk         (1ul << SysTick_CTRL_CLKSOURCE_Pos)            /*!< SysT
+ARM GAS  /tmp/ccdboO4f.s 			page 23
+
+
+ 379:library/usb/../cmsis/inc/core_cm3.h **** 
+ 380:library/usb/../cmsis/inc/core_cm3.h **** #define SysTick_CTRL_TICKINT_Pos            1                                             /*!< SysT
+ 381:library/usb/../cmsis/inc/core_cm3.h **** #define SysTick_CTRL_TICKINT_Msk           (1ul << SysTick_CTRL_TICKINT_Pos)              /*!< SysT
+ 382:library/usb/../cmsis/inc/core_cm3.h **** 
+ 383:library/usb/../cmsis/inc/core_cm3.h **** #define SysTick_CTRL_ENABLE_Pos             0                                             /*!< SysT
+ 384:library/usb/../cmsis/inc/core_cm3.h **** #define SysTick_CTRL_ENABLE_Msk            (1ul << SysTick_CTRL_ENABLE_Pos)               /*!< SysT
+ 385:library/usb/../cmsis/inc/core_cm3.h **** 
+ 386:library/usb/../cmsis/inc/core_cm3.h **** /* SysTick Reload Register Definitions */
+ 387:library/usb/../cmsis/inc/core_cm3.h **** #define SysTick_LOAD_RELOAD_Pos             0                                             /*!< SysT
+ 388:library/usb/../cmsis/inc/core_cm3.h **** #define SysTick_LOAD_RELOAD_Msk            (0xFFFFFFul << SysTick_LOAD_RELOAD_Pos)        /*!< SysT
+ 389:library/usb/../cmsis/inc/core_cm3.h **** 
+ 390:library/usb/../cmsis/inc/core_cm3.h **** /* SysTick Current Register Definitions */
+ 391:library/usb/../cmsis/inc/core_cm3.h **** #define SysTick_VAL_CURRENT_Pos             0                                             /*!< SysT
+ 392:library/usb/../cmsis/inc/core_cm3.h **** #define SysTick_VAL_CURRENT_Msk            (0xFFFFFFul << SysTick_VAL_CURRENT_Pos)        /*!< SysT
+ 393:library/usb/../cmsis/inc/core_cm3.h **** 
+ 394:library/usb/../cmsis/inc/core_cm3.h **** /* SysTick Calibration Register Definitions */
+ 395:library/usb/../cmsis/inc/core_cm3.h **** #define SysTick_CALIB_NOREF_Pos            31                                             /*!< SysT
+ 396:library/usb/../cmsis/inc/core_cm3.h **** #define SysTick_CALIB_NOREF_Msk            (1ul << SysTick_CALIB_NOREF_Pos)               /*!< SysT
+ 397:library/usb/../cmsis/inc/core_cm3.h **** 
+ 398:library/usb/../cmsis/inc/core_cm3.h **** #define SysTick_CALIB_SKEW_Pos             30                                             /*!< SysT
+ 399:library/usb/../cmsis/inc/core_cm3.h **** #define SysTick_CALIB_SKEW_Msk             (1ul << SysTick_CALIB_SKEW_Pos)                /*!< SysT
+ 400:library/usb/../cmsis/inc/core_cm3.h **** 
+ 401:library/usb/../cmsis/inc/core_cm3.h **** #define SysTick_CALIB_TENMS_Pos             0                                             /*!< SysT
+ 402:library/usb/../cmsis/inc/core_cm3.h **** #define SysTick_CALIB_TENMS_Msk            (0xFFFFFFul << SysTick_VAL_CURRENT_Pos)        /*!< SysT
+ 403:library/usb/../cmsis/inc/core_cm3.h **** /*@}*/ /* end of group CMSIS_CM3_SysTick */
+ 404:library/usb/../cmsis/inc/core_cm3.h **** 
+ 405:library/usb/../cmsis/inc/core_cm3.h **** 
+ 406:library/usb/../cmsis/inc/core_cm3.h **** /** @addtogroup CMSIS_CM3_ITM CMSIS CM3 ITM
+ 407:library/usb/../cmsis/inc/core_cm3.h ****   memory mapped structure for Instrumentation Trace Macrocell (ITM)
+ 408:library/usb/../cmsis/inc/core_cm3.h ****   @{
+ 409:library/usb/../cmsis/inc/core_cm3.h ****  */
+ 410:library/usb/../cmsis/inc/core_cm3.h **** typedef struct
+ 411:library/usb/../cmsis/inc/core_cm3.h **** {
+ 412:library/usb/../cmsis/inc/core_cm3.h ****   __O  union  
+ 413:library/usb/../cmsis/inc/core_cm3.h ****   {
+ 414:library/usb/../cmsis/inc/core_cm3.h ****     __O  uint8_t    u8;                       /*!< Offset:       ITM Stimulus Port 8-bit           
+ 415:library/usb/../cmsis/inc/core_cm3.h ****     __O  uint16_t   u16;                      /*!< Offset:       ITM Stimulus Port 16-bit          
+ 416:library/usb/../cmsis/inc/core_cm3.h ****     __O  uint32_t   u32;                      /*!< Offset:       ITM Stimulus Port 32-bit          
+ 417:library/usb/../cmsis/inc/core_cm3.h ****   }  PORT [32];                               /*!< Offset: 0x00  ITM Stimulus Port Registers       
+ 418:library/usb/../cmsis/inc/core_cm3.h ****        uint32_t RESERVED0[864];                                 
+ 419:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t TER;                          /*!< Offset:       ITM Trace Enable Register         
+ 420:library/usb/../cmsis/inc/core_cm3.h ****        uint32_t RESERVED1[15];                                  
+ 421:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t TPR;                          /*!< Offset:       ITM Trace Privilege Register      
+ 422:library/usb/../cmsis/inc/core_cm3.h ****        uint32_t RESERVED2[15];                                  
+ 423:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t TCR;                          /*!< Offset:       ITM Trace Control Register        
+ 424:library/usb/../cmsis/inc/core_cm3.h ****        uint32_t RESERVED3[29];                                  
+ 425:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t IWR;                          /*!< Offset:       ITM Integration Write Register    
+ 426:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t IRR;                          /*!< Offset:       ITM Integration Read Register     
+ 427:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t IMCR;                         /*!< Offset:       ITM Integration Mode Control Regis
+ 428:library/usb/../cmsis/inc/core_cm3.h ****        uint32_t RESERVED4[43];                                  
+ 429:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t LAR;                          /*!< Offset:       ITM Lock Access Register          
+ 430:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t LSR;                          /*!< Offset:       ITM Lock Status Register          
+ 431:library/usb/../cmsis/inc/core_cm3.h ****        uint32_t RESERVED5[6];                                   
+ 432:library/usb/../cmsis/inc/core_cm3.h ****   __I  uint32_t PID4;                         /*!< Offset:       ITM Peripheral Identification Regi
+ 433:library/usb/../cmsis/inc/core_cm3.h ****   __I  uint32_t PID5;                         /*!< Offset:       ITM Peripheral Identification Regi
+ 434:library/usb/../cmsis/inc/core_cm3.h ****   __I  uint32_t PID6;                         /*!< Offset:       ITM Peripheral Identification Regi
+ 435:library/usb/../cmsis/inc/core_cm3.h ****   __I  uint32_t PID7;                         /*!< Offset:       ITM Peripheral Identification Regi
+ARM GAS  /tmp/ccdboO4f.s 			page 24
+
+
+ 436:library/usb/../cmsis/inc/core_cm3.h ****   __I  uint32_t PID0;                         /*!< Offset:       ITM Peripheral Identification Regi
+ 437:library/usb/../cmsis/inc/core_cm3.h ****   __I  uint32_t PID1;                         /*!< Offset:       ITM Peripheral Identification Regi
+ 438:library/usb/../cmsis/inc/core_cm3.h ****   __I  uint32_t PID2;                         /*!< Offset:       ITM Peripheral Identification Regi
+ 439:library/usb/../cmsis/inc/core_cm3.h ****   __I  uint32_t PID3;                         /*!< Offset:       ITM Peripheral Identification Regi
+ 440:library/usb/../cmsis/inc/core_cm3.h ****   __I  uint32_t CID0;                         /*!< Offset:       ITM Component  Identification Regi
+ 441:library/usb/../cmsis/inc/core_cm3.h ****   __I  uint32_t CID1;                         /*!< Offset:       ITM Component  Identification Regi
+ 442:library/usb/../cmsis/inc/core_cm3.h ****   __I  uint32_t CID2;                         /*!< Offset:       ITM Component  Identification Regi
+ 443:library/usb/../cmsis/inc/core_cm3.h ****   __I  uint32_t CID3;                         /*!< Offset:       ITM Component  Identification Regi
+ 444:library/usb/../cmsis/inc/core_cm3.h **** } ITM_Type;                                                
+ 445:library/usb/../cmsis/inc/core_cm3.h **** 
+ 446:library/usb/../cmsis/inc/core_cm3.h **** /* ITM Trace Privilege Register Definitions */
+ 447:library/usb/../cmsis/inc/core_cm3.h **** #define ITM_TPR_PRIVMASK_Pos                0                                             /*!< ITM 
+ 448:library/usb/../cmsis/inc/core_cm3.h **** #define ITM_TPR_PRIVMASK_Msk               (0xFul << ITM_TPR_PRIVMASK_Pos)                /*!< ITM 
+ 449:library/usb/../cmsis/inc/core_cm3.h **** 
+ 450:library/usb/../cmsis/inc/core_cm3.h **** /* ITM Trace Control Register Definitions */
+ 451:library/usb/../cmsis/inc/core_cm3.h **** #define ITM_TCR_BUSY_Pos                   23                                             /*!< ITM 
+ 452:library/usb/../cmsis/inc/core_cm3.h **** #define ITM_TCR_BUSY_Msk                   (1ul << ITM_TCR_BUSY_Pos)                      /*!< ITM 
+ 453:library/usb/../cmsis/inc/core_cm3.h **** 
+ 454:library/usb/../cmsis/inc/core_cm3.h **** #define ITM_TCR_ATBID_Pos                  16                                             /*!< ITM 
+ 455:library/usb/../cmsis/inc/core_cm3.h **** #define ITM_TCR_ATBID_Msk                  (0x7Ful << ITM_TCR_ATBID_Pos)                  /*!< ITM 
+ 456:library/usb/../cmsis/inc/core_cm3.h **** 
+ 457:library/usb/../cmsis/inc/core_cm3.h **** #define ITM_TCR_TSPrescale_Pos              8                                             /*!< ITM 
+ 458:library/usb/../cmsis/inc/core_cm3.h **** #define ITM_TCR_TSPrescale_Msk             (3ul << ITM_TCR_TSPrescale_Pos)                /*!< ITM 
+ 459:library/usb/../cmsis/inc/core_cm3.h **** 
+ 460:library/usb/../cmsis/inc/core_cm3.h **** #define ITM_TCR_SWOENA_Pos                  4                                             /*!< ITM 
+ 461:library/usb/../cmsis/inc/core_cm3.h **** #define ITM_TCR_SWOENA_Msk                 (1ul << ITM_TCR_SWOENA_Pos)                    /*!< ITM 
+ 462:library/usb/../cmsis/inc/core_cm3.h **** 
+ 463:library/usb/../cmsis/inc/core_cm3.h **** #define ITM_TCR_DWTENA_Pos                  3                                             /*!< ITM 
+ 464:library/usb/../cmsis/inc/core_cm3.h **** #define ITM_TCR_DWTENA_Msk                 (1ul << ITM_TCR_DWTENA_Pos)                    /*!< ITM 
+ 465:library/usb/../cmsis/inc/core_cm3.h **** 
+ 466:library/usb/../cmsis/inc/core_cm3.h **** #define ITM_TCR_SYNCENA_Pos                 2                                             /*!< ITM 
+ 467:library/usb/../cmsis/inc/core_cm3.h **** #define ITM_TCR_SYNCENA_Msk                (1ul << ITM_TCR_SYNCENA_Pos)                   /*!< ITM 
+ 468:library/usb/../cmsis/inc/core_cm3.h **** 
+ 469:library/usb/../cmsis/inc/core_cm3.h **** #define ITM_TCR_TSENA_Pos                   1                                             /*!< ITM 
+ 470:library/usb/../cmsis/inc/core_cm3.h **** #define ITM_TCR_TSENA_Msk                  (1ul << ITM_TCR_TSENA_Pos)                     /*!< ITM 
+ 471:library/usb/../cmsis/inc/core_cm3.h **** 
+ 472:library/usb/../cmsis/inc/core_cm3.h **** #define ITM_TCR_ITMENA_Pos                  0                                             /*!< ITM 
+ 473:library/usb/../cmsis/inc/core_cm3.h **** #define ITM_TCR_ITMENA_Msk                 (1ul << ITM_TCR_ITMENA_Pos)                    /*!< ITM 
+ 474:library/usb/../cmsis/inc/core_cm3.h **** 
+ 475:library/usb/../cmsis/inc/core_cm3.h **** /* ITM Integration Write Register Definitions */
+ 476:library/usb/../cmsis/inc/core_cm3.h **** #define ITM_IWR_ATVALIDM_Pos                0                                             /*!< ITM 
+ 477:library/usb/../cmsis/inc/core_cm3.h **** #define ITM_IWR_ATVALIDM_Msk               (1ul << ITM_IWR_ATVALIDM_Pos)                  /*!< ITM 
+ 478:library/usb/../cmsis/inc/core_cm3.h **** 
+ 479:library/usb/../cmsis/inc/core_cm3.h **** /* ITM Integration Read Register Definitions */
+ 480:library/usb/../cmsis/inc/core_cm3.h **** #define ITM_IRR_ATREADYM_Pos                0                                             /*!< ITM 
+ 481:library/usb/../cmsis/inc/core_cm3.h **** #define ITM_IRR_ATREADYM_Msk               (1ul << ITM_IRR_ATREADYM_Pos)                  /*!< ITM 
+ 482:library/usb/../cmsis/inc/core_cm3.h **** 
+ 483:library/usb/../cmsis/inc/core_cm3.h **** /* ITM Integration Mode Control Register Definitions */
+ 484:library/usb/../cmsis/inc/core_cm3.h **** #define ITM_IMCR_INTEGRATION_Pos            0                                             /*!< ITM 
+ 485:library/usb/../cmsis/inc/core_cm3.h **** #define ITM_IMCR_INTEGRATION_Msk           (1ul << ITM_IMCR_INTEGRATION_Pos)              /*!< ITM 
+ 486:library/usb/../cmsis/inc/core_cm3.h **** 
+ 487:library/usb/../cmsis/inc/core_cm3.h **** /* ITM Lock Status Register Definitions */
+ 488:library/usb/../cmsis/inc/core_cm3.h **** #define ITM_LSR_ByteAcc_Pos                 2                                             /*!< ITM 
+ 489:library/usb/../cmsis/inc/core_cm3.h **** #define ITM_LSR_ByteAcc_Msk                (1ul << ITM_LSR_ByteAcc_Pos)                   /*!< ITM 
+ 490:library/usb/../cmsis/inc/core_cm3.h **** 
+ 491:library/usb/../cmsis/inc/core_cm3.h **** #define ITM_LSR_Access_Pos                  1                                             /*!< ITM 
+ 492:library/usb/../cmsis/inc/core_cm3.h **** #define ITM_LSR_Access_Msk                 (1ul << ITM_LSR_Access_Pos)                    /*!< ITM 
+ARM GAS  /tmp/ccdboO4f.s 			page 25
+
+
+ 493:library/usb/../cmsis/inc/core_cm3.h **** 
+ 494:library/usb/../cmsis/inc/core_cm3.h **** #define ITM_LSR_Present_Pos                 0                                             /*!< ITM 
+ 495:library/usb/../cmsis/inc/core_cm3.h **** #define ITM_LSR_Present_Msk                (1ul << ITM_LSR_Present_Pos)                   /*!< ITM 
+ 496:library/usb/../cmsis/inc/core_cm3.h **** /*@}*/ /* end of group CMSIS_CM3_ITM */
+ 497:library/usb/../cmsis/inc/core_cm3.h **** 
+ 498:library/usb/../cmsis/inc/core_cm3.h **** 
+ 499:library/usb/../cmsis/inc/core_cm3.h **** /** @addtogroup CMSIS_CM3_InterruptType CMSIS CM3 Interrupt Type
+ 500:library/usb/../cmsis/inc/core_cm3.h ****   memory mapped structure for Interrupt Type
+ 501:library/usb/../cmsis/inc/core_cm3.h ****   @{
+ 502:library/usb/../cmsis/inc/core_cm3.h ****  */
+ 503:library/usb/../cmsis/inc/core_cm3.h **** typedef struct
+ 504:library/usb/../cmsis/inc/core_cm3.h **** {
+ 505:library/usb/../cmsis/inc/core_cm3.h ****        uint32_t RESERVED0;
+ 506:library/usb/../cmsis/inc/core_cm3.h ****   __I  uint32_t ICTR;                         /*!< Offset: 0x04  Interrupt Control Type Register */
+ 507:library/usb/../cmsis/inc/core_cm3.h **** #if ((defined __CM3_REV) && (__CM3_REV >= 0x200))
+ 508:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t ACTLR;                        /*!< Offset: 0x08  Auxiliary Control Register      */
+ 509:library/usb/../cmsis/inc/core_cm3.h **** #else
+ 510:library/usb/../cmsis/inc/core_cm3.h ****        uint32_t RESERVED1;
+ 511:library/usb/../cmsis/inc/core_cm3.h **** #endif
+ 512:library/usb/../cmsis/inc/core_cm3.h **** } InterruptType_Type;
+ 513:library/usb/../cmsis/inc/core_cm3.h **** 
+ 514:library/usb/../cmsis/inc/core_cm3.h **** /* Interrupt Controller Type Register Definitions */
+ 515:library/usb/../cmsis/inc/core_cm3.h **** #define InterruptType_ICTR_INTLINESNUM_Pos  0                                             /*!< Inte
+ 516:library/usb/../cmsis/inc/core_cm3.h **** #define InterruptType_ICTR_INTLINESNUM_Msk (0x1Ful << InterruptType_ICTR_INTLINESNUM_Pos) /*!< Inte
+ 517:library/usb/../cmsis/inc/core_cm3.h **** 
+ 518:library/usb/../cmsis/inc/core_cm3.h **** /* Auxiliary Control Register Definitions */
+ 519:library/usb/../cmsis/inc/core_cm3.h **** #define InterruptType_ACTLR_DISFOLD_Pos     2                                             /*!< Inte
+ 520:library/usb/../cmsis/inc/core_cm3.h **** #define InterruptType_ACTLR_DISFOLD_Msk    (1ul << InterruptType_ACTLR_DISFOLD_Pos)       /*!< Inte
+ 521:library/usb/../cmsis/inc/core_cm3.h **** 
+ 522:library/usb/../cmsis/inc/core_cm3.h **** #define InterruptType_ACTLR_DISDEFWBUF_Pos  1                                             /*!< Inte
+ 523:library/usb/../cmsis/inc/core_cm3.h **** #define InterruptType_ACTLR_DISDEFWBUF_Msk (1ul << InterruptType_ACTLR_DISDEFWBUF_Pos)    /*!< Inte
+ 524:library/usb/../cmsis/inc/core_cm3.h **** 
+ 525:library/usb/../cmsis/inc/core_cm3.h **** #define InterruptType_ACTLR_DISMCYCINT_Pos  0                                             /*!< Inte
+ 526:library/usb/../cmsis/inc/core_cm3.h **** #define InterruptType_ACTLR_DISMCYCINT_Msk (1ul << InterruptType_ACTLR_DISMCYCINT_Pos)    /*!< Inte
+ 527:library/usb/../cmsis/inc/core_cm3.h **** /*@}*/ /* end of group CMSIS_CM3_InterruptType */
+ 528:library/usb/../cmsis/inc/core_cm3.h **** 
+ 529:library/usb/../cmsis/inc/core_cm3.h **** 
+ 530:library/usb/../cmsis/inc/core_cm3.h **** #if defined (__MPU_PRESENT) && (__MPU_PRESENT == 1)
+ 531:library/usb/../cmsis/inc/core_cm3.h **** /** @addtogroup CMSIS_CM3_MPU CMSIS CM3 MPU
+ 532:library/usb/../cmsis/inc/core_cm3.h ****   memory mapped structure for Memory Protection Unit (MPU)
+ 533:library/usb/../cmsis/inc/core_cm3.h ****   @{
+ 534:library/usb/../cmsis/inc/core_cm3.h ****  */
+ 535:library/usb/../cmsis/inc/core_cm3.h **** typedef struct
+ 536:library/usb/../cmsis/inc/core_cm3.h **** {
+ 537:library/usb/../cmsis/inc/core_cm3.h ****   __I  uint32_t TYPE;                         /*!< Offset: 0x00  MPU Type Register                 
+ 538:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t CTRL;                         /*!< Offset: 0x04  MPU Control Register              
+ 539:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t RNR;                          /*!< Offset: 0x08  MPU Region RNRber Register        
+ 540:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t RBAR;                         /*!< Offset: 0x0C  MPU Region Base Address Register  
+ 541:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t RASR;                         /*!< Offset: 0x10  MPU Region Attribute and Size Regi
+ 542:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t RBAR_A1;                      /*!< Offset: 0x14  MPU Alias 1 Region Base Address Re
+ 543:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t RASR_A1;                      /*!< Offset: 0x18  MPU Alias 1 Region Attribute and S
+ 544:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t RBAR_A2;                      /*!< Offset: 0x1C  MPU Alias 2 Region Base Address Re
+ 545:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t RASR_A2;                      /*!< Offset: 0x20  MPU Alias 2 Region Attribute and S
+ 546:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t RBAR_A3;                      /*!< Offset: 0x24  MPU Alias 3 Region Base Address Re
+ 547:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t RASR_A3;                      /*!< Offset: 0x28  MPU Alias 3 Region Attribute and S
+ 548:library/usb/../cmsis/inc/core_cm3.h **** } MPU_Type;                                                
+ 549:library/usb/../cmsis/inc/core_cm3.h **** 
+ARM GAS  /tmp/ccdboO4f.s 			page 26
+
+
+ 550:library/usb/../cmsis/inc/core_cm3.h **** /* MPU Type Register */
+ 551:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_TYPE_IREGION_Pos               16                                             /*!< MPU 
+ 552:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_TYPE_IREGION_Msk               (0xFFul << MPU_TYPE_IREGION_Pos)               /*!< MPU 
+ 553:library/usb/../cmsis/inc/core_cm3.h **** 
+ 554:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_TYPE_DREGION_Pos                8                                             /*!< MPU 
+ 555:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_TYPE_DREGION_Msk               (0xFFul << MPU_TYPE_DREGION_Pos)               /*!< MPU 
+ 556:library/usb/../cmsis/inc/core_cm3.h **** 
+ 557:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_TYPE_SEPARATE_Pos               0                                             /*!< MPU 
+ 558:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_TYPE_SEPARATE_Msk              (1ul << MPU_TYPE_SEPARATE_Pos)                 /*!< MPU 
+ 559:library/usb/../cmsis/inc/core_cm3.h **** 
+ 560:library/usb/../cmsis/inc/core_cm3.h **** /* MPU Control Register */
+ 561:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_CTRL_PRIVDEFENA_Pos             2                                             /*!< MPU 
+ 562:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_CTRL_PRIVDEFENA_Msk            (1ul << MPU_CTRL_PRIVDEFENA_Pos)               /*!< MPU 
+ 563:library/usb/../cmsis/inc/core_cm3.h **** 
+ 564:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_CTRL_HFNMIENA_Pos               1                                             /*!< MPU 
+ 565:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_CTRL_HFNMIENA_Msk              (1ul << MPU_CTRL_HFNMIENA_Pos)                 /*!< MPU 
+ 566:library/usb/../cmsis/inc/core_cm3.h **** 
+ 567:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_CTRL_ENABLE_Pos                 0                                             /*!< MPU 
+ 568:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_CTRL_ENABLE_Msk                (1ul << MPU_CTRL_ENABLE_Pos)                   /*!< MPU 
+ 569:library/usb/../cmsis/inc/core_cm3.h **** 
+ 570:library/usb/../cmsis/inc/core_cm3.h **** /* MPU Region Number Register */
+ 571:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_RNR_REGION_Pos                  0                                             /*!< MPU 
+ 572:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_RNR_REGION_Msk                 (0xFFul << MPU_RNR_REGION_Pos)                 /*!< MPU 
+ 573:library/usb/../cmsis/inc/core_cm3.h **** 
+ 574:library/usb/../cmsis/inc/core_cm3.h **** /* MPU Region Base Address Register */
+ 575:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_RBAR_ADDR_Pos                   5                                             /*!< MPU 
+ 576:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_RBAR_ADDR_Msk                  (0x7FFFFFFul << MPU_RBAR_ADDR_Pos)             /*!< MPU 
+ 577:library/usb/../cmsis/inc/core_cm3.h **** 
+ 578:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_RBAR_VALID_Pos                  4                                             /*!< MPU 
+ 579:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_RBAR_VALID_Msk                 (1ul << MPU_RBAR_VALID_Pos)                    /*!< MPU 
+ 580:library/usb/../cmsis/inc/core_cm3.h **** 
+ 581:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_RBAR_REGION_Pos                 0                                             /*!< MPU 
+ 582:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_RBAR_REGION_Msk                (0xFul << MPU_RBAR_REGION_Pos)                 /*!< MPU 
+ 583:library/usb/../cmsis/inc/core_cm3.h **** 
+ 584:library/usb/../cmsis/inc/core_cm3.h **** /* MPU Region Attribute and Size Register */
+ 585:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_RASR_XN_Pos                    28                                             /*!< MPU 
+ 586:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_RASR_XN_Msk                    (1ul << MPU_RASR_XN_Pos)                       /*!< MPU 
+ 587:library/usb/../cmsis/inc/core_cm3.h **** 
+ 588:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_RASR_AP_Pos                    24                                             /*!< MPU 
+ 589:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_RASR_AP_Msk                    (7ul << MPU_RASR_AP_Pos)                       /*!< MPU 
+ 590:library/usb/../cmsis/inc/core_cm3.h **** 
+ 591:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_RASR_TEX_Pos                   19                                             /*!< MPU 
+ 592:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_RASR_TEX_Msk                   (7ul << MPU_RASR_TEX_Pos)                      /*!< MPU 
+ 593:library/usb/../cmsis/inc/core_cm3.h **** 
+ 594:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_RASR_S_Pos                     18                                             /*!< MPU 
+ 595:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_RASR_S_Msk                     (1ul << MPU_RASR_S_Pos)                        /*!< MPU 
+ 596:library/usb/../cmsis/inc/core_cm3.h **** 
+ 597:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_RASR_C_Pos                     17                                             /*!< MPU 
+ 598:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_RASR_C_Msk                     (1ul << MPU_RASR_C_Pos)                        /*!< MPU 
+ 599:library/usb/../cmsis/inc/core_cm3.h **** 
+ 600:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_RASR_B_Pos                     16                                             /*!< MPU 
+ 601:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_RASR_B_Msk                     (1ul << MPU_RASR_B_Pos)                        /*!< MPU 
+ 602:library/usb/../cmsis/inc/core_cm3.h **** 
+ 603:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_RASR_SRD_Pos                    8                                             /*!< MPU 
+ 604:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_RASR_SRD_Msk                   (0xFFul << MPU_RASR_SRD_Pos)                   /*!< MPU 
+ 605:library/usb/../cmsis/inc/core_cm3.h **** 
+ 606:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_RASR_SIZE_Pos                   1                                             /*!< MPU 
+ARM GAS  /tmp/ccdboO4f.s 			page 27
+
+
+ 607:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_RASR_SIZE_Msk                  (0x1Ful << MPU_RASR_SIZE_Pos)                  /*!< MPU 
+ 608:library/usb/../cmsis/inc/core_cm3.h **** 
+ 609:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_RASR_ENA_Pos                     0                                            /*!< MPU 
+ 610:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_RASR_ENA_Msk                    (0x1Ful << MPU_RASR_ENA_Pos)                  /*!< MPU 
+ 611:library/usb/../cmsis/inc/core_cm3.h **** 
+ 612:library/usb/../cmsis/inc/core_cm3.h **** /*@}*/ /* end of group CMSIS_CM3_MPU */
+ 613:library/usb/../cmsis/inc/core_cm3.h **** #endif
+ 614:library/usb/../cmsis/inc/core_cm3.h **** 
+ 615:library/usb/../cmsis/inc/core_cm3.h **** 
+ 616:library/usb/../cmsis/inc/core_cm3.h **** /** @addtogroup CMSIS_CM3_CoreDebug CMSIS CM3 Core Debug
+ 617:library/usb/../cmsis/inc/core_cm3.h ****   memory mapped structure for Core Debug Register
+ 618:library/usb/../cmsis/inc/core_cm3.h ****   @{
+ 619:library/usb/../cmsis/inc/core_cm3.h ****  */
+ 620:library/usb/../cmsis/inc/core_cm3.h **** typedef struct
+ 621:library/usb/../cmsis/inc/core_cm3.h **** {
+ 622:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t DHCSR;                        /*!< Offset: 0x00  Debug Halting Control and Status R
+ 623:library/usb/../cmsis/inc/core_cm3.h ****   __O  uint32_t DCRSR;                        /*!< Offset: 0x04  Debug Core Register Selector Regis
+ 624:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t DCRDR;                        /*!< Offset: 0x08  Debug Core Register Data Register 
+ 625:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t DEMCR;                        /*!< Offset: 0x0C  Debug Exception and Monitor Contro
+ 626:library/usb/../cmsis/inc/core_cm3.h **** } CoreDebug_Type;
+ 627:library/usb/../cmsis/inc/core_cm3.h **** 
+ 628:library/usb/../cmsis/inc/core_cm3.h **** /* Debug Halting Control and Status Register */
+ 629:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DHCSR_DBGKEY_Pos         16                                             /*!< Core
+ 630:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DHCSR_DBGKEY_Msk         (0xFFFFul << CoreDebug_DHCSR_DBGKEY_Pos)       /*!< Core
+ 631:library/usb/../cmsis/inc/core_cm3.h **** 
+ 632:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DHCSR_S_RESET_ST_Pos     25                                             /*!< Core
+ 633:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DHCSR_S_RESET_ST_Msk     (1ul << CoreDebug_DHCSR_S_RESET_ST_Pos)        /*!< Core
+ 634:library/usb/../cmsis/inc/core_cm3.h **** 
+ 635:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DHCSR_S_RETIRE_ST_Pos    24                                             /*!< Core
+ 636:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DHCSR_S_RETIRE_ST_Msk    (1ul << CoreDebug_DHCSR_S_RETIRE_ST_Pos)       /*!< Core
+ 637:library/usb/../cmsis/inc/core_cm3.h **** 
+ 638:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DHCSR_S_LOCKUP_Pos       19                                             /*!< Core
+ 639:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DHCSR_S_LOCKUP_Msk       (1ul << CoreDebug_DHCSR_S_LOCKUP_Pos)          /*!< Core
+ 640:library/usb/../cmsis/inc/core_cm3.h **** 
+ 641:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DHCSR_S_SLEEP_Pos        18                                             /*!< Core
+ 642:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DHCSR_S_SLEEP_Msk        (1ul << CoreDebug_DHCSR_S_SLEEP_Pos)           /*!< Core
+ 643:library/usb/../cmsis/inc/core_cm3.h **** 
+ 644:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DHCSR_S_HALT_Pos         17                                             /*!< Core
+ 645:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DHCSR_S_HALT_Msk         (1ul << CoreDebug_DHCSR_S_HALT_Pos)            /*!< Core
+ 646:library/usb/../cmsis/inc/core_cm3.h **** 
+ 647:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DHCSR_S_REGRDY_Pos       16                                             /*!< Core
+ 648:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DHCSR_S_REGRDY_Msk       (1ul << CoreDebug_DHCSR_S_REGRDY_Pos)          /*!< Core
+ 649:library/usb/../cmsis/inc/core_cm3.h **** 
+ 650:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DHCSR_C_SNAPSTALL_Pos     5                                             /*!< Core
+ 651:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DHCSR_C_SNAPSTALL_Msk    (1ul << CoreDebug_DHCSR_C_SNAPSTALL_Pos)       /*!< Core
+ 652:library/usb/../cmsis/inc/core_cm3.h **** 
+ 653:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DHCSR_C_MASKINTS_Pos      3                                             /*!< Core
+ 654:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DHCSR_C_MASKINTS_Msk     (1ul << CoreDebug_DHCSR_C_MASKINTS_Pos)        /*!< Core
+ 655:library/usb/../cmsis/inc/core_cm3.h **** 
+ 656:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DHCSR_C_STEP_Pos          2                                             /*!< Core
+ 657:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DHCSR_C_STEP_Msk         (1ul << CoreDebug_DHCSR_C_STEP_Pos)            /*!< Core
+ 658:library/usb/../cmsis/inc/core_cm3.h **** 
+ 659:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DHCSR_C_HALT_Pos          1                                             /*!< Core
+ 660:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DHCSR_C_HALT_Msk         (1ul << CoreDebug_DHCSR_C_HALT_Pos)            /*!< Core
+ 661:library/usb/../cmsis/inc/core_cm3.h **** 
+ 662:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DHCSR_C_DEBUGEN_Pos       0                                             /*!< Core
+ 663:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DHCSR_C_DEBUGEN_Msk      (1ul << CoreDebug_DHCSR_C_DEBUGEN_Pos)         /*!< Core
+ARM GAS  /tmp/ccdboO4f.s 			page 28
+
+
+ 664:library/usb/../cmsis/inc/core_cm3.h **** 
+ 665:library/usb/../cmsis/inc/core_cm3.h **** /* Debug Core Register Selector Register */
+ 666:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DCRSR_REGWnR_Pos         16                                             /*!< Core
+ 667:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DCRSR_REGWnR_Msk         (1ul << CoreDebug_DCRSR_REGWnR_Pos)            /*!< Core
+ 668:library/usb/../cmsis/inc/core_cm3.h **** 
+ 669:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DCRSR_REGSEL_Pos          0                                             /*!< Core
+ 670:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DCRSR_REGSEL_Msk         (0x1Ful << CoreDebug_DCRSR_REGSEL_Pos)         /*!< Core
+ 671:library/usb/../cmsis/inc/core_cm3.h **** 
+ 672:library/usb/../cmsis/inc/core_cm3.h **** /* Debug Exception and Monitor Control Register */
+ 673:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DEMCR_TRCENA_Pos         24                                             /*!< Core
+ 674:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DEMCR_TRCENA_Msk         (1ul << CoreDebug_DEMCR_TRCENA_Pos)            /*!< Core
+ 675:library/usb/../cmsis/inc/core_cm3.h **** 
+ 676:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DEMCR_MON_REQ_Pos        19                                             /*!< Core
+ 677:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DEMCR_MON_REQ_Msk        (1ul << CoreDebug_DEMCR_MON_REQ_Pos)           /*!< Core
+ 678:library/usb/../cmsis/inc/core_cm3.h **** 
+ 679:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DEMCR_MON_STEP_Pos       18                                             /*!< Core
+ 680:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DEMCR_MON_STEP_Msk       (1ul << CoreDebug_DEMCR_MON_STEP_Pos)          /*!< Core
+ 681:library/usb/../cmsis/inc/core_cm3.h **** 
+ 682:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DEMCR_MON_PEND_Pos       17                                             /*!< Core
+ 683:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DEMCR_MON_PEND_Msk       (1ul << CoreDebug_DEMCR_MON_PEND_Pos)          /*!< Core
+ 684:library/usb/../cmsis/inc/core_cm3.h **** 
+ 685:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DEMCR_MON_EN_Pos         16                                             /*!< Core
+ 686:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DEMCR_MON_EN_Msk         (1ul << CoreDebug_DEMCR_MON_EN_Pos)            /*!< Core
+ 687:library/usb/../cmsis/inc/core_cm3.h **** 
+ 688:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DEMCR_VC_HARDERR_Pos     10                                             /*!< Core
+ 689:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DEMCR_VC_HARDERR_Msk     (1ul << CoreDebug_DEMCR_VC_HARDERR_Pos)        /*!< Core
+ 690:library/usb/../cmsis/inc/core_cm3.h **** 
+ 691:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DEMCR_VC_INTERR_Pos       9                                             /*!< Core
+ 692:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DEMCR_VC_INTERR_Msk      (1ul << CoreDebug_DEMCR_VC_INTERR_Pos)         /*!< Core
+ 693:library/usb/../cmsis/inc/core_cm3.h **** 
+ 694:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DEMCR_VC_BUSERR_Pos       8                                             /*!< Core
+ 695:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DEMCR_VC_BUSERR_Msk      (1ul << CoreDebug_DEMCR_VC_BUSERR_Pos)         /*!< Core
+ 696:library/usb/../cmsis/inc/core_cm3.h **** 
+ 697:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DEMCR_VC_STATERR_Pos      7                                             /*!< Core
+ 698:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DEMCR_VC_STATERR_Msk     (1ul << CoreDebug_DEMCR_VC_STATERR_Pos)        /*!< Core
+ 699:library/usb/../cmsis/inc/core_cm3.h **** 
+ 700:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DEMCR_VC_CHKERR_Pos       6                                             /*!< Core
+ 701:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DEMCR_VC_CHKERR_Msk      (1ul << CoreDebug_DEMCR_VC_CHKERR_Pos)         /*!< Core
+ 702:library/usb/../cmsis/inc/core_cm3.h **** 
+ 703:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DEMCR_VC_NOCPERR_Pos      5                                             /*!< Core
+ 704:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DEMCR_VC_NOCPERR_Msk     (1ul << CoreDebug_DEMCR_VC_NOCPERR_Pos)        /*!< Core
+ 705:library/usb/../cmsis/inc/core_cm3.h **** 
+ 706:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DEMCR_VC_MMERR_Pos        4                                             /*!< Core
+ 707:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DEMCR_VC_MMERR_Msk       (1ul << CoreDebug_DEMCR_VC_MMERR_Pos)          /*!< Core
+ 708:library/usb/../cmsis/inc/core_cm3.h **** 
+ 709:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DEMCR_VC_CORERESET_Pos    0                                             /*!< Core
+ 710:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DEMCR_VC_CORERESET_Msk   (1ul << CoreDebug_DEMCR_VC_CORERESET_Pos)      /*!< Core
+ 711:library/usb/../cmsis/inc/core_cm3.h **** /*@}*/ /* end of group CMSIS_CM3_CoreDebug */
+ 712:library/usb/../cmsis/inc/core_cm3.h **** 
+ 713:library/usb/../cmsis/inc/core_cm3.h **** 
+ 714:library/usb/../cmsis/inc/core_cm3.h **** /* Memory mapping of Cortex-M3 Hardware */
+ 715:library/usb/../cmsis/inc/core_cm3.h **** #define SCS_BASE            (0xE000E000)                              /*!< System Control Space Bas
+ 716:library/usb/../cmsis/inc/core_cm3.h **** #define ITM_BASE            (0xE0000000)                              /*!< ITM Base Address        
+ 717:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_BASE      (0xE000EDF0)                              /*!< Core Debug Base Address 
+ 718:library/usb/../cmsis/inc/core_cm3.h **** #define SysTick_BASE        (SCS_BASE +  0x0010)                      /*!< SysTick Base Address    
+ 719:library/usb/../cmsis/inc/core_cm3.h **** #define NVIC_BASE           (SCS_BASE +  0x0100)                      /*!< NVIC Base Address       
+ 720:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_BASE            (SCS_BASE +  0x0D00)                      /*!< System Control Block Bas
+ARM GAS  /tmp/ccdboO4f.s 			page 29
+
+
+ 721:library/usb/../cmsis/inc/core_cm3.h **** 
+ 722:library/usb/../cmsis/inc/core_cm3.h **** #define InterruptType       ((InterruptType_Type *) SCS_BASE)         /*!< Interrupt Type Register 
+ 723:library/usb/../cmsis/inc/core_cm3.h **** #define SCB                 ((SCB_Type *)           SCB_BASE)         /*!< SCB configuration struct
+ 724:library/usb/../cmsis/inc/core_cm3.h **** #define SysTick             ((SysTick_Type *)       SysTick_BASE)     /*!< SysTick configuration st
+ 725:library/usb/../cmsis/inc/core_cm3.h **** #define NVIC                ((NVIC_Type *)          NVIC_BASE)        /*!< NVIC configuration struc
+ 726:library/usb/../cmsis/inc/core_cm3.h **** #define ITM                 ((ITM_Type *)           ITM_BASE)         /*!< ITM configuration struct
+ 727:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug           ((CoreDebug_Type *)     CoreDebug_BASE)   /*!< Core Debug configuration
+ 728:library/usb/../cmsis/inc/core_cm3.h **** 
+ 729:library/usb/../cmsis/inc/core_cm3.h **** #if defined (__MPU_PRESENT) && (__MPU_PRESENT == 1)
+ 730:library/usb/../cmsis/inc/core_cm3.h ****   #define MPU_BASE          (SCS_BASE +  0x0D90)                      /*!< Memory Protection Unit  
+ 731:library/usb/../cmsis/inc/core_cm3.h ****   #define MPU               ((MPU_Type*)            MPU_BASE)         /*!< Memory Protection Unit  
+ 732:library/usb/../cmsis/inc/core_cm3.h **** #endif
+ 733:library/usb/../cmsis/inc/core_cm3.h **** 
+ 734:library/usb/../cmsis/inc/core_cm3.h **** /*@}*/ /* end of group CMSIS_CM3_core_register */
+ 735:library/usb/../cmsis/inc/core_cm3.h **** 
+ 736:library/usb/../cmsis/inc/core_cm3.h **** 
+ 737:library/usb/../cmsis/inc/core_cm3.h **** /*******************************************************************************
+ 738:library/usb/../cmsis/inc/core_cm3.h ****  *                Hardware Abstraction Layer
+ 739:library/usb/../cmsis/inc/core_cm3.h ****  ******************************************************************************/
+ 740:library/usb/../cmsis/inc/core_cm3.h **** 
+ 741:library/usb/../cmsis/inc/core_cm3.h **** #if defined ( __CC_ARM   )
+ 742:library/usb/../cmsis/inc/core_cm3.h ****   #define __ASM            __asm                                      /*!< asm keyword for ARM Comp
+ 743:library/usb/../cmsis/inc/core_cm3.h ****   #define __INLINE         __inline                                   /*!< inline keyword for ARM C
+ 744:library/usb/../cmsis/inc/core_cm3.h **** 
+ 745:library/usb/../cmsis/inc/core_cm3.h **** #elif defined ( __ICCARM__ )
+ 746:library/usb/../cmsis/inc/core_cm3.h ****   #define __ASM           __asm                                       /*!< asm keyword for IAR Comp
+ 747:library/usb/../cmsis/inc/core_cm3.h ****   #define __INLINE        inline                                      /*!< inline keyword for IAR C
+ 748:library/usb/../cmsis/inc/core_cm3.h **** 
+ 749:library/usb/../cmsis/inc/core_cm3.h **** #elif defined   (  __GNUC__  )
+ 750:library/usb/../cmsis/inc/core_cm3.h ****   #define __ASM            __asm                                      /*!< asm keyword for GNU Comp
+ 751:library/usb/../cmsis/inc/core_cm3.h ****   #define __INLINE         inline                                     /*!< inline keyword for GNU C
+ 752:library/usb/../cmsis/inc/core_cm3.h **** 
+ 753:library/usb/../cmsis/inc/core_cm3.h **** #elif defined   (  __TASKING__  )
+ 754:library/usb/../cmsis/inc/core_cm3.h ****   #define __ASM            __asm                                      /*!< asm keyword for TASKING 
+ 755:library/usb/../cmsis/inc/core_cm3.h ****   #define __INLINE         inline                                     /*!< inline keyword for TASKI
+ 756:library/usb/../cmsis/inc/core_cm3.h **** 
+ 757:library/usb/../cmsis/inc/core_cm3.h **** #endif
+ 758:library/usb/../cmsis/inc/core_cm3.h **** 
+ 759:library/usb/../cmsis/inc/core_cm3.h **** 
+ 760:library/usb/../cmsis/inc/core_cm3.h **** /* ###################  Compiler specific Intrinsics  ########################### */
+ 761:library/usb/../cmsis/inc/core_cm3.h **** 
+ 762:library/usb/../cmsis/inc/core_cm3.h **** #if defined ( __CC_ARM   ) /*------------------RealView Compiler -----------------*/
+ 763:library/usb/../cmsis/inc/core_cm3.h **** /* ARM armcc specific functions */
+ 764:library/usb/../cmsis/inc/core_cm3.h **** 
+ 765:library/usb/../cmsis/inc/core_cm3.h **** #define __enable_fault_irq                __enable_fiq
+ 766:library/usb/../cmsis/inc/core_cm3.h **** #define __disable_fault_irq               __disable_fiq
+ 767:library/usb/../cmsis/inc/core_cm3.h **** 
+ 768:library/usb/../cmsis/inc/core_cm3.h **** #define __NOP                             __nop
+ 769:library/usb/../cmsis/inc/core_cm3.h **** #define __WFI                             __wfi
+ 770:library/usb/../cmsis/inc/core_cm3.h **** #define __WFE                             __wfe
+ 771:library/usb/../cmsis/inc/core_cm3.h **** #define __SEV                             __sev
+ 772:library/usb/../cmsis/inc/core_cm3.h **** #define __ISB()                           __isb(0)
+ 773:library/usb/../cmsis/inc/core_cm3.h **** #define __DSB()                           __dsb(0)
+ 774:library/usb/../cmsis/inc/core_cm3.h **** #define __DMB()                           __dmb(0)
+ 775:library/usb/../cmsis/inc/core_cm3.h **** #define __REV                             __rev
+ 776:library/usb/../cmsis/inc/core_cm3.h **** #define __RBIT                            __rbit
+ 777:library/usb/../cmsis/inc/core_cm3.h **** #define __LDREXB(ptr)                     ((unsigned char ) __ldrex(ptr))
+ARM GAS  /tmp/ccdboO4f.s 			page 30
+
+
+ 778:library/usb/../cmsis/inc/core_cm3.h **** #define __LDREXH(ptr)                     ((unsigned short) __ldrex(ptr))
+ 779:library/usb/../cmsis/inc/core_cm3.h **** #define __LDREXW(ptr)                     ((unsigned int  ) __ldrex(ptr))
+ 780:library/usb/../cmsis/inc/core_cm3.h **** #define __STREXB(value, ptr)              __strex(value, ptr)
+ 781:library/usb/../cmsis/inc/core_cm3.h **** #define __STREXH(value, ptr)              __strex(value, ptr)
+ 782:library/usb/../cmsis/inc/core_cm3.h **** #define __STREXW(value, ptr)              __strex(value, ptr)
+ 783:library/usb/../cmsis/inc/core_cm3.h **** 
+ 784:library/usb/../cmsis/inc/core_cm3.h **** 
+ 785:library/usb/../cmsis/inc/core_cm3.h **** /* intrinsic unsigned long long __ldrexd(volatile void *ptr) */
+ 786:library/usb/../cmsis/inc/core_cm3.h **** /* intrinsic int __strexd(unsigned long long val, volatile void *ptr) */
+ 787:library/usb/../cmsis/inc/core_cm3.h **** /* intrinsic void __enable_irq();     */
+ 788:library/usb/../cmsis/inc/core_cm3.h **** /* intrinsic void __disable_irq();    */
+ 789:library/usb/../cmsis/inc/core_cm3.h **** 
+ 790:library/usb/../cmsis/inc/core_cm3.h **** 
+ 791:library/usb/../cmsis/inc/core_cm3.h **** /**
+ 792:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Return the Process Stack Pointer
+ 793:library/usb/../cmsis/inc/core_cm3.h ****  *
+ 794:library/usb/../cmsis/inc/core_cm3.h ****  * @return ProcessStackPointer
+ 795:library/usb/../cmsis/inc/core_cm3.h ****  *
+ 796:library/usb/../cmsis/inc/core_cm3.h ****  * Return the actual process stack pointer
+ 797:library/usb/../cmsis/inc/core_cm3.h ****  */
+ 798:library/usb/../cmsis/inc/core_cm3.h **** extern uint32_t __get_PSP(void);
+ 799:library/usb/../cmsis/inc/core_cm3.h **** 
+ 800:library/usb/../cmsis/inc/core_cm3.h **** /**
+ 801:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Set the Process Stack Pointer
+ 802:library/usb/../cmsis/inc/core_cm3.h ****  *
+ 803:library/usb/../cmsis/inc/core_cm3.h ****  * @param  topOfProcStack  Process Stack Pointer
+ 804:library/usb/../cmsis/inc/core_cm3.h ****  *
+ 805:library/usb/../cmsis/inc/core_cm3.h ****  * Assign the value ProcessStackPointer to the MSP 
+ 806:library/usb/../cmsis/inc/core_cm3.h ****  * (process stack pointer) Cortex processor register
+ 807:library/usb/../cmsis/inc/core_cm3.h ****  */
+ 808:library/usb/../cmsis/inc/core_cm3.h **** extern void __set_PSP(uint32_t topOfProcStack);
+ 809:library/usb/../cmsis/inc/core_cm3.h **** 
+ 810:library/usb/../cmsis/inc/core_cm3.h **** /**
+ 811:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Return the Main Stack Pointer
+ 812:library/usb/../cmsis/inc/core_cm3.h ****  *
+ 813:library/usb/../cmsis/inc/core_cm3.h ****  * @return Main Stack Pointer
+ 814:library/usb/../cmsis/inc/core_cm3.h ****  *
+ 815:library/usb/../cmsis/inc/core_cm3.h ****  * Return the current value of the MSP (main stack pointer)
+ 816:library/usb/../cmsis/inc/core_cm3.h ****  * Cortex processor register
+ 817:library/usb/../cmsis/inc/core_cm3.h ****  */
+ 818:library/usb/../cmsis/inc/core_cm3.h **** extern uint32_t __get_MSP(void);
+ 819:library/usb/../cmsis/inc/core_cm3.h **** 
+ 820:library/usb/../cmsis/inc/core_cm3.h **** /**
+ 821:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Set the Main Stack Pointer
+ 822:library/usb/../cmsis/inc/core_cm3.h ****  *
+ 823:library/usb/../cmsis/inc/core_cm3.h ****  * @param  topOfMainStack  Main Stack Pointer
+ 824:library/usb/../cmsis/inc/core_cm3.h ****  *
+ 825:library/usb/../cmsis/inc/core_cm3.h ****  * Assign the value mainStackPointer to the MSP 
+ 826:library/usb/../cmsis/inc/core_cm3.h ****  * (main stack pointer) Cortex processor register
+ 827:library/usb/../cmsis/inc/core_cm3.h ****  */
+ 828:library/usb/../cmsis/inc/core_cm3.h **** extern void __set_MSP(uint32_t topOfMainStack);
+ 829:library/usb/../cmsis/inc/core_cm3.h **** 
+ 830:library/usb/../cmsis/inc/core_cm3.h **** /**
+ 831:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Reverse byte order in unsigned short value
+ 832:library/usb/../cmsis/inc/core_cm3.h ****  *
+ 833:library/usb/../cmsis/inc/core_cm3.h ****  * @param   value  value to reverse
+ 834:library/usb/../cmsis/inc/core_cm3.h ****  * @return         reversed value
+ARM GAS  /tmp/ccdboO4f.s 			page 31
+
+
+ 835:library/usb/../cmsis/inc/core_cm3.h ****  *
+ 836:library/usb/../cmsis/inc/core_cm3.h ****  * Reverse byte order in unsigned short value
+ 837:library/usb/../cmsis/inc/core_cm3.h ****  */
+ 838:library/usb/../cmsis/inc/core_cm3.h **** extern uint32_t __REV16(uint16_t value);
+ 839:library/usb/../cmsis/inc/core_cm3.h **** 
+ 840:library/usb/../cmsis/inc/core_cm3.h **** /**
+ 841:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Reverse byte order in signed short value with sign extension to integer
+ 842:library/usb/../cmsis/inc/core_cm3.h ****  *
+ 843:library/usb/../cmsis/inc/core_cm3.h ****  * @param   value  value to reverse
+ 844:library/usb/../cmsis/inc/core_cm3.h ****  * @return         reversed value
+ 845:library/usb/../cmsis/inc/core_cm3.h ****  *
+ 846:library/usb/../cmsis/inc/core_cm3.h ****  * Reverse byte order in signed short value with sign extension to integer
+ 847:library/usb/../cmsis/inc/core_cm3.h ****  */
+ 848:library/usb/../cmsis/inc/core_cm3.h **** extern int32_t __REVSH(int16_t value);
+ 849:library/usb/../cmsis/inc/core_cm3.h **** 
+ 850:library/usb/../cmsis/inc/core_cm3.h **** 
+ 851:library/usb/../cmsis/inc/core_cm3.h **** #if (__ARMCC_VERSION < 400000)
+ 852:library/usb/../cmsis/inc/core_cm3.h **** 
+ 853:library/usb/../cmsis/inc/core_cm3.h **** /**
+ 854:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Remove the exclusive lock created by ldrex
+ 855:library/usb/../cmsis/inc/core_cm3.h ****  *
+ 856:library/usb/../cmsis/inc/core_cm3.h ****  * Removes the exclusive lock which is created by ldrex.
+ 857:library/usb/../cmsis/inc/core_cm3.h ****  */
+ 858:library/usb/../cmsis/inc/core_cm3.h **** extern void __CLREX(void);
+ 859:library/usb/../cmsis/inc/core_cm3.h **** 
+ 860:library/usb/../cmsis/inc/core_cm3.h **** /**
+ 861:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Return the Base Priority value
+ 862:library/usb/../cmsis/inc/core_cm3.h ****  *
+ 863:library/usb/../cmsis/inc/core_cm3.h ****  * @return BasePriority
+ 864:library/usb/../cmsis/inc/core_cm3.h ****  *
+ 865:library/usb/../cmsis/inc/core_cm3.h ****  * Return the content of the base priority register
+ 866:library/usb/../cmsis/inc/core_cm3.h ****  */
+ 867:library/usb/../cmsis/inc/core_cm3.h **** extern uint32_t __get_BASEPRI(void);
+ 868:library/usb/../cmsis/inc/core_cm3.h **** 
+ 869:library/usb/../cmsis/inc/core_cm3.h **** /**
+ 870:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Set the Base Priority value
+ 871:library/usb/../cmsis/inc/core_cm3.h ****  *
+ 872:library/usb/../cmsis/inc/core_cm3.h ****  * @param  basePri  BasePriority
+ 873:library/usb/../cmsis/inc/core_cm3.h ****  *
+ 874:library/usb/../cmsis/inc/core_cm3.h ****  * Set the base priority register
+ 875:library/usb/../cmsis/inc/core_cm3.h ****  */
+ 876:library/usb/../cmsis/inc/core_cm3.h **** extern void __set_BASEPRI(uint32_t basePri);
+ 877:library/usb/../cmsis/inc/core_cm3.h **** 
+ 878:library/usb/../cmsis/inc/core_cm3.h **** /**
+ 879:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Return the Priority Mask value
+ 880:library/usb/../cmsis/inc/core_cm3.h ****  *
+ 881:library/usb/../cmsis/inc/core_cm3.h ****  * @return PriMask
+ 882:library/usb/../cmsis/inc/core_cm3.h ****  *
+ 883:library/usb/../cmsis/inc/core_cm3.h ****  * Return state of the priority mask bit from the priority mask register
+ 884:library/usb/../cmsis/inc/core_cm3.h ****  */
+ 885:library/usb/../cmsis/inc/core_cm3.h **** extern uint32_t __get_PRIMASK(void);
+ 886:library/usb/../cmsis/inc/core_cm3.h **** 
+ 887:library/usb/../cmsis/inc/core_cm3.h **** /**
+ 888:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Set the Priority Mask value
+ 889:library/usb/../cmsis/inc/core_cm3.h ****  *
+ 890:library/usb/../cmsis/inc/core_cm3.h ****  * @param   priMask  PriMask
+ 891:library/usb/../cmsis/inc/core_cm3.h ****  *
+ARM GAS  /tmp/ccdboO4f.s 			page 32
+
+
+ 892:library/usb/../cmsis/inc/core_cm3.h ****  * Set the priority mask bit in the priority mask register
+ 893:library/usb/../cmsis/inc/core_cm3.h ****  */
+ 894:library/usb/../cmsis/inc/core_cm3.h **** extern void __set_PRIMASK(uint32_t priMask);
+ 895:library/usb/../cmsis/inc/core_cm3.h **** 
+ 896:library/usb/../cmsis/inc/core_cm3.h **** /**
+ 897:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Return the Fault Mask value
+ 898:library/usb/../cmsis/inc/core_cm3.h ****  *
+ 899:library/usb/../cmsis/inc/core_cm3.h ****  * @return FaultMask
+ 900:library/usb/../cmsis/inc/core_cm3.h ****  *
+ 901:library/usb/../cmsis/inc/core_cm3.h ****  * Return the content of the fault mask register
+ 902:library/usb/../cmsis/inc/core_cm3.h ****  */
+ 903:library/usb/../cmsis/inc/core_cm3.h **** extern uint32_t __get_FAULTMASK(void);
+ 904:library/usb/../cmsis/inc/core_cm3.h **** 
+ 905:library/usb/../cmsis/inc/core_cm3.h **** /**
+ 906:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Set the Fault Mask value
+ 907:library/usb/../cmsis/inc/core_cm3.h ****  *
+ 908:library/usb/../cmsis/inc/core_cm3.h ****  * @param  faultMask faultMask value
+ 909:library/usb/../cmsis/inc/core_cm3.h ****  *
+ 910:library/usb/../cmsis/inc/core_cm3.h ****  * Set the fault mask register
+ 911:library/usb/../cmsis/inc/core_cm3.h ****  */
+ 912:library/usb/../cmsis/inc/core_cm3.h **** extern void __set_FAULTMASK(uint32_t faultMask);
+ 913:library/usb/../cmsis/inc/core_cm3.h **** 
+ 914:library/usb/../cmsis/inc/core_cm3.h **** /**
+ 915:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Return the Control Register value
+ 916:library/usb/../cmsis/inc/core_cm3.h ****  * 
+ 917:library/usb/../cmsis/inc/core_cm3.h ****  * @return Control value
+ 918:library/usb/../cmsis/inc/core_cm3.h ****  *
+ 919:library/usb/../cmsis/inc/core_cm3.h ****  * Return the content of the control register
+ 920:library/usb/../cmsis/inc/core_cm3.h ****  */
+ 921:library/usb/../cmsis/inc/core_cm3.h **** extern uint32_t __get_CONTROL(void);
+ 922:library/usb/../cmsis/inc/core_cm3.h **** 
+ 923:library/usb/../cmsis/inc/core_cm3.h **** /**
+ 924:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Set the Control Register value
+ 925:library/usb/../cmsis/inc/core_cm3.h ****  *
+ 926:library/usb/../cmsis/inc/core_cm3.h ****  * @param  control  Control value
+ 927:library/usb/../cmsis/inc/core_cm3.h ****  *
+ 928:library/usb/../cmsis/inc/core_cm3.h ****  * Set the control register
+ 929:library/usb/../cmsis/inc/core_cm3.h ****  */
+ 930:library/usb/../cmsis/inc/core_cm3.h **** extern void __set_CONTROL(uint32_t control);
+ 931:library/usb/../cmsis/inc/core_cm3.h **** 
+ 932:library/usb/../cmsis/inc/core_cm3.h **** #else  /* (__ARMCC_VERSION >= 400000)  */
+ 933:library/usb/../cmsis/inc/core_cm3.h **** 
+ 934:library/usb/../cmsis/inc/core_cm3.h **** /**
+ 935:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Remove the exclusive lock created by ldrex
+ 936:library/usb/../cmsis/inc/core_cm3.h ****  *
+ 937:library/usb/../cmsis/inc/core_cm3.h ****  * Removes the exclusive lock which is created by ldrex.
+ 938:library/usb/../cmsis/inc/core_cm3.h ****  */
+ 939:library/usb/../cmsis/inc/core_cm3.h **** #define __CLREX                           __clrex
+ 940:library/usb/../cmsis/inc/core_cm3.h **** 
+ 941:library/usb/../cmsis/inc/core_cm3.h **** /**
+ 942:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Return the Base Priority value
+ 943:library/usb/../cmsis/inc/core_cm3.h ****  *
+ 944:library/usb/../cmsis/inc/core_cm3.h ****  * @return BasePriority
+ 945:library/usb/../cmsis/inc/core_cm3.h ****  *
+ 946:library/usb/../cmsis/inc/core_cm3.h ****  * Return the content of the base priority register
+ 947:library/usb/../cmsis/inc/core_cm3.h ****  */
+ 948:library/usb/../cmsis/inc/core_cm3.h **** static __INLINE uint32_t  __get_BASEPRI(void)
+ARM GAS  /tmp/ccdboO4f.s 			page 33
+
+
+ 949:library/usb/../cmsis/inc/core_cm3.h **** {
+ 950:library/usb/../cmsis/inc/core_cm3.h ****   register uint32_t __regBasePri         __ASM("basepri");
+ 951:library/usb/../cmsis/inc/core_cm3.h ****   return(__regBasePri);
+ 952:library/usb/../cmsis/inc/core_cm3.h **** }
+ 953:library/usb/../cmsis/inc/core_cm3.h **** 
+ 954:library/usb/../cmsis/inc/core_cm3.h **** /**
+ 955:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Set the Base Priority value
+ 956:library/usb/../cmsis/inc/core_cm3.h ****  *
+ 957:library/usb/../cmsis/inc/core_cm3.h ****  * @param  basePri  BasePriority
+ 958:library/usb/../cmsis/inc/core_cm3.h ****  *
+ 959:library/usb/../cmsis/inc/core_cm3.h ****  * Set the base priority register
+ 960:library/usb/../cmsis/inc/core_cm3.h ****  */
+ 961:library/usb/../cmsis/inc/core_cm3.h **** static __INLINE void __set_BASEPRI(uint32_t basePri)
+ 962:library/usb/../cmsis/inc/core_cm3.h **** {
+ 963:library/usb/../cmsis/inc/core_cm3.h ****   register uint32_t __regBasePri         __ASM("basepri");
+ 964:library/usb/../cmsis/inc/core_cm3.h ****   __regBasePri = (basePri & 0xff);
+ 965:library/usb/../cmsis/inc/core_cm3.h **** }
+ 966:library/usb/../cmsis/inc/core_cm3.h **** 
+ 967:library/usb/../cmsis/inc/core_cm3.h **** /**
+ 968:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Return the Priority Mask value
+ 969:library/usb/../cmsis/inc/core_cm3.h ****  *
+ 970:library/usb/../cmsis/inc/core_cm3.h ****  * @return PriMask
+ 971:library/usb/../cmsis/inc/core_cm3.h ****  *
+ 972:library/usb/../cmsis/inc/core_cm3.h ****  * Return state of the priority mask bit from the priority mask register
+ 973:library/usb/../cmsis/inc/core_cm3.h ****  */
+ 974:library/usb/../cmsis/inc/core_cm3.h **** static __INLINE uint32_t __get_PRIMASK(void)
+ 975:library/usb/../cmsis/inc/core_cm3.h **** {
+ 976:library/usb/../cmsis/inc/core_cm3.h ****   register uint32_t __regPriMask         __ASM("primask");
+ 977:library/usb/../cmsis/inc/core_cm3.h ****   return(__regPriMask);
+ 978:library/usb/../cmsis/inc/core_cm3.h **** }
+ 979:library/usb/../cmsis/inc/core_cm3.h **** 
+ 980:library/usb/../cmsis/inc/core_cm3.h **** /**
+ 981:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Set the Priority Mask value
+ 982:library/usb/../cmsis/inc/core_cm3.h ****  *
+ 983:library/usb/../cmsis/inc/core_cm3.h ****  * @param  priMask  PriMask
+ 984:library/usb/../cmsis/inc/core_cm3.h ****  *
+ 985:library/usb/../cmsis/inc/core_cm3.h ****  * Set the priority mask bit in the priority mask register
+ 986:library/usb/../cmsis/inc/core_cm3.h ****  */
+ 987:library/usb/../cmsis/inc/core_cm3.h **** static __INLINE void __set_PRIMASK(uint32_t priMask)
+ 988:library/usb/../cmsis/inc/core_cm3.h **** {
+ 989:library/usb/../cmsis/inc/core_cm3.h ****   register uint32_t __regPriMask         __ASM("primask");
+ 990:library/usb/../cmsis/inc/core_cm3.h ****   __regPriMask = (priMask);
+ 991:library/usb/../cmsis/inc/core_cm3.h **** }
+ 992:library/usb/../cmsis/inc/core_cm3.h **** 
+ 993:library/usb/../cmsis/inc/core_cm3.h **** /**
+ 994:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Return the Fault Mask value
+ 995:library/usb/../cmsis/inc/core_cm3.h ****  *
+ 996:library/usb/../cmsis/inc/core_cm3.h ****  * @return FaultMask
+ 997:library/usb/../cmsis/inc/core_cm3.h ****  *
+ 998:library/usb/../cmsis/inc/core_cm3.h ****  * Return the content of the fault mask register
+ 999:library/usb/../cmsis/inc/core_cm3.h ****  */
+1000:library/usb/../cmsis/inc/core_cm3.h **** static __INLINE uint32_t __get_FAULTMASK(void)
+1001:library/usb/../cmsis/inc/core_cm3.h **** {
+1002:library/usb/../cmsis/inc/core_cm3.h ****   register uint32_t __regFaultMask       __ASM("faultmask");
+1003:library/usb/../cmsis/inc/core_cm3.h ****   return(__regFaultMask);
+1004:library/usb/../cmsis/inc/core_cm3.h **** }
+1005:library/usb/../cmsis/inc/core_cm3.h **** 
+ARM GAS  /tmp/ccdboO4f.s 			page 34
+
+
+1006:library/usb/../cmsis/inc/core_cm3.h **** /**
+1007:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Set the Fault Mask value
+1008:library/usb/../cmsis/inc/core_cm3.h ****  *
+1009:library/usb/../cmsis/inc/core_cm3.h ****  * @param  faultMask  faultMask value
+1010:library/usb/../cmsis/inc/core_cm3.h ****  *
+1011:library/usb/../cmsis/inc/core_cm3.h ****  * Set the fault mask register
+1012:library/usb/../cmsis/inc/core_cm3.h ****  */
+1013:library/usb/../cmsis/inc/core_cm3.h **** static __INLINE void __set_FAULTMASK(uint32_t faultMask)
+1014:library/usb/../cmsis/inc/core_cm3.h **** {
+1015:library/usb/../cmsis/inc/core_cm3.h ****   register uint32_t __regFaultMask       __ASM("faultmask");
+1016:library/usb/../cmsis/inc/core_cm3.h ****   __regFaultMask = (faultMask & 1);
+1017:library/usb/../cmsis/inc/core_cm3.h **** }
+1018:library/usb/../cmsis/inc/core_cm3.h **** 
+1019:library/usb/../cmsis/inc/core_cm3.h **** /**
+1020:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Return the Control Register value
+1021:library/usb/../cmsis/inc/core_cm3.h ****  * 
+1022:library/usb/../cmsis/inc/core_cm3.h ****  * @return Control value
+1023:library/usb/../cmsis/inc/core_cm3.h ****  *
+1024:library/usb/../cmsis/inc/core_cm3.h ****  * Return the content of the control register
+1025:library/usb/../cmsis/inc/core_cm3.h ****  */
+1026:library/usb/../cmsis/inc/core_cm3.h **** static __INLINE uint32_t __get_CONTROL(void)
+1027:library/usb/../cmsis/inc/core_cm3.h **** {
+1028:library/usb/../cmsis/inc/core_cm3.h ****   register uint32_t __regControl         __ASM("control");
+1029:library/usb/../cmsis/inc/core_cm3.h ****   return(__regControl);
+1030:library/usb/../cmsis/inc/core_cm3.h **** }
+1031:library/usb/../cmsis/inc/core_cm3.h **** 
+1032:library/usb/../cmsis/inc/core_cm3.h **** /**
+1033:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Set the Control Register value
+1034:library/usb/../cmsis/inc/core_cm3.h ****  *
+1035:library/usb/../cmsis/inc/core_cm3.h ****  * @param  control  Control value
+1036:library/usb/../cmsis/inc/core_cm3.h ****  *
+1037:library/usb/../cmsis/inc/core_cm3.h ****  * Set the control register
+1038:library/usb/../cmsis/inc/core_cm3.h ****  */
+1039:library/usb/../cmsis/inc/core_cm3.h **** static __INLINE void __set_CONTROL(uint32_t control)
+1040:library/usb/../cmsis/inc/core_cm3.h **** {
+1041:library/usb/../cmsis/inc/core_cm3.h ****   register uint32_t __regControl         __ASM("control");
+1042:library/usb/../cmsis/inc/core_cm3.h ****   __regControl = control;
+1043:library/usb/../cmsis/inc/core_cm3.h **** }
+1044:library/usb/../cmsis/inc/core_cm3.h **** 
+1045:library/usb/../cmsis/inc/core_cm3.h **** #endif /* __ARMCC_VERSION  */ 
+1046:library/usb/../cmsis/inc/core_cm3.h **** 
+1047:library/usb/../cmsis/inc/core_cm3.h **** 
+1048:library/usb/../cmsis/inc/core_cm3.h **** 
+1049:library/usb/../cmsis/inc/core_cm3.h **** #elif (defined (__ICCARM__)) /*------------------ ICC Compiler -------------------*/
+1050:library/usb/../cmsis/inc/core_cm3.h **** /* IAR iccarm specific functions */
+1051:library/usb/../cmsis/inc/core_cm3.h **** 
+1052:library/usb/../cmsis/inc/core_cm3.h **** #define __enable_irq                              __enable_interrupt        /*!< global Interrupt e
+1053:library/usb/../cmsis/inc/core_cm3.h **** #define __disable_irq                             __disable_interrupt       /*!< global Interrupt d
+1054:library/usb/../cmsis/inc/core_cm3.h **** 
+1055:library/usb/../cmsis/inc/core_cm3.h **** static __INLINE void __enable_fault_irq()         { __ASM ("cpsie f"); }
+1056:library/usb/../cmsis/inc/core_cm3.h **** static __INLINE void __disable_fault_irq()        { __ASM ("cpsid f"); }
+1057:library/usb/../cmsis/inc/core_cm3.h **** 
+1058:library/usb/../cmsis/inc/core_cm3.h **** #define __NOP                                     __no_operation            /*!< no operation intri
+1059:library/usb/../cmsis/inc/core_cm3.h **** static __INLINE  void __WFI()                     { __ASM ("wfi"); }
+1060:library/usb/../cmsis/inc/core_cm3.h **** static __INLINE  void __WFE()                     { __ASM ("wfe"); }
+1061:library/usb/../cmsis/inc/core_cm3.h **** static __INLINE  void __SEV()                     { __ASM ("sev"); }
+1062:library/usb/../cmsis/inc/core_cm3.h **** static __INLINE  void __CLREX()                   { __ASM ("clrex"); }
+ARM GAS  /tmp/ccdboO4f.s 			page 35
+
+
+1063:library/usb/../cmsis/inc/core_cm3.h **** 
+1064:library/usb/../cmsis/inc/core_cm3.h **** /* intrinsic void __ISB(void)                                     */
+1065:library/usb/../cmsis/inc/core_cm3.h **** /* intrinsic void __DSB(void)                                     */
+1066:library/usb/../cmsis/inc/core_cm3.h **** /* intrinsic void __DMB(void)                                     */
+1067:library/usb/../cmsis/inc/core_cm3.h **** /* intrinsic void __set_PRIMASK();                                */
+1068:library/usb/../cmsis/inc/core_cm3.h **** /* intrinsic void __get_PRIMASK();                                */
+1069:library/usb/../cmsis/inc/core_cm3.h **** /* intrinsic void __set_FAULTMASK();                              */
+1070:library/usb/../cmsis/inc/core_cm3.h **** /* intrinsic void __get_FAULTMASK();                              */
+1071:library/usb/../cmsis/inc/core_cm3.h **** /* intrinsic uint32_t __REV(uint32_t value);                      */
+1072:library/usb/../cmsis/inc/core_cm3.h **** /* intrinsic uint32_t __REVSH(uint32_t value);                    */
+1073:library/usb/../cmsis/inc/core_cm3.h **** /* intrinsic unsigned long __STREX(unsigned long, unsigned long); */
+1074:library/usb/../cmsis/inc/core_cm3.h **** /* intrinsic unsigned long __LDREX(unsigned long *);              */
+1075:library/usb/../cmsis/inc/core_cm3.h **** 
+1076:library/usb/../cmsis/inc/core_cm3.h **** 
+1077:library/usb/../cmsis/inc/core_cm3.h **** /**
+1078:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Return the Process Stack Pointer
+1079:library/usb/../cmsis/inc/core_cm3.h ****  *
+1080:library/usb/../cmsis/inc/core_cm3.h ****  * @return ProcessStackPointer
+1081:library/usb/../cmsis/inc/core_cm3.h ****  *
+1082:library/usb/../cmsis/inc/core_cm3.h ****  * Return the actual process stack pointer
+1083:library/usb/../cmsis/inc/core_cm3.h ****  */
+1084:library/usb/../cmsis/inc/core_cm3.h **** extern uint32_t __get_PSP(void);
+1085:library/usb/../cmsis/inc/core_cm3.h **** 
+1086:library/usb/../cmsis/inc/core_cm3.h **** /**
+1087:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Set the Process Stack Pointer
+1088:library/usb/../cmsis/inc/core_cm3.h ****  *
+1089:library/usb/../cmsis/inc/core_cm3.h ****  * @param  topOfProcStack  Process Stack Pointer
+1090:library/usb/../cmsis/inc/core_cm3.h ****  *
+1091:library/usb/../cmsis/inc/core_cm3.h ****  * Assign the value ProcessStackPointer to the MSP 
+1092:library/usb/../cmsis/inc/core_cm3.h ****  * (process stack pointer) Cortex processor register
+1093:library/usb/../cmsis/inc/core_cm3.h ****  */
+1094:library/usb/../cmsis/inc/core_cm3.h **** extern void __set_PSP(uint32_t topOfProcStack);
+1095:library/usb/../cmsis/inc/core_cm3.h **** 
+1096:library/usb/../cmsis/inc/core_cm3.h **** /**
+1097:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Return the Main Stack Pointer
+1098:library/usb/../cmsis/inc/core_cm3.h ****  *
+1099:library/usb/../cmsis/inc/core_cm3.h ****  * @return Main Stack Pointer
+1100:library/usb/../cmsis/inc/core_cm3.h ****  *
+1101:library/usb/../cmsis/inc/core_cm3.h ****  * Return the current value of the MSP (main stack pointer)
+1102:library/usb/../cmsis/inc/core_cm3.h ****  * Cortex processor register
+1103:library/usb/../cmsis/inc/core_cm3.h ****  */
+1104:library/usb/../cmsis/inc/core_cm3.h **** extern uint32_t __get_MSP(void);
+1105:library/usb/../cmsis/inc/core_cm3.h **** 
+1106:library/usb/../cmsis/inc/core_cm3.h **** /**
+1107:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Set the Main Stack Pointer
+1108:library/usb/../cmsis/inc/core_cm3.h ****  *
+1109:library/usb/../cmsis/inc/core_cm3.h ****  * @param  topOfMainStack  Main Stack Pointer
+1110:library/usb/../cmsis/inc/core_cm3.h ****  *
+1111:library/usb/../cmsis/inc/core_cm3.h ****  * Assign the value mainStackPointer to the MSP 
+1112:library/usb/../cmsis/inc/core_cm3.h ****  * (main stack pointer) Cortex processor register
+1113:library/usb/../cmsis/inc/core_cm3.h ****  */
+1114:library/usb/../cmsis/inc/core_cm3.h **** extern void __set_MSP(uint32_t topOfMainStack);
+1115:library/usb/../cmsis/inc/core_cm3.h **** 
+1116:library/usb/../cmsis/inc/core_cm3.h **** /**
+1117:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Reverse byte order in unsigned short value
+1118:library/usb/../cmsis/inc/core_cm3.h ****  *
+1119:library/usb/../cmsis/inc/core_cm3.h ****  * @param  value  value to reverse
+ARM GAS  /tmp/ccdboO4f.s 			page 36
+
+
+1120:library/usb/../cmsis/inc/core_cm3.h ****  * @return        reversed value
+1121:library/usb/../cmsis/inc/core_cm3.h ****  *
+1122:library/usb/../cmsis/inc/core_cm3.h ****  * Reverse byte order in unsigned short value
+1123:library/usb/../cmsis/inc/core_cm3.h ****  */
+1124:library/usb/../cmsis/inc/core_cm3.h **** extern uint32_t __REV16(uint16_t value);
+1125:library/usb/../cmsis/inc/core_cm3.h **** 
+1126:library/usb/../cmsis/inc/core_cm3.h **** /**
+1127:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Reverse bit order of value
+1128:library/usb/../cmsis/inc/core_cm3.h ****  *
+1129:library/usb/../cmsis/inc/core_cm3.h ****  * @param  value  value to reverse
+1130:library/usb/../cmsis/inc/core_cm3.h ****  * @return        reversed value
+1131:library/usb/../cmsis/inc/core_cm3.h ****  *
+1132:library/usb/../cmsis/inc/core_cm3.h ****  * Reverse bit order of value
+1133:library/usb/../cmsis/inc/core_cm3.h ****  */
+1134:library/usb/../cmsis/inc/core_cm3.h **** extern uint32_t __RBIT(uint32_t value);
+1135:library/usb/../cmsis/inc/core_cm3.h **** 
+1136:library/usb/../cmsis/inc/core_cm3.h **** /**
+1137:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  LDR Exclusive (8 bit)
+1138:library/usb/../cmsis/inc/core_cm3.h ****  *
+1139:library/usb/../cmsis/inc/core_cm3.h ****  * @param  *addr  address pointer
+1140:library/usb/../cmsis/inc/core_cm3.h ****  * @return        value of (*address)
+1141:library/usb/../cmsis/inc/core_cm3.h ****  *
+1142:library/usb/../cmsis/inc/core_cm3.h ****  * Exclusive LDR command for 8 bit values)
+1143:library/usb/../cmsis/inc/core_cm3.h ****  */
+1144:library/usb/../cmsis/inc/core_cm3.h **** extern uint8_t __LDREXB(uint8_t *addr);
+1145:library/usb/../cmsis/inc/core_cm3.h **** 
+1146:library/usb/../cmsis/inc/core_cm3.h **** /**
+1147:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  LDR Exclusive (16 bit)
+1148:library/usb/../cmsis/inc/core_cm3.h ****  *
+1149:library/usb/../cmsis/inc/core_cm3.h ****  * @param  *addr  address pointer
+1150:library/usb/../cmsis/inc/core_cm3.h ****  * @return        value of (*address)
+1151:library/usb/../cmsis/inc/core_cm3.h ****  *
+1152:library/usb/../cmsis/inc/core_cm3.h ****  * Exclusive LDR command for 16 bit values
+1153:library/usb/../cmsis/inc/core_cm3.h ****  */
+1154:library/usb/../cmsis/inc/core_cm3.h **** extern uint16_t __LDREXH(uint16_t *addr);
+1155:library/usb/../cmsis/inc/core_cm3.h **** 
+1156:library/usb/../cmsis/inc/core_cm3.h **** /**
+1157:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  LDR Exclusive (32 bit)
+1158:library/usb/../cmsis/inc/core_cm3.h ****  *
+1159:library/usb/../cmsis/inc/core_cm3.h ****  * @param  *addr  address pointer
+1160:library/usb/../cmsis/inc/core_cm3.h ****  * @return        value of (*address)
+1161:library/usb/../cmsis/inc/core_cm3.h ****  *
+1162:library/usb/../cmsis/inc/core_cm3.h ****  * Exclusive LDR command for 32 bit values
+1163:library/usb/../cmsis/inc/core_cm3.h ****  */
+1164:library/usb/../cmsis/inc/core_cm3.h **** extern uint32_t __LDREXW(uint32_t *addr);
+1165:library/usb/../cmsis/inc/core_cm3.h **** 
+1166:library/usb/../cmsis/inc/core_cm3.h **** /**
+1167:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  STR Exclusive (8 bit)
+1168:library/usb/../cmsis/inc/core_cm3.h ****  *
+1169:library/usb/../cmsis/inc/core_cm3.h ****  * @param  value  value to store
+1170:library/usb/../cmsis/inc/core_cm3.h ****  * @param  *addr  address pointer
+1171:library/usb/../cmsis/inc/core_cm3.h ****  * @return        successful / failed
+1172:library/usb/../cmsis/inc/core_cm3.h ****  *
+1173:library/usb/../cmsis/inc/core_cm3.h ****  * Exclusive STR command for 8 bit values
+1174:library/usb/../cmsis/inc/core_cm3.h ****  */
+1175:library/usb/../cmsis/inc/core_cm3.h **** extern uint32_t __STREXB(uint8_t value, uint8_t *addr);
+1176:library/usb/../cmsis/inc/core_cm3.h **** 
+ARM GAS  /tmp/ccdboO4f.s 			page 37
+
+
+1177:library/usb/../cmsis/inc/core_cm3.h **** /**
+1178:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  STR Exclusive (16 bit)
+1179:library/usb/../cmsis/inc/core_cm3.h ****  *
+1180:library/usb/../cmsis/inc/core_cm3.h ****  * @param  value  value to store
+1181:library/usb/../cmsis/inc/core_cm3.h ****  * @param  *addr  address pointer
+1182:library/usb/../cmsis/inc/core_cm3.h ****  * @return        successful / failed
+1183:library/usb/../cmsis/inc/core_cm3.h ****  *
+1184:library/usb/../cmsis/inc/core_cm3.h ****  * Exclusive STR command for 16 bit values
+1185:library/usb/../cmsis/inc/core_cm3.h ****  */
+1186:library/usb/../cmsis/inc/core_cm3.h **** extern uint32_t __STREXH(uint16_t value, uint16_t *addr);
+1187:library/usb/../cmsis/inc/core_cm3.h **** 
+1188:library/usb/../cmsis/inc/core_cm3.h **** /**
+1189:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  STR Exclusive (32 bit)
+1190:library/usb/../cmsis/inc/core_cm3.h ****  *
+1191:library/usb/../cmsis/inc/core_cm3.h ****  * @param  value  value to store
+1192:library/usb/../cmsis/inc/core_cm3.h ****  * @param  *addr  address pointer
+1193:library/usb/../cmsis/inc/core_cm3.h ****  * @return        successful / failed
+1194:library/usb/../cmsis/inc/core_cm3.h ****  *
+1195:library/usb/../cmsis/inc/core_cm3.h ****  * Exclusive STR command for 32 bit values
+1196:library/usb/../cmsis/inc/core_cm3.h ****  */
+1197:library/usb/../cmsis/inc/core_cm3.h **** extern uint32_t __STREXW(uint32_t value, uint32_t *addr);
+1198:library/usb/../cmsis/inc/core_cm3.h **** 
+1199:library/usb/../cmsis/inc/core_cm3.h **** 
+1200:library/usb/../cmsis/inc/core_cm3.h **** 
+1201:library/usb/../cmsis/inc/core_cm3.h **** #elif (defined (__GNUC__)) /*------------------ GNU Compiler ---------------------*/
+1202:library/usb/../cmsis/inc/core_cm3.h **** /* GNU gcc specific functions */
+1203:library/usb/../cmsis/inc/core_cm3.h **** 
+1204:library/usb/../cmsis/inc/core_cm3.h **** static __INLINE void __enable_irq()               { __ASM volatile ("cpsie i"); }
+1205:library/usb/../cmsis/inc/core_cm3.h **** static __INLINE void __disable_irq()              { __ASM volatile ("cpsid i"); }
+1206:library/usb/../cmsis/inc/core_cm3.h **** 
+1207:library/usb/../cmsis/inc/core_cm3.h **** static __INLINE void __enable_fault_irq()         { __ASM volatile ("cpsie f"); }
+1208:library/usb/../cmsis/inc/core_cm3.h **** static __INLINE void __disable_fault_irq()        { __ASM volatile ("cpsid f"); }
+1209:library/usb/../cmsis/inc/core_cm3.h **** 
+1210:library/usb/../cmsis/inc/core_cm3.h **** static __INLINE void __NOP()                      { __ASM volatile ("nop"); }
+1211:library/usb/../cmsis/inc/core_cm3.h **** static __INLINE void __WFI()                      { __ASM volatile ("wfi"); }
+1212:library/usb/../cmsis/inc/core_cm3.h **** static __INLINE void __WFE()                      { __ASM volatile ("wfe"); }
+1213:library/usb/../cmsis/inc/core_cm3.h **** static __INLINE void __SEV()                      { __ASM volatile ("sev"); }
+1214:library/usb/../cmsis/inc/core_cm3.h **** static __INLINE void __ISB()                      { __ASM volatile ("isb"); }
+1215:library/usb/../cmsis/inc/core_cm3.h **** static __INLINE void __DSB()                      { __ASM volatile ("dsb"); }
+1216:library/usb/../cmsis/inc/core_cm3.h **** static __INLINE void __DMB()                      { __ASM volatile ("dmb"); }
+1217:library/usb/../cmsis/inc/core_cm3.h **** static __INLINE void __CLREX()                    { __ASM volatile ("clrex"); }
+1218:library/usb/../cmsis/inc/core_cm3.h **** 
+1219:library/usb/../cmsis/inc/core_cm3.h **** 
+1220:library/usb/../cmsis/inc/core_cm3.h **** /**
+1221:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Return the Process Stack Pointer
+1222:library/usb/../cmsis/inc/core_cm3.h ****  *
+1223:library/usb/../cmsis/inc/core_cm3.h ****  * @return ProcessStackPointer
+1224:library/usb/../cmsis/inc/core_cm3.h ****  *
+1225:library/usb/../cmsis/inc/core_cm3.h ****  * Return the actual process stack pointer
+1226:library/usb/../cmsis/inc/core_cm3.h ****  */
+1227:library/usb/../cmsis/inc/core_cm3.h **** extern uint32_t __get_PSP(void);
+1228:library/usb/../cmsis/inc/core_cm3.h **** 
+1229:library/usb/../cmsis/inc/core_cm3.h **** /**
+1230:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Set the Process Stack Pointer
+1231:library/usb/../cmsis/inc/core_cm3.h ****  *
+1232:library/usb/../cmsis/inc/core_cm3.h ****  * @param  topOfProcStack  Process Stack Pointer
+1233:library/usb/../cmsis/inc/core_cm3.h ****  *
+ARM GAS  /tmp/ccdboO4f.s 			page 38
+
+
+1234:library/usb/../cmsis/inc/core_cm3.h ****  * Assign the value ProcessStackPointer to the MSP 
+1235:library/usb/../cmsis/inc/core_cm3.h ****  * (process stack pointer) Cortex processor register
+1236:library/usb/../cmsis/inc/core_cm3.h ****  */
+1237:library/usb/../cmsis/inc/core_cm3.h **** extern void __set_PSP(uint32_t topOfProcStack);
+1238:library/usb/../cmsis/inc/core_cm3.h **** 
+1239:library/usb/../cmsis/inc/core_cm3.h **** /**
+1240:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Return the Main Stack Pointer
+1241:library/usb/../cmsis/inc/core_cm3.h ****  *
+1242:library/usb/../cmsis/inc/core_cm3.h ****  * @return Main Stack Pointer
+1243:library/usb/../cmsis/inc/core_cm3.h ****  *
+1244:library/usb/../cmsis/inc/core_cm3.h ****  * Return the current value of the MSP (main stack pointer)
+1245:library/usb/../cmsis/inc/core_cm3.h ****  * Cortex processor register
+1246:library/usb/../cmsis/inc/core_cm3.h ****  */
+1247:library/usb/../cmsis/inc/core_cm3.h **** extern uint32_t __get_MSP(void);
+1248:library/usb/../cmsis/inc/core_cm3.h **** 
+1249:library/usb/../cmsis/inc/core_cm3.h **** /**
+1250:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Set the Main Stack Pointer
+1251:library/usb/../cmsis/inc/core_cm3.h ****  *
+1252:library/usb/../cmsis/inc/core_cm3.h ****  * @param  topOfMainStack  Main Stack Pointer
+1253:library/usb/../cmsis/inc/core_cm3.h ****  *
+1254:library/usb/../cmsis/inc/core_cm3.h ****  * Assign the value mainStackPointer to the MSP 
+1255:library/usb/../cmsis/inc/core_cm3.h ****  * (main stack pointer) Cortex processor register
+1256:library/usb/../cmsis/inc/core_cm3.h ****  */
+1257:library/usb/../cmsis/inc/core_cm3.h **** extern void __set_MSP(uint32_t topOfMainStack);
+1258:library/usb/../cmsis/inc/core_cm3.h **** 
+1259:library/usb/../cmsis/inc/core_cm3.h **** /**
+1260:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Return the Base Priority value
+1261:library/usb/../cmsis/inc/core_cm3.h ****  *
+1262:library/usb/../cmsis/inc/core_cm3.h ****  * @return BasePriority
+1263:library/usb/../cmsis/inc/core_cm3.h ****  *
+1264:library/usb/../cmsis/inc/core_cm3.h ****  * Return the content of the base priority register
+1265:library/usb/../cmsis/inc/core_cm3.h ****  */
+1266:library/usb/../cmsis/inc/core_cm3.h **** extern uint32_t __get_BASEPRI(void);
+1267:library/usb/../cmsis/inc/core_cm3.h **** 
+1268:library/usb/../cmsis/inc/core_cm3.h **** /**
+1269:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Set the Base Priority value
+1270:library/usb/../cmsis/inc/core_cm3.h ****  *
+1271:library/usb/../cmsis/inc/core_cm3.h ****  * @param  basePri  BasePriority
+1272:library/usb/../cmsis/inc/core_cm3.h ****  *
+1273:library/usb/../cmsis/inc/core_cm3.h ****  * Set the base priority register
+1274:library/usb/../cmsis/inc/core_cm3.h ****  */
+1275:library/usb/../cmsis/inc/core_cm3.h **** extern void __set_BASEPRI(uint32_t basePri);
+1276:library/usb/../cmsis/inc/core_cm3.h **** 
+1277:library/usb/../cmsis/inc/core_cm3.h **** /**
+1278:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Return the Priority Mask value
+1279:library/usb/../cmsis/inc/core_cm3.h ****  *
+1280:library/usb/../cmsis/inc/core_cm3.h ****  * @return PriMask
+1281:library/usb/../cmsis/inc/core_cm3.h ****  *
+1282:library/usb/../cmsis/inc/core_cm3.h ****  * Return state of the priority mask bit from the priority mask register
+1283:library/usb/../cmsis/inc/core_cm3.h ****  */
+1284:library/usb/../cmsis/inc/core_cm3.h **** extern uint32_t  __get_PRIMASK(void);
+1285:library/usb/../cmsis/inc/core_cm3.h **** 
+1286:library/usb/../cmsis/inc/core_cm3.h **** /**
+1287:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Set the Priority Mask value
+1288:library/usb/../cmsis/inc/core_cm3.h ****  *
+1289:library/usb/../cmsis/inc/core_cm3.h ****  * @param  priMask  PriMask
+1290:library/usb/../cmsis/inc/core_cm3.h ****  *
+ARM GAS  /tmp/ccdboO4f.s 			page 39
+
+
+1291:library/usb/../cmsis/inc/core_cm3.h ****  * Set the priority mask bit in the priority mask register
+1292:library/usb/../cmsis/inc/core_cm3.h ****  */
+1293:library/usb/../cmsis/inc/core_cm3.h **** extern void __set_PRIMASK(uint32_t priMask);
+1294:library/usb/../cmsis/inc/core_cm3.h **** 
+1295:library/usb/../cmsis/inc/core_cm3.h **** /**
+1296:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Return the Fault Mask value
+1297:library/usb/../cmsis/inc/core_cm3.h ****  *
+1298:library/usb/../cmsis/inc/core_cm3.h ****  * @return FaultMask
+1299:library/usb/../cmsis/inc/core_cm3.h ****  *
+1300:library/usb/../cmsis/inc/core_cm3.h ****  * Return the content of the fault mask register
+1301:library/usb/../cmsis/inc/core_cm3.h ****  */
+1302:library/usb/../cmsis/inc/core_cm3.h **** extern uint32_t __get_FAULTMASK(void);
+1303:library/usb/../cmsis/inc/core_cm3.h **** 
+1304:library/usb/../cmsis/inc/core_cm3.h **** /**
+1305:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Set the Fault Mask value
+1306:library/usb/../cmsis/inc/core_cm3.h ****  *
+1307:library/usb/../cmsis/inc/core_cm3.h ****  * @param  faultMask  faultMask value
+1308:library/usb/../cmsis/inc/core_cm3.h ****  *
+1309:library/usb/../cmsis/inc/core_cm3.h ****  * Set the fault mask register
+1310:library/usb/../cmsis/inc/core_cm3.h ****  */
+1311:library/usb/../cmsis/inc/core_cm3.h **** extern void __set_FAULTMASK(uint32_t faultMask);
+1312:library/usb/../cmsis/inc/core_cm3.h **** 
+1313:library/usb/../cmsis/inc/core_cm3.h **** /**
+1314:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Return the Control Register value
+1315:library/usb/../cmsis/inc/core_cm3.h **** * 
+1316:library/usb/../cmsis/inc/core_cm3.h **** *  @return Control value
+1317:library/usb/../cmsis/inc/core_cm3.h ****  *
+1318:library/usb/../cmsis/inc/core_cm3.h ****  * Return the content of the control register
+1319:library/usb/../cmsis/inc/core_cm3.h ****  */
+1320:library/usb/../cmsis/inc/core_cm3.h **** extern uint32_t __get_CONTROL(void);
+1321:library/usb/../cmsis/inc/core_cm3.h **** 
+1322:library/usb/../cmsis/inc/core_cm3.h **** /**
+1323:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Set the Control Register value
+1324:library/usb/../cmsis/inc/core_cm3.h ****  *
+1325:library/usb/../cmsis/inc/core_cm3.h ****  * @param  control  Control value
+1326:library/usb/../cmsis/inc/core_cm3.h ****  *
+1327:library/usb/../cmsis/inc/core_cm3.h ****  * Set the control register
+1328:library/usb/../cmsis/inc/core_cm3.h ****  */
+1329:library/usb/../cmsis/inc/core_cm3.h **** extern void __set_CONTROL(uint32_t control);
+1330:library/usb/../cmsis/inc/core_cm3.h **** 
+1331:library/usb/../cmsis/inc/core_cm3.h **** /**
+1332:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Reverse byte order in integer value
+1333:library/usb/../cmsis/inc/core_cm3.h ****  *
+1334:library/usb/../cmsis/inc/core_cm3.h ****  * @param  value  value to reverse
+1335:library/usb/../cmsis/inc/core_cm3.h ****  * @return        reversed value
+1336:library/usb/../cmsis/inc/core_cm3.h ****  *
+1337:library/usb/../cmsis/inc/core_cm3.h ****  * Reverse byte order in integer value
+1338:library/usb/../cmsis/inc/core_cm3.h ****  */
+1339:library/usb/../cmsis/inc/core_cm3.h **** extern uint32_t __REV(uint32_t value);
+1340:library/usb/../cmsis/inc/core_cm3.h **** 
+1341:library/usb/../cmsis/inc/core_cm3.h **** /**
+1342:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Reverse byte order in unsigned short value
+1343:library/usb/../cmsis/inc/core_cm3.h ****  *
+1344:library/usb/../cmsis/inc/core_cm3.h ****  * @param  value  value to reverse
+1345:library/usb/../cmsis/inc/core_cm3.h ****  * @return        reversed value
+1346:library/usb/../cmsis/inc/core_cm3.h ****  *
+1347:library/usb/../cmsis/inc/core_cm3.h ****  * Reverse byte order in unsigned short value
+ARM GAS  /tmp/ccdboO4f.s 			page 40
+
+
+1348:library/usb/../cmsis/inc/core_cm3.h ****  */
+1349:library/usb/../cmsis/inc/core_cm3.h **** extern uint32_t __REV16(uint16_t value);
+1350:library/usb/../cmsis/inc/core_cm3.h **** 
+1351:library/usb/../cmsis/inc/core_cm3.h **** /**
+1352:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Reverse byte order in signed short value with sign extension to integer
+1353:library/usb/../cmsis/inc/core_cm3.h ****  *
+1354:library/usb/../cmsis/inc/core_cm3.h ****  * @param  value  value to reverse
+1355:library/usb/../cmsis/inc/core_cm3.h ****  * @return        reversed value
+1356:library/usb/../cmsis/inc/core_cm3.h ****  *
+1357:library/usb/../cmsis/inc/core_cm3.h ****  * Reverse byte order in signed short value with sign extension to integer
+1358:library/usb/../cmsis/inc/core_cm3.h ****  */
+1359:library/usb/../cmsis/inc/core_cm3.h **** extern int32_t __REVSH(int16_t value);
+1360:library/usb/../cmsis/inc/core_cm3.h **** 
+1361:library/usb/../cmsis/inc/core_cm3.h **** /**
+1362:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Reverse bit order of value
+1363:library/usb/../cmsis/inc/core_cm3.h ****  *
+1364:library/usb/../cmsis/inc/core_cm3.h ****  * @param  value  value to reverse
+1365:library/usb/../cmsis/inc/core_cm3.h ****  * @return        reversed value
+1366:library/usb/../cmsis/inc/core_cm3.h ****  *
+1367:library/usb/../cmsis/inc/core_cm3.h ****  * Reverse bit order of value
+1368:library/usb/../cmsis/inc/core_cm3.h ****  */
+1369:library/usb/../cmsis/inc/core_cm3.h **** extern uint32_t __RBIT(uint32_t value);
+1370:library/usb/../cmsis/inc/core_cm3.h **** 
+1371:library/usb/../cmsis/inc/core_cm3.h **** /**
+1372:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  LDR Exclusive (8 bit)
+1373:library/usb/../cmsis/inc/core_cm3.h ****  *
+1374:library/usb/../cmsis/inc/core_cm3.h ****  * @param  *addr  address pointer
+1375:library/usb/../cmsis/inc/core_cm3.h ****  * @return        value of (*address)
+1376:library/usb/../cmsis/inc/core_cm3.h ****  *
+1377:library/usb/../cmsis/inc/core_cm3.h ****  * Exclusive LDR command for 8 bit value
+1378:library/usb/../cmsis/inc/core_cm3.h ****  */
+1379:library/usb/../cmsis/inc/core_cm3.h **** extern uint8_t __LDREXB(uint8_t *addr);
+1380:library/usb/../cmsis/inc/core_cm3.h **** 
+1381:library/usb/../cmsis/inc/core_cm3.h **** /**
+1382:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  LDR Exclusive (16 bit)
+1383:library/usb/../cmsis/inc/core_cm3.h ****  *
+1384:library/usb/../cmsis/inc/core_cm3.h ****  * @param  *addr  address pointer
+1385:library/usb/../cmsis/inc/core_cm3.h ****  * @return        value of (*address)
+1386:library/usb/../cmsis/inc/core_cm3.h ****  *
+1387:library/usb/../cmsis/inc/core_cm3.h ****  * Exclusive LDR command for 16 bit values
+1388:library/usb/../cmsis/inc/core_cm3.h ****  */
+1389:library/usb/../cmsis/inc/core_cm3.h **** extern uint16_t __LDREXH(uint16_t *addr);
+1390:library/usb/../cmsis/inc/core_cm3.h **** 
+1391:library/usb/../cmsis/inc/core_cm3.h **** /**
+1392:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  LDR Exclusive (32 bit)
+1393:library/usb/../cmsis/inc/core_cm3.h ****  *
+1394:library/usb/../cmsis/inc/core_cm3.h ****  * @param  *addr  address pointer
+1395:library/usb/../cmsis/inc/core_cm3.h ****  * @return        value of (*address)
+1396:library/usb/../cmsis/inc/core_cm3.h ****  *
+1397:library/usb/../cmsis/inc/core_cm3.h ****  * Exclusive LDR command for 32 bit values
+1398:library/usb/../cmsis/inc/core_cm3.h ****  */
+1399:library/usb/../cmsis/inc/core_cm3.h **** extern uint32_t __LDREXW(uint32_t *addr);
+1400:library/usb/../cmsis/inc/core_cm3.h **** 
+1401:library/usb/../cmsis/inc/core_cm3.h **** /**
+1402:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  STR Exclusive (8 bit)
+1403:library/usb/../cmsis/inc/core_cm3.h ****  *
+1404:library/usb/../cmsis/inc/core_cm3.h ****  * @param  value  value to store
+ARM GAS  /tmp/ccdboO4f.s 			page 41
+
+
+1405:library/usb/../cmsis/inc/core_cm3.h ****  * @param  *addr  address pointer
+1406:library/usb/../cmsis/inc/core_cm3.h ****  * @return        successful / failed
+1407:library/usb/../cmsis/inc/core_cm3.h ****  *
+1408:library/usb/../cmsis/inc/core_cm3.h ****  * Exclusive STR command for 8 bit values
+1409:library/usb/../cmsis/inc/core_cm3.h ****  */
+1410:library/usb/../cmsis/inc/core_cm3.h **** extern uint32_t __STREXB(uint8_t value, uint8_t *addr);
+1411:library/usb/../cmsis/inc/core_cm3.h **** 
+1412:library/usb/../cmsis/inc/core_cm3.h **** /**
+1413:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  STR Exclusive (16 bit)
+1414:library/usb/../cmsis/inc/core_cm3.h ****  *
+1415:library/usb/../cmsis/inc/core_cm3.h ****  * @param  value  value to store
+1416:library/usb/../cmsis/inc/core_cm3.h ****  * @param  *addr  address pointer
+1417:library/usb/../cmsis/inc/core_cm3.h ****  * @return        successful / failed
+1418:library/usb/../cmsis/inc/core_cm3.h ****  *
+1419:library/usb/../cmsis/inc/core_cm3.h ****  * Exclusive STR command for 16 bit values
+1420:library/usb/../cmsis/inc/core_cm3.h ****  */
+1421:library/usb/../cmsis/inc/core_cm3.h **** extern uint32_t __STREXH(uint16_t value, uint16_t *addr);
+1422:library/usb/../cmsis/inc/core_cm3.h **** 
+1423:library/usb/../cmsis/inc/core_cm3.h **** /**
+1424:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  STR Exclusive (32 bit)
+1425:library/usb/../cmsis/inc/core_cm3.h ****  *
+1426:library/usb/../cmsis/inc/core_cm3.h ****  * @param  value  value to store
+1427:library/usb/../cmsis/inc/core_cm3.h ****  * @param  *addr  address pointer
+1428:library/usb/../cmsis/inc/core_cm3.h ****  * @return        successful / failed
+1429:library/usb/../cmsis/inc/core_cm3.h ****  *
+1430:library/usb/../cmsis/inc/core_cm3.h ****  * Exclusive STR command for 32 bit values
+1431:library/usb/../cmsis/inc/core_cm3.h ****  */
+1432:library/usb/../cmsis/inc/core_cm3.h **** extern uint32_t __STREXW(uint32_t value, uint32_t *addr);
+1433:library/usb/../cmsis/inc/core_cm3.h **** 
+1434:library/usb/../cmsis/inc/core_cm3.h **** 
+1435:library/usb/../cmsis/inc/core_cm3.h **** #elif (defined (__TASKING__)) /*------------------ TASKING Compiler ---------------------*/
+1436:library/usb/../cmsis/inc/core_cm3.h **** /* TASKING carm specific functions */
+1437:library/usb/../cmsis/inc/core_cm3.h **** 
+1438:library/usb/../cmsis/inc/core_cm3.h **** /*
+1439:library/usb/../cmsis/inc/core_cm3.h ****  * The CMSIS functions have been implemented as intrinsics in the compiler.
+1440:library/usb/../cmsis/inc/core_cm3.h ****  * Please use "carm -?i" to get an up to date list of all instrinsics,
+1441:library/usb/../cmsis/inc/core_cm3.h ****  * Including the CMSIS ones.
+1442:library/usb/../cmsis/inc/core_cm3.h ****  */
+1443:library/usb/../cmsis/inc/core_cm3.h **** 
+1444:library/usb/../cmsis/inc/core_cm3.h **** #endif
+1445:library/usb/../cmsis/inc/core_cm3.h **** 
+1446:library/usb/../cmsis/inc/core_cm3.h **** 
+1447:library/usb/../cmsis/inc/core_cm3.h **** /** @addtogroup CMSIS_CM3_Core_FunctionInterface CMSIS CM3 Core Function Interface
+1448:library/usb/../cmsis/inc/core_cm3.h ****   Core  Function Interface containing:
+1449:library/usb/../cmsis/inc/core_cm3.h ****   - Core NVIC Functions
+1450:library/usb/../cmsis/inc/core_cm3.h ****   - Core SysTick Functions
+1451:library/usb/../cmsis/inc/core_cm3.h ****   - Core Reset Functions
+1452:library/usb/../cmsis/inc/core_cm3.h **** */
+1453:library/usb/../cmsis/inc/core_cm3.h **** /*@{*/
+1454:library/usb/../cmsis/inc/core_cm3.h **** 
+1455:library/usb/../cmsis/inc/core_cm3.h **** /* ##########################   NVIC functions  #################################### */
+1456:library/usb/../cmsis/inc/core_cm3.h **** 
+1457:library/usb/../cmsis/inc/core_cm3.h **** /**
+1458:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Set the Priority Grouping in NVIC Interrupt Controller
+1459:library/usb/../cmsis/inc/core_cm3.h ****  *
+1460:library/usb/../cmsis/inc/core_cm3.h ****  * @param  PriorityGroup is priority grouping field
+1461:library/usb/../cmsis/inc/core_cm3.h ****  *
+ARM GAS  /tmp/ccdboO4f.s 			page 42
+
+
+1462:library/usb/../cmsis/inc/core_cm3.h ****  * Set the priority grouping field using the required unlock sequence.
+1463:library/usb/../cmsis/inc/core_cm3.h ****  * The parameter priority_grouping is assigned to the field 
+1464:library/usb/../cmsis/inc/core_cm3.h ****  * SCB->AIRCR [10:8] PRIGROUP field. Only values from 0..7 are used.
+1465:library/usb/../cmsis/inc/core_cm3.h ****  * In case of a conflict between priority grouping and available
+1466:library/usb/../cmsis/inc/core_cm3.h ****  * priority bits (__NVIC_PRIO_BITS) the smallest possible priority group is set.
+1467:library/usb/../cmsis/inc/core_cm3.h ****  */
+1468:library/usb/../cmsis/inc/core_cm3.h **** static __INLINE void NVIC_SetPriorityGrouping(uint32_t PriorityGroup)
+1469:library/usb/../cmsis/inc/core_cm3.h **** {
+1470:library/usb/../cmsis/inc/core_cm3.h ****   uint32_t reg_value;
+1471:library/usb/../cmsis/inc/core_cm3.h ****   uint32_t PriorityGroupTmp = (PriorityGroup & 0x07);                         /* only values 0..7 a
+1472:library/usb/../cmsis/inc/core_cm3.h ****   
+1473:library/usb/../cmsis/inc/core_cm3.h ****   reg_value  =  SCB->AIRCR;                                                   /* read old register 
+1474:library/usb/../cmsis/inc/core_cm3.h ****   reg_value &= ~(SCB_AIRCR_VECTKEY_Msk | SCB_AIRCR_PRIGROUP_Msk);             /* clear bits to chan
+1475:library/usb/../cmsis/inc/core_cm3.h ****   reg_value  =  (reg_value                       |
+1476:library/usb/../cmsis/inc/core_cm3.h ****                 (0x5FA << SCB_AIRCR_VECTKEY_Pos) | 
+1477:library/usb/../cmsis/inc/core_cm3.h ****                 (PriorityGroupTmp << 8));                                     /* Insert write key a
+1478:library/usb/../cmsis/inc/core_cm3.h ****   SCB->AIRCR =  reg_value;
+1479:library/usb/../cmsis/inc/core_cm3.h **** }
+1480:library/usb/../cmsis/inc/core_cm3.h **** 
+1481:library/usb/../cmsis/inc/core_cm3.h **** /**
+1482:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Get the Priority Grouping from NVIC Interrupt Controller
+1483:library/usb/../cmsis/inc/core_cm3.h ****  *
+1484:library/usb/../cmsis/inc/core_cm3.h ****  * @return priority grouping field 
+1485:library/usb/../cmsis/inc/core_cm3.h ****  *
+1486:library/usb/../cmsis/inc/core_cm3.h ****  * Get the priority grouping from NVIC Interrupt Controller.
+1487:library/usb/../cmsis/inc/core_cm3.h ****  * priority grouping is SCB->AIRCR [10:8] PRIGROUP field.
+1488:library/usb/../cmsis/inc/core_cm3.h ****  */
+1489:library/usb/../cmsis/inc/core_cm3.h **** static __INLINE uint32_t NVIC_GetPriorityGrouping(void)
+1490:library/usb/../cmsis/inc/core_cm3.h **** {
+1491:library/usb/../cmsis/inc/core_cm3.h ****   return ((SCB->AIRCR & SCB_AIRCR_PRIGROUP_Msk) >> SCB_AIRCR_PRIGROUP_Pos);   /* read priority grou
+1492:library/usb/../cmsis/inc/core_cm3.h **** }
+1493:library/usb/../cmsis/inc/core_cm3.h **** 
+1494:library/usb/../cmsis/inc/core_cm3.h **** /**
+1495:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Enable Interrupt in NVIC Interrupt Controller
+1496:library/usb/../cmsis/inc/core_cm3.h ****  *
+1497:library/usb/../cmsis/inc/core_cm3.h ****  * @param  IRQn   The positive number of the external interrupt to enable
+1498:library/usb/../cmsis/inc/core_cm3.h ****  *
+1499:library/usb/../cmsis/inc/core_cm3.h ****  * Enable a device specific interupt in the NVIC interrupt controller.
+1500:library/usb/../cmsis/inc/core_cm3.h ****  * The interrupt number cannot be a negative value.
+1501:library/usb/../cmsis/inc/core_cm3.h ****  */
+1502:library/usb/../cmsis/inc/core_cm3.h **** static __INLINE void NVIC_EnableIRQ(IRQn_Type IRQn)
+1503:library/usb/../cmsis/inc/core_cm3.h **** {
+1504:library/usb/../cmsis/inc/core_cm3.h ****   NVIC->ISER[((uint32_t)(IRQn) >> 5)] = (1 << ((uint32_t)(IRQn) & 0x1F)); /* enable interrupt */
+ 700              		.loc 2 1504 0
+ 701 0036 064B     		ldr	r3, .L41+8
+ 702 0038 4FF48062 		mov	r2, #1024
+ 703 003c 5A60     		str	r2, [r3, #4]
+ 704              	.LVL33:
+ 705              	.LBE7:
+ 706              	.LBE6:
+ 707              	.LBB8:
+ 708              	.LBB9:
+ 709 003e 4FF48012 		mov	r2, #1048576
+ 710 0042 1A60     		str	r2, [r3]
+ 711              	.LVL34:
+ 712 0044 7047     		bx	lr
+ 713              	.L42:
+ARM GAS  /tmp/ccdboO4f.s 			page 43
+
+
+ 714 0046 00BF     		.align	2
+ 715              	.L41:
+ 716 0048 00100240 		.word	1073876992
+ 717 004c 005C0040 		.word	1073765376
+ 718 0050 00E100E0 		.word	-536813312
+ 719              	.LBE9:
+ 720              	.LBE8:
+ 721              		.cfi_endproc
+ 722              	.LFE35:
+ 724              		.section	.text.USBSendData,"ax",%progbits
+ 725              		.align	2
+ 726              		.global	USBSendData
+ 727              		.thumb
+ 728              		.thumb_func
+ 730              	USBSendData:
+ 731              	.LFB36:
+ 187:library/usb/usb.c **** 
+ 188:library/usb/usb.c ****     /* Clean up buffer */
+ 189:library/usb/usb.c **** 	// for(uint16_t *i = USB_PMAADDR; i <= USB_PMAADDR + 0x3FF; i+=2) *i = 0;
+ 190:library/usb/usb.c **** 
+ 191:library/usb/usb.c ****    	/* Activation interrput */
+ 192:library/usb/usb.c **** 	NVIC_EnableIRQ(USBWakeUp_IRQn);
+ 193:library/usb/usb.c **** 	// NVIC_EnableIRQ(USB_HP_CAN1_TX_IRQn);
+ 194:library/usb/usb.c **** 	NVIC_EnableIRQ(USB_LP_CAN1_RX0_IRQn);
+ 195:library/usb/usb.c **** 
+ 196:library/usb/usb.c **** }
+ 197:library/usb/usb.c **** 
+ 198:library/usb/usb.c **** void USBSendData(uint8_t *buff){
+ 732              		.loc 1 198 0
+ 733              		.cfi_startproc
+ 734              		@ args = 0, pretend = 0, frame = 0
+ 735              		@ frame_needed = 0, uses_anonymous_args = 0
+ 736              	.LVL35:
+ 737 0000 08B5     		push	{r3, lr}
+ 738              	.LCFI3:
+ 739              		.cfi_def_cfa_offset 8
+ 740              		.cfi_offset 3, -8
+ 741              		.cfi_offset 14, -4
+ 199:library/usb/usb.c ****     USBWritePMA((uint16_t *)buff, USB_EP1_TX, sizeof(buff));
+ 742              		.loc 1 199 0
+ 743 0002 0422     		movs	r2, #4
+ 744 0004 8021     		movs	r1, #128
+ 745 0006 FFF7FEFF 		bl	USBWritePMA
+ 746              	.LVL36:
+ 200:library/usb/usb.c ****     USB_COUNT1_TX = sizeof(buff);
+ 747              		.loc 1 200 0
+ 748 000a 0422     		movs	r2, #4
+ 749 000c 044B     		ldr	r3, .L46
+ 750 000e 1A60     		str	r2, [r3]
+ 751              	.L44:
+ 201:library/usb/usb.c ****     while(!(USB->EP1R & USB_EP_CTR_TX)){}
+ 752              		.loc 1 201 0 discriminator 1
+ 753 0010 044B     		ldr	r3, .L46+4
+ 754 0012 9B88     		ldrh	r3, [r3, #4]
+ 755 0014 03F08003 		and	r3, r3, #128
+ 756 0018 9BB2     		uxth	r3, r3
+ 757 001a 002B     		cmp	r3, #0
+ARM GAS  /tmp/ccdboO4f.s 			page 44
+
+
+ 758 001c F8D0     		beq	.L44
+ 202:library/usb/usb.c **** }
+ 759              		.loc 1 202 0
+ 760 001e 08BD     		pop	{r3, pc}
+ 761              	.L47:
+ 762              		.align	2
+ 763              	.L46:
+ 764 0020 14600040 		.word	1073766420
+ 765 0024 005C0040 		.word	1073765376
+ 766              		.cfi_endproc
+ 767              	.LFE36:
+ 769              		.section	.text.USB_LP_CAN1_RX0_IRQHandler,"ax",%progbits
+ 770              		.align	2
+ 771              		.global	USB_LP_CAN1_RX0_IRQHandler
+ 772              		.thumb
+ 773              		.thumb_func
+ 775              	USB_LP_CAN1_RX0_IRQHandler:
+ 776              	.LFB37:
+ 203:library/usb/usb.c **** 
+ 204:library/usb/usb.c **** /* Interrput */
+ 205:library/usb/usb.c **** 
+ 206:library/usb/usb.c **** void USB_LP_IRQHandler(void){
+ 777              		.loc 1 206 0
+ 778              		.cfi_startproc
+ 779              		@ args = 0, pretend = 0, frame = 0
+ 780              		@ frame_needed = 0, uses_anonymous_args = 0
+ 781 0000 08B5     		push	{r3, lr}
+ 782              	.LCFI4:
+ 783              		.cfi_def_cfa_offset 8
+ 784              		.cfi_offset 3, -8
+ 785              		.cfi_offset 14, -4
+ 207:library/usb/usb.c ****     uint32_t num;
+ 208:library/usb/usb.c **** 	if(USB->ISTR & USB_ISTR_RESET){ 
+ 786              		.loc 1 208 0
+ 787 0002 2C4B     		ldr	r3, .L58
+ 788 0004 B3F84430 		ldrh	r3, [r3, #68]
+ 789 0008 03F48063 		and	r3, r3, #1024
+ 790 000c 9BB2     		uxth	r3, r3
+ 791 000e 0BB1     		cbz	r3, .L49
+ 209:library/usb/usb.c ****     	USBReset();
+ 792              		.loc 1 209 0
+ 793 0010 FFF7FEFF 		bl	USBReset
+ 794              	.LVL37:
+ 795              	.L49:
+ 210:library/usb/usb.c **** 	}
+ 211:library/usb/usb.c ****     if(USB->ISTR & USB_ISTR_SUSP){
+ 796              		.loc 1 211 0
+ 797 0014 274B     		ldr	r3, .L58
+ 798 0016 B3F84430 		ldrh	r3, [r3, #68]
+ 799 001a 03F40063 		and	r3, r3, #2048
+ 800 001e 9BB2     		uxth	r3, r3
+ 801 0020 73B1     		cbz	r3, .L50
+ 212:library/usb/usb.c ****         USB->CNTR |= USB_CNTR_FSUSP;                       /* Force Suspend */
+ 802              		.loc 1 212 0
+ 803 0022 244A     		ldr	r2, .L58
+ 804 0024 B2F84030 		ldrh	r3, [r2, #64]
+ 805 0028 9BB2     		uxth	r3, r3
+ARM GAS  /tmp/ccdboO4f.s 			page 45
+
+
+ 806 002a 43F00803 		orr	r3, r3, #8
+ 807 002e A2F84030 		strh	r3, [r2, #64]	@ movhi
+ 213:library/usb/usb.c ****         USB->CNTR |= USB_CNTR_LP_MODE;                     /* Low Power Mode */
+ 808              		.loc 1 213 0
+ 809 0032 B2F84030 		ldrh	r3, [r2, #64]
+ 810 0036 9BB2     		uxth	r3, r3
+ 811 0038 43F00403 		orr	r3, r3, #4
+ 812 003c A2F84030 		strh	r3, [r2, #64]	@ movhi
+ 813              	.L50:
+ 214:library/usb/usb.c ****     }
+ 215:library/usb/usb.c ****     if(USB->ISTR & USB_ISTR_WKUP){  
+ 814              		.loc 1 215 0
+ 815 0040 1C4B     		ldr	r3, .L58
+ 816 0042 B3F84430 		ldrh	r3, [r3, #68]
+ 817 0046 03F48053 		and	r3, r3, #4096
+ 818 004a 9BB2     		uxth	r3, r3
+ 819 004c 33B3     		cbz	r3, .L53
+ 216:library/usb/usb.c ****         USB->CNTR &= ~USB_CNTR_FSUSP;
+ 820              		.loc 1 216 0
+ 821 004e 194A     		ldr	r2, .L58
+ 822 0050 B2F84030 		ldrh	r3, [r2, #64]
+ 823 0054 9BB2     		uxth	r3, r3
+ 824 0056 23F00803 		bic	r3, r3, #8
+ 825 005a 9BB2     		uxth	r3, r3
+ 826 005c A2F84030 		strh	r3, [r2, #64]	@ movhi
+ 827 0060 1CE0     		b	.L53
+ 828              	.L56:
+ 217:library/usb/usb.c ****     }
+ 218:library/usb/usb.c ****     while((USB->ISTR & USB_ISTR_CTR) != 0){
+ 219:library/usb/usb.c ****         num = USB->ISTR & USB_ISTR_EP_ID;
+ 829              		.loc 1 219 0
+ 830 0062 144B     		ldr	r3, .L58
+ 831 0064 B3F84430 		ldrh	r3, [r3, #68]
+ 832              	.LVL38:
+ 220:library/usb/usb.c ****         if(num == 0){ /* Endpoint 0 */
+ 833              		.loc 1 220 0
+ 834 0068 13F00F0F 		tst	r3, #15
+ 835 006c 16D1     		bne	.L53
+ 221:library/usb/usb.c ****             if((USB->ISTR & USB_ISTR_DIR) != 0){
+ 836              		.loc 1 221 0
+ 837 006e 114B     		ldr	r3, .L58
+ 838              	.LVL39:
+ 839 0070 B3F84430 		ldrh	r3, [r3, #68]
+ 840 0074 03F01003 		and	r3, r3, #16
+ 841 0078 9BB2     		uxth	r3, r3
+ 842 007a 43B1     		cbz	r3, .L54
+ 222:library/usb/usb.c ****                 if(USB->EP0R & USB_EP_SETUP){ /* SETUP */
+ 843              		.loc 1 222 0
+ 844 007c 0D4B     		ldr	r3, .L58
+ 845 007e 1B88     		ldrh	r3, [r3]
+ 846 0080 03F40063 		and	r3, r3, #2048
+ 847 0084 9BB2     		uxth	r3, r3
+ 848 0086 4BB1     		cbz	r3, .L53
+ 223:library/usb/usb.c ****                     USBSetup();
+ 849              		.loc 1 223 0
+ 850 0088 FFF7FEFF 		bl	USBSetup
+ 851              	.LVL40:
+ARM GAS  /tmp/ccdboO4f.s 			page 46
+
+
+ 852 008c 06E0     		b	.L53
+ 853              	.L54:
+ 224:library/usb/usb.c ****                 }else{ /* OUT */
+ 225:library/usb/usb.c **** 
+ 226:library/usb/usb.c ****                 }
+ 227:library/usb/usb.c ****             }else{ /* IN */
+ 228:library/usb/usb.c ****                 USB->EP0R &= ~USB_EP_CTR_TX;
+ 854              		.loc 1 228 0
+ 855 008e 094A     		ldr	r2, .L58
+ 856 0090 1388     		ldrh	r3, [r2]
+ 857 0092 9BB2     		uxth	r3, r3
+ 858 0094 23F08003 		bic	r3, r3, #128
+ 859 0098 9BB2     		uxth	r3, r3
+ 860 009a 1380     		strh	r3, [r2]	@ movhi
+ 861              	.L53:
+ 218:library/usb/usb.c ****         num = USB->ISTR & USB_ISTR_EP_ID;
+ 862              		.loc 1 218 0
+ 863 009c 054B     		ldr	r3, .L58
+ 864 009e B3F84430 		ldrh	r3, [r3, #68]
+ 865 00a2 13F4004F 		tst	r3, #32768
+ 866 00a6 DCD1     		bne	.L56
+ 229:library/usb/usb.c ****             }
+ 230:library/usb/usb.c ****         }else{ /* num > 0 */
+ 231:library/usb/usb.c **** 
+ 232:library/usb/usb.c ****         }
+ 233:library/usb/usb.c ****     }
+ 234:library/usb/usb.c ****     USB->ISTR = 0x0;
+ 867              		.loc 1 234 0
+ 868 00a8 0022     		movs	r2, #0
+ 869 00aa 024B     		ldr	r3, .L58
+ 870 00ac A3F84420 		strh	r2, [r3, #68]	@ movhi
+ 871 00b0 08BD     		pop	{r3, pc}
+ 872              	.L59:
+ 873 00b2 00BF     		.align	2
+ 874              	.L58:
+ 875 00b4 005C0040 		.word	1073765376
+ 876              		.cfi_endproc
+ 877              	.LFE37:
+ 879              		.comm	bufferSetup,48,4
+ 880              		.comm	SetupPacket,8,4
+ 881              		.global	devAddress
+ 882              		.section	.bss.devAddress,"aw",%nobits
+ 883              		.set	.LANCHOR0,. + 0
+ 886              	devAddress:
+ 887 0000 00       		.space	1
+ 888              		.text
+ 889              	.Letext0:
+ 890              		.file 3 "library/usb/../cmsis/inc/stm32f103xb.h"
+ 891              		.file 4 "/usr/include/newlib/machine/_default_types.h"
+ 892              		.file 5 "/usr/include/newlib/sys/_stdint.h"
+ 893              		.file 6 "library/usb/usb.h"
+ARM GAS  /tmp/ccdboO4f.s 			page 47
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 usb.c
+     /tmp/ccdboO4f.s:20     .text.USBReset:0000000000000000 $t
+     /tmp/ccdboO4f.s:25     .text.USBReset:0000000000000000 USBReset
+     /tmp/ccdboO4f.s:111    .text.USBReset:0000000000000078 $d
+     /tmp/ccdboO4f.s:119    .text.USBZeroLengthPacket:0000000000000000 $t
+     /tmp/ccdboO4f.s:124    .text.USBZeroLengthPacket:0000000000000000 USBZeroLengthPacket
+     /tmp/ccdboO4f.s:152    .text.USBZeroLengthPacket:0000000000000020 $d
+     /tmp/ccdboO4f.s:158    .text.USBRequest:0000000000000000 $t
+     /tmp/ccdboO4f.s:163    .text.USBRequest:0000000000000000 USBRequest
+     /tmp/ccdboO4f.s:200    .text.USBReadPMA:0000000000000000 $t
+     /tmp/ccdboO4f.s:205    .text.USBReadPMA:0000000000000000 USBReadPMA
+     /tmp/ccdboO4f.s:250    .text.USBWritePMA:0000000000000000 $t
+     /tmp/ccdboO4f.s:255    .text.USBWritePMA:0000000000000000 USBWritePMA
+     /tmp/ccdboO4f.s:300    .text.USBSetup:0000000000000000 $t
+     /tmp/ccdboO4f.s:305    .text.USBSetup:0000000000000000 USBSetup
+     /tmp/ccdboO4f.s:642    .text.USBSetup:0000000000000230 $d
+                            *COM*:0000000000000030 bufferSetup
+                            *COM*:0000000000000008 SetupPacket
+     /tmp/ccdboO4f.s:660    .text.USBConfig:0000000000000000 $t
+     /tmp/ccdboO4f.s:665    .text.USBConfig:0000000000000000 USBConfig
+     /tmp/ccdboO4f.s:716    .text.USBConfig:0000000000000048 $d
+     /tmp/ccdboO4f.s:725    .text.USBSendData:0000000000000000 $t
+     /tmp/ccdboO4f.s:730    .text.USBSendData:0000000000000000 USBSendData
+     /tmp/ccdboO4f.s:764    .text.USBSendData:0000000000000020 $d
+     /tmp/ccdboO4f.s:770    .text.USB_LP_CAN1_RX0_IRQHandler:0000000000000000 $t
+     /tmp/ccdboO4f.s:775    .text.USB_LP_CAN1_RX0_IRQHandler:0000000000000000 USB_LP_CAN1_RX0_IRQHandler
+     /tmp/ccdboO4f.s:875    .text.USB_LP_CAN1_RX0_IRQHandler:00000000000000b4 $d
+     /tmp/ccdboO4f.s:886    .bss.devAddress:0000000000000000 devAddress
+     /tmp/ccdboO4f.s:887    .bss.devAddress:0000000000000000 $d
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+descDevice
+descDeviceQualifier
+descConfiguration
+descStringLangID
+descStringMFC
+descStringProduct
+descStringSerialNumber
+descStringConfig
+descStringInterface

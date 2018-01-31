@@ -27,17 +27,17 @@
 #define USB_ADDR2_RX    *(uint32_t *)(USB_PMAADDR + 0x28)  /* USB_PMAADDR + NUMEP * 16 + 8 */
 #define USB_COUNT2_RX   *(uint32_t *)(USB_PMAADDR + 0x2C)  /* USB_PMAADDR + NUMEP * 16 + 12 */
 
-#define  USB_REQ_GET_STATUS                             0x00
-#define  USB_REQ_CLEAR_FEATURE                          0x01
-#define  USB_REQ_SET_FEATURE                            0x03
-#define  USB_REQ_SET_ADDRESS                            0x05
-#define  USB_REQ_GET_DESCRIPTOR                         0x06
-#define  USB_REQ_SET_DESCRIPTOR                         0x07
-#define  USB_REQ_GET_CONFIGURATION                      0x08
-#define  USB_REQ_SET_CONFIGURATION                      0x09
-#define  USB_REQ_GET_INTERFACE                          0x0A
-#define  USB_REQ_SET_INTERFACE                          0x0B
-#define  USB_REQ_SYNCH_FRAME                            0x0C
+#define USB_REQ_GET_STATUS                             0x00
+#define USB_REQ_CLEAR_FEATURE                          0x01
+#define USB_REQ_SET_FEATURE                            0x03
+#define USB_REQ_SET_ADDRESS                            0x05
+#define USB_REQ_GET_DESCRIPTOR                         0x06
+#define USB_REQ_SET_DESCRIPTOR                         0x07
+#define USB_REQ_GET_CONFIGURATION                      0x08
+#define USB_REQ_SET_CONFIGURATION                      0x09
+#define USB_REQ_GET_INTERFACE                          0x0A
+#define USB_REQ_SET_INTERFACE                          0x0B
+#define USB_REQ_SYNCH_FRAME                            0x0C
 
 #define USB_VAL_DEVICE									0x01
 #define USB_VAL_DEVICE_QUALIFIER						0x06
@@ -71,28 +71,7 @@ typedef struct _USB_SETUP_PACKET {
   LOW_HIGH_BYTE    wLength;
 } USB_SETUP_PACKET;
 
-
-typedef struct {
-    uint32_t a,b,c,d, e,f,g,h, i,j,k,l, m,n,o,p;
-} uint32x16_t;
-
-typedef uint32_t uint32x32_t[32];
-
-// #define USBTABLE  ((usbtable_t*) 0x40006000)
-// #define USBSTAGE  ((usbstage_t*) 0x40006080)
-#define USBTXD0  ((uint32x16_t*) 0x40006100)
-#define USBRXD0  ((uint32x16_t*) 0x40006180)
-#define USBTXD1  ((uint32x32_t*) 0x40006200)
-#define USBRXD1  ((uint32x32_t*) 0x40006280)
-
-// #define EPTxADDR(epNum)  ((uint32_t *)(((uint16_t)epNum * 16)      + USB_PMAADDR))
-// #define EPTxCOUNT(epNum) ((uint32_t *)(((uint16_t)epNum * 16 + 4)  + USB_PMAADDR))
-// #define EPRxADDR(epNum)  ((uint32_t *)(((uint16_t)epNum * 16 + 8)  + USB_PMAADDR))
-// #define EPRxCOUNT(epNum) ((uint32_t *)(((uint16_t)epNum * 16 + 12) + USB_PMAADDR))
-// #define EPxREG(x)        (uint32_t *)(USB_BASE + 4 * x)
-
-#define EP0VALID *EPxREG(USB_EP0) |= USB_EP_TX_VALID;
-
 void USBConfig(void);
+void USBSendData(uint8_t *buff);
 
 #endif /* USB_H */

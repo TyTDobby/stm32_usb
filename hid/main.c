@@ -64,11 +64,11 @@ int main(void){
 	*(buffSend + 2) = 0x32;
 	*(buffSend + 3) = 0x33;
 	while(1) {
-		// USBSendData(buffSend);
-		// for (int i = 0; i < 0xfffff; ++i)
-		// {
-		// 	/* code */
-		// }
+		USBSendData(buffSend);
+		for (int i = 0; i < 0xfffff; ++i)
+		{
+			/* code */
+		}
 	}
 	return 0;
 

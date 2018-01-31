@@ -6,14 +6,9 @@
 #define LOBYTE(x)  ((uint8_t)(x & 0x00FF))
 #define HIBYTE(x)  ((uint8_t)((x & 0xFF00) >> 8))
 
-#define  USB_VID     					1155
-#define  USB_LANGID_STRING    			1033
-#define  USB_MANUFACTURER_STRING        "TEst"
-#define  USB_PID     				    22352
-#define  USB_PRODUCT_STRING_FS          "STM32 Custom HID"
-#define  USB_SERIALNUMBER_STRING_FS     "00000000001A"
-#define  USB_CONFIGURATION_STRING_FS    "Custom HID Config"
-#define  USB_INTERFACE_STRING_FS        "Custom HID Interface"
+#define  USB_VID     								   1155
+#define  USB_PID     				                   22352
+#define  USB_LANGID_STRING    						   1033
 
 #define  USB_MAX_EP0_SIZE                              0x40
 
@@ -48,13 +43,14 @@
 
 /* HID */
 
-#define USB_DESC_SIZE_HID_REPORT     		   	       0x02
+#define USB_DESC_SIZE_HID_REPORT     		   	       0x4f
 
 #define USB_HID_EPIN_ADDR                 		       0x01
-#define USB_HID_EPIN_SIZE                 		   	   0x02
+#define USB_HID_EPIN_SIZE                 		   	   0x08
 
 #define USB_HID_EPOUT_ADDR                		       0x02
-#define USB_HID_EPOUT_SIZE                		       0x02
+#define USB_HID_EPOUT_SIZE                		       0x08
+
 #define USB_HID_DESCRIPTOR_TYPE           		       0x21
 #define USB_DESC_HID_REPORT               		       0x22
 
