@@ -31,7 +31,8 @@ C_SOURCES +=  \
 main.c \
 library/cmsis/src/system_stm32f1xx.c \
 library/usb/usb.c\
-library/usb/usb_desc.c\
+
+#library/usb/usb_desc.c\
 
 # ASM исходники
 ASM_SOURCES =  \
