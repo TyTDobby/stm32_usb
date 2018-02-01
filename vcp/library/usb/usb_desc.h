@@ -22,7 +22,7 @@
 
 #define  USB_DESC_SIZE_DEVICE                		   0x12
 #define  USB_DESC_SIZE_DEVICE_QUALIFIER                0x0A
-#define  USB_DESC_SIZE_CONFIGURATION                   0x29
+#define  USB_DESC_SIZE_CONFIGURATION                   67
 
 
 #define  USB_STR_SIZE_LANGID                   		   0x04
@@ -41,20 +41,24 @@
 
 #define  USB_MAX_NUM_CONFIGURATION     				   0x01
 
-/* HID */
+/* VCP */
 
-#define USB_DESC_SIZE_HID_REPORT     		   	       0x4f
+#define USB_CLASS									   0x02
 
-#define USB_HID_EPIN_ADDR                 		       0x01
-#define USB_HID_EPIN_SIZE                 		   	   0x08
+// #define USB_VCP_DESC_SIZE		     		   	       67
 
-#define USB_HID_EPOUT_ADDR                		       0x02
-#define USB_HID_EPOUT_SIZE                		       0x08
+#define USB_VCP_EPIN_ADDR                 		       0x01
+#define USB_VCP_EPIN_SIZE                 		   	   0x08
 
-#define USB_HID_DESCRIPTOR_TYPE           		       0x21
-#define USB_DESC_HID_REPORT               		       0x22
+#define USB_VCP_EPOUT_ADDR                		       0x01
+#define USB_VCP_EPOUT_SIZE                		       0x08
 
+#define USB_VCP_DESCRIPTOR_TYPE           		       0x21
+#define USB_VCP_CMD_PACKET_SIZE                        8
+#define USB_VCP_DATA_HS_MAX_PACKET_SIZE                512
 
-
+#define CDC_IN_EP                                   0x81  /* EP1 for data IN */
+#define CDC_OUT_EP                                  0x01  /* EP1 for data OUT */
+#define CDC_CMD_EP                                  0x82  /* EP2 for CDC commands */
 
 #endif /* USB_DESC_H */

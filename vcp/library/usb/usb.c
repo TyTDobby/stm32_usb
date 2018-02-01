@@ -14,7 +14,7 @@ extern uint8_t descStringMFC[USB_STR_SIZE_MFC];
 extern uint8_t descStringSerialNumber[USB_STR_SIZE_SERIALNUMBER];
 extern uint8_t descStringConfig[USB_STR_SIZE_CONFIG];
 extern uint8_t descStringInterface[USB_STR_SIZE_INTERFACE];
-extern uint8_t descHIDReport[USB_DESC_SIZE_HID_REPORT];
+// extern uint8_t descHIDReport[USB_DESC_SIZE_HID_REPORT];
 
 uint8_t devAddress = 0;
 USB_SETUP_PACKET SetupPacket;
@@ -67,9 +67,9 @@ void USBReset(void){
     /* Endpoints 0; Type: CONTROL; RX: VALID; TX: NAK */
     USB->EP0R = USB_EP_CONTROL | USB_EP_RX_VALID | USB_EP_TX_NAK | USB_EP_AE_0;
     /* Endpoints 1; Type: BULK; RX: VALID; TX: NAK */
-    USB->EP1R = USB_EP_BULK | USB_EP_RX_VALID | USB_EP_TX_NAK | USB_HID_EPOUT_ADDR;
+    USB->EP1R = USB_EP_BULK | USB_EP_RX_VALID | USB_EP_TX_NAK | 0x01;
     /* Endpoints 2; Type: BULK; RX: NAK; TX: VALID */
-    USB->EP2R = USB_EP_BULK | USB_EP_RX_NAK | USB_EP_TX_VALID | USB_HID_EPIN_ADDR;
+    // USB->EP2R = USB_EP_BULK | USB_EP_RX_NAK | USB_EP_TX_VALID | USB_HID_EPIN_ADDR;
 
     USB->DADDR = USB_DADDR_EF;   /* Activation device */
 
@@ -201,11 +201,11 @@ void USBSetup(void){
 		}
 	}else if(SetupPacket.bmRequestType == 0x81){
         if(SetupPacket.bRequest == USB_REQ_GET_DESCRIPTOR){
-            if(SetupPacket.wValue.high == USB_DESC_HID_REPORT){
-                USBWritePMA((uint16_t *)descHIDReport, USB_EP0_TX, USB_DESC_SIZE_HID_REPORT);
-                USB_COUNT0_TX = USB_DESC_SIZE_HID_REPORT;
-                USB->EP0R = USB_EP_TX_VALID | USB_EP_CONTROL;
-                while(!(USB->EP0R & USB_EP_CTR_TX)){}
+            if(SetupPacket.wValue.high == USB_VCP_DESCRIPTOR_TYPE){
+                // USBWritePMA((uint16_t *)descHIDReport, USB_EP0_TX, USB_DESC_SIZE_HID_REPORT);
+                // USB_COUNT0_TX = USB_DESC_SIZE_HID_REPORT;
+                // USB->EP0R = USB_EP_TX_VALID | USB_EP_CONTROL;
+                // while(!(USB->EP0R & USB_EP_CTR_TX)){}
             }
         }
 	}

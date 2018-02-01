@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccPVOqSL.s 			page 1
+ARM GAS  /tmp/ccddVxxl.s 			page 1
 
 
    1              		.syntax unified
@@ -43,7 +43,7 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
   14:library/usb/usb.c **** extern uint8_t descStringSerialNumber[USB_STR_SIZE_SERIALNUMBER];
   15:library/usb/usb.c **** extern uint8_t descStringConfig[USB_STR_SIZE_CONFIG];
   16:library/usb/usb.c **** extern uint8_t descStringInterface[USB_STR_SIZE_INTERFACE];
-  17:library/usb/usb.c **** extern uint8_t descHIDReport[USB_DESC_SIZE_HID_REPORT];
+  17:library/usb/usb.c **** // extern uint8_t descHIDReport[USB_DESC_SIZE_HID_REPORT];
   18:library/usb/usb.c **** 
   19:library/usb/usb.c **** uint8_t devAddress = 0;
   20:library/usb/usb.c **** USB_SETUP_PACKET SetupPacket;
@@ -58,7 +58,7 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
   29:library/usb/usb.c **** void USBRequest(USB_SETUP_PACKET *req, uint8_t *pdata);
   30:library/usb/usb.c **** void USBReadPMA(uint16_t *buff, uint16_t offset, uint16_t numBytes);
   31:library/usb/usb.c **** void USBWritePMA(uint16_t *buff, uint16_t offset, uint16_t numBytes);
-ARM GAS  /tmp/ccPVOqSL.s 			page 2
+ARM GAS  /tmp/ccddVxxl.s 			page 2
 
 
   32:library/usb/usb.c **** void USBSetup(void);
@@ -85,7 +85,7 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
   44:library/usb/usb.c ****     
   45:library/usb/usb.c ****     USB->ISTR = 0x0;
   37              		.loc 1 45 0
-  38 0002 1D4B     		ldr	r3, .L3
+  38 0002 1C4B     		ldr	r3, .L3
   39 0004 0022     		movs	r2, #0
   40 0006 A3F84420 		strh	r2, [r3, #68]	@ movhi
   46:library/usb/usb.c **** 
@@ -102,7 +102,7 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
   52:library/usb/usb.c ****     USB_ADDR0_RX = USB_EP0_RX;
   46              		.loc 1 52 0
   47 0016 8022     		movs	r2, #128
-  48 0018 1849     		ldr	r1, .L3+4
+  48 0018 1749     		ldr	r1, .L3+4
   49 001a 0A60     		str	r2, [r1]
   53:library/usb/usb.c ****     USB_ADDR0_TX = USB_EP0_TX;
   50              		.loc 1 53 0
@@ -116,9 +116,9 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
   55:library/usb/usb.c ****     USB_COUNT0_RX = 0x8400;
   57              		.loc 1 55 0
   58 0026 4FF40441 		mov	r1, #33792
-  59 002a 154C     		ldr	r4, .L3+8
+  59 002a 144C     		ldr	r4, .L3+8
   60 002c 2160     		str	r1, [r4]
-ARM GAS  /tmp/ccPVOqSL.s 			page 3
+ARM GAS  /tmp/ccddVxxl.s 			page 3
 
 
   56:library/usb/usb.c **** 
@@ -153,7 +153,7 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
   81 0048 2060     		str	r0, [r4]
   65:library/usb/usb.c ****     USB_COUNT2_RX = 0x8400;
   82              		.loc 1 65 0
-  83 004a 0E48     		ldr	r0, .L3+12
+  83 004a 0D48     		ldr	r0, .L3+12
   84 004c 0160     		str	r1, [r0]
   66:library/usb/usb.c **** 
   67:library/usb/usb.c ****     /* Endpoints 0; Type: CONTROL; RX: VALID; TX: NAK */
@@ -162,103 +162,100 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
   86 004e 43F22021 		movw	r1, #12832
   87 0052 1980     		strh	r1, [r3]	@ movhi
   69:library/usb/usb.c ****     /* Endpoints 1; Type: BULK; RX: VALID; TX: NAK */
-  70:library/usb/usb.c ****     USB->EP1R = USB_EP_BULK | USB_EP_RX_VALID | USB_EP_TX_NAK | USB_HID_EPOUT_ADDR;
+  70:library/usb/usb.c ****     USB->EP1R = USB_EP_BULK | USB_EP_RX_VALID | USB_EP_TX_NAK | 0x01;
   88              		.loc 1 70 0
-  89 0054 43F22201 		movw	r1, #12322
+  89 0054 43F22101 		movw	r1, #12321
   90 0058 9980     		strh	r1, [r3, #4]	@ movhi
   71:library/usb/usb.c ****     /* Endpoints 2; Type: BULK; RX: NAK; TX: VALID */
-  72:library/usb/usb.c ****     USB->EP2R = USB_EP_BULK | USB_EP_RX_NAK | USB_EP_TX_VALID | USB_HID_EPIN_ADDR;
-  91              		.loc 1 72 0
-  92 005a 42F23101 		movw	r1, #8241
-  93 005e 1981     		strh	r1, [r3, #8]	@ movhi
+  72:library/usb/usb.c ****     // USB->EP2R = USB_EP_BULK | USB_EP_RX_NAK | USB_EP_TX_VALID | USB_HID_EPIN_ADDR;
   73:library/usb/usb.c **** 
   74:library/usb/usb.c ****     USB->DADDR = USB_DADDR_EF;   /* Activation device */
-  94              		.loc 1 74 0
-  95 0060 A3F84C20 		strh	r2, [r3, #76]	@ movhi
+  91              		.loc 1 74 0
+  92 005a A3F84C20 		strh	r2, [r3, #76]	@ movhi
   75:library/usb/usb.c **** 
   76:library/usb/usb.c ****     USB->ISTR &= ~USB_ISTR_RESET;
-  96              		.loc 1 76 0
-ARM GAS  /tmp/ccPVOqSL.s 			page 4
+  93              		.loc 1 76 0
+  94 005e B3F84420 		ldrh	r2, [r3, #68]
+  95 0062 92B2     		uxth	r2, r2
+  96 0064 22F48062 		bic	r2, r2, #1024
+ARM GAS  /tmp/ccddVxxl.s 			page 4
 
 
-  97 0064 B3F84420 		ldrh	r2, [r3, #68]
-  98 0068 92B2     		uxth	r2, r2
-  99 006a 22F48062 		bic	r2, r2, #1024
- 100 006e 92B2     		uxth	r2, r2
- 101 0070 A3F84420 		strh	r2, [r3, #68]	@ movhi
+  97 0068 92B2     		uxth	r2, r2
+  98 006a A3F84420 		strh	r2, [r3, #68]	@ movhi
   77:library/usb/usb.c **** }
- 102              		.loc 1 77 0
- 103 0074 10BC     		pop	{r4}
- 104              	.LCFI1:
- 105              		.cfi_restore 4
- 106              		.cfi_def_cfa_offset 0
- 107 0076 7047     		bx	lr
- 108              	.L4:
- 109              		.align	2
- 110              	.L3:
- 111 0078 005C0040 		.word	1073765376
- 112 007c 08600040 		.word	1073766408
- 113 0080 0C600040 		.word	1073766412
- 114 0084 2C600040 		.word	1073766444
- 115              		.cfi_endproc
- 116              	.LFE29:
- 118              		.section	.text.USBZeroLengthPacket,"ax",%progbits
- 119              		.align	2
- 120              		.global	USBZeroLengthPacket
- 121              		.thumb
- 122              		.thumb_func
- 124              	USBZeroLengthPacket:
- 125              	.LFB30:
+  99              		.loc 1 77 0
+ 100 006e 10BC     		pop	{r4}
+ 101              	.LCFI1:
+ 102              		.cfi_restore 4
+ 103              		.cfi_def_cfa_offset 0
+ 104 0070 7047     		bx	lr
+ 105              	.L4:
+ 106 0072 00BF     		.align	2
+ 107              	.L3:
+ 108 0074 005C0040 		.word	1073765376
+ 109 0078 08600040 		.word	1073766408
+ 110 007c 0C600040 		.word	1073766412
+ 111 0080 2C600040 		.word	1073766444
+ 112              		.cfi_endproc
+ 113              	.LFE29:
+ 115              		.section	.text.USBZeroLengthPacket,"ax",%progbits
+ 116              		.align	2
+ 117              		.global	USBZeroLengthPacket
+ 118              		.thumb
+ 119              		.thumb_func
+ 121              	USBZeroLengthPacket:
+ 122              	.LFB30:
   78:library/usb/usb.c **** /*
   79:library/usb/usb.c ****  * Name: USBZeroLengthPacket
   80:library/usb/usb.c ****  * Description: Send zero length packet to host
   81:library/usb/usb.c ****  * Parametrs: none
   82:library/usb/usb.c ****  */
   83:library/usb/usb.c **** void USBZeroLengthPacket(void){
- 126              		.loc 1 83 0
- 127              		.cfi_startproc
- 128              		@ args = 0, pretend = 0, frame = 0
- 129              		@ frame_needed = 0, uses_anonymous_args = 0
- 130              		@ link register save eliminated.
+ 123              		.loc 1 83 0
+ 124              		.cfi_startproc
+ 125              		@ args = 0, pretend = 0, frame = 0
+ 126              		@ frame_needed = 0, uses_anonymous_args = 0
+ 127              		@ link register save eliminated.
   84:library/usb/usb.c ****     USB_COUNT0_TX = 0x0;
- 131              		.loc 1 84 0
- 132 0000 0022     		movs	r2, #0
- 133 0002 074B     		ldr	r3, .L7
- 134 0004 1A60     		str	r2, [r3]
+ 128              		.loc 1 84 0
+ 129 0000 0022     		movs	r2, #0
+ 130 0002 074B     		ldr	r3, .L7
+ 131 0004 1A60     		str	r2, [r3]
   85:library/usb/usb.c ****     USB->EP0R = USB_EP_TX_VALID | USB_EP_CONTROL;
- 135              		.loc 1 85 0
- 136 0006 4FF40C72 		mov	r2, #560
- 137 000a A3F20443 		subw	r3, r3, #1028
- 138 000e 1A80     		strh	r2, [r3]	@ movhi
- 139              	.L6:
+ 132              		.loc 1 85 0
+ 133 0006 4FF40C72 		mov	r2, #560
+ 134 000a A3F20443 		subw	r3, r3, #1028
+ 135 000e 1A80     		strh	r2, [r3]	@ movhi
+ 136              	.L6:
   86:library/usb/usb.c ****     while(!(USB->EP0R & USB_EP_CTR_TX)){}  
- 140              		.loc 1 86 0 discriminator 1
- 141 0010 044B     		ldr	r3, .L7+4
- 142 0012 1B88     		ldrh	r3, [r3]
- 143 0014 03F08003 		and	r3, r3, #128
- 144 0018 9BB2     		uxth	r3, r3
- 145 001a 002B     		cmp	r3, #0
-ARM GAS  /tmp/ccPVOqSL.s 			page 5
-
-
- 146 001c F8D0     		beq	.L6
+ 137              		.loc 1 86 0 discriminator 1
+ 138 0010 044B     		ldr	r3, .L7+4
+ 139 0012 1B88     		ldrh	r3, [r3]
+ 140 0014 03F08003 		and	r3, r3, #128
+ 141 0018 9BB2     		uxth	r3, r3
+ 142 001a 002B     		cmp	r3, #0
+ 143 001c F8D0     		beq	.L6
   87:library/usb/usb.c **** }
- 147              		.loc 1 87 0
- 148 001e 7047     		bx	lr
- 149              	.L8:
- 150              		.align	2
- 151              	.L7:
- 152 0020 04600040 		.word	1073766404
- 153 0024 005C0040 		.word	1073765376
- 154              		.cfi_endproc
- 155              	.LFE30:
- 157              		.section	.text.USBRequest,"ax",%progbits
- 158              		.align	2
- 159              		.global	USBRequest
- 160              		.thumb
- 161              		.thumb_func
- 163              	USBRequest:
- 164              	.LFB31:
+ 144              		.loc 1 87 0
+ARM GAS  /tmp/ccddVxxl.s 			page 5
+
+
+ 145 001e 7047     		bx	lr
+ 146              	.L8:
+ 147              		.align	2
+ 148              	.L7:
+ 149 0020 04600040 		.word	1073766404
+ 150 0024 005C0040 		.word	1073765376
+ 151              		.cfi_endproc
+ 152              	.LFE30:
+ 154              		.section	.text.USBRequest,"ax",%progbits
+ 155              		.align	2
+ 156              		.global	USBRequest
+ 157              		.thumb
+ 158              		.thumb_func
+ 160              	USBRequest:
+ 161              	.LFB31:
   88:library/usb/usb.c **** /*
   89:library/usb/usb.c ****  * Name: USBRequest
   90:library/usb/usb.c ****  * Description: Send zero length packet to host
@@ -266,57 +263,57 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
   92:library/usb/usb.c ****  *            pdata - buffer SETUP packet
   93:library/usb/usb.c ****  */
   94:library/usb/usb.c **** void USBRequest(USB_SETUP_PACKET *req, uint8_t *pdata){
- 165              		.loc 1 94 0
- 166              		.cfi_startproc
- 167              		@ args = 0, pretend = 0, frame = 0
- 168              		@ frame_needed = 0, uses_anonymous_args = 0
- 169              		@ link register save eliminated.
- 170              	.LVL0:
+ 162              		.loc 1 94 0
+ 163              		.cfi_startproc
+ 164              		@ args = 0, pretend = 0, frame = 0
+ 165              		@ frame_needed = 0, uses_anonymous_args = 0
+ 166              		@ link register save eliminated.
+ 167              	.LVL0:
   95:library/usb/usb.c ****     req->bmRequestType     = *pdata;
- 171              		.loc 1 95 0
- 172 0000 0B78     		ldrb	r3, [r1]	@ zero_extendqisi2
- 173 0002 0370     		strb	r3, [r0]
+ 168              		.loc 1 95 0
+ 169 0000 0B78     		ldrb	r3, [r1]	@ zero_extendqisi2
+ 170 0002 0370     		strb	r3, [r0]
   96:library/usb/usb.c ****     req->bRequest          = *(pdata + 1);
- 174              		.loc 1 96 0
- 175 0004 4B78     		ldrb	r3, [r1, #1]	@ zero_extendqisi2
- 176 0006 4370     		strb	r3, [r0, #1]
+ 171              		.loc 1 96 0
+ 172 0004 4B78     		ldrb	r3, [r1, #1]	@ zero_extendqisi2
+ 173 0006 4370     		strb	r3, [r0, #1]
   97:library/usb/usb.c ****     req->wValue.low        = *(pdata + 2);
- 177              		.loc 1 97 0
- 178 0008 8B78     		ldrb	r3, [r1, #2]	@ zero_extendqisi2
- 179 000a C370     		strb	r3, [r0, #3]
+ 174              		.loc 1 97 0
+ 175 0008 8B78     		ldrb	r3, [r1, #2]	@ zero_extendqisi2
+ 176 000a C370     		strb	r3, [r0, #3]
   98:library/usb/usb.c ****     req->wValue.high       = *(pdata + 3);
- 180              		.loc 1 98 0
- 181 000c CB78     		ldrb	r3, [r1, #3]	@ zero_extendqisi2
- 182 000e 8370     		strb	r3, [r0, #2]
+ 177              		.loc 1 98 0
+ 178 000c CB78     		ldrb	r3, [r1, #3]	@ zero_extendqisi2
+ 179 000e 8370     		strb	r3, [r0, #2]
   99:library/usb/usb.c ****     req->wIndex.low        = *(pdata + 4);
- 183              		.loc 1 99 0
- 184 0010 0B79     		ldrb	r3, [r1, #4]	@ zero_extendqisi2
- 185 0012 4371     		strb	r3, [r0, #5]
+ 180              		.loc 1 99 0
+ 181 0010 0B79     		ldrb	r3, [r1, #4]	@ zero_extendqisi2
+ 182 0012 4371     		strb	r3, [r0, #5]
  100:library/usb/usb.c ****     req->wIndex.high       = *(pdata + 5);
- 186              		.loc 1 100 0
- 187 0014 4B79     		ldrb	r3, [r1, #5]	@ zero_extendqisi2
- 188 0016 0371     		strb	r3, [r0, #4]
+ 183              		.loc 1 100 0
+ 184 0014 4B79     		ldrb	r3, [r1, #5]	@ zero_extendqisi2
+ 185 0016 0371     		strb	r3, [r0, #4]
  101:library/usb/usb.c ****     req->wLength.low       = *(pdata + 6);
- 189              		.loc 1 101 0
-ARM GAS  /tmp/ccPVOqSL.s 			page 6
-
-
- 190 0018 8B79     		ldrb	r3, [r1, #6]	@ zero_extendqisi2
- 191 001a C371     		strb	r3, [r0, #7]
+ 186              		.loc 1 101 0
+ 187 0018 8B79     		ldrb	r3, [r1, #6]	@ zero_extendqisi2
+ 188 001a C371     		strb	r3, [r0, #7]
  102:library/usb/usb.c ****     req->wLength.high      = *(pdata + 7);
- 192              		.loc 1 102 0
- 193 001c CB79     		ldrb	r3, [r1, #7]	@ zero_extendqisi2
- 194 001e 8371     		strb	r3, [r0, #6]
- 195 0020 7047     		bx	lr
- 196              		.cfi_endproc
- 197              	.LFE31:
- 199 0022 00BF     		.section	.text.USBReadPMA,"ax",%progbits
- 200              		.align	2
- 201              		.global	USBReadPMA
- 202              		.thumb
- 203              		.thumb_func
- 205              	USBReadPMA:
- 206              	.LFB32:
+ARM GAS  /tmp/ccddVxxl.s 			page 6
+
+
+ 189              		.loc 1 102 0
+ 190 001c CB79     		ldrb	r3, [r1, #7]	@ zero_extendqisi2
+ 191 001e 8371     		strb	r3, [r0, #6]
+ 192 0020 7047     		bx	lr
+ 193              		.cfi_endproc
+ 194              	.LFE31:
+ 196 0022 00BF     		.section	.text.USBReadPMA,"ax",%progbits
+ 197              		.align	2
+ 198              		.global	USBReadPMA
+ 199              		.thumb
+ 200              		.thumb_func
+ 202              	USBReadPMA:
+ 203              	.LFB32:
  103:library/usb/usb.c **** }
  104:library/usb/usb.c **** /*
  105:library/usb/usb.c ****  * Name: USBReadPMA
@@ -326,64 +323,64 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
  109:library/usb/usb.c ****  *            numBytes - number bytes for read
  110:library/usb/usb.c ****  */
  111:library/usb/usb.c **** void USBReadPMA(uint16_t *buff, uint16_t offset, uint16_t numBytes){
- 207              		.loc 1 111 0
- 208              		.cfi_startproc
- 209              		@ args = 0, pretend = 0, frame = 0
- 210              		@ frame_needed = 0, uses_anonymous_args = 0
- 211              		@ link register save eliminated.
- 212              	.LVL1:
+ 204              		.loc 1 111 0
+ 205              		.cfi_startproc
+ 206              		@ args = 0, pretend = 0, frame = 0
+ 207              		@ frame_needed = 0, uses_anonymous_args = 0
+ 208              		@ link register save eliminated.
+ 209              	.LVL1:
  112:library/usb/usb.c ****     uint32_t nBytes = (numBytes + 1) >> 1;
- 213              		.loc 1 112 0
- 214 0000 0132     		adds	r2, r2, #1
- 215              	.LVL2:
- 216 0002 5210     		asrs	r2, r2, #1
- 217              	.LVL3:
+ 210              		.loc 1 112 0
+ 211 0000 0132     		adds	r2, r2, #1
+ 212              	.LVL2:
+ 213 0002 5210     		asrs	r2, r2, #1
+ 214              	.LVL3:
  113:library/usb/usb.c ****     uint32_t *addrRx = (uint32_t *)(offset * 2 + USB_PMAADDR);
- 218              		.loc 1 113 0
- 219 0004 4900     		lsls	r1, r1, #1
- 220              	.LVL4:
- 221 0006 01F18041 		add	r1, r1, #1073741824
- 222 000a 01F5C041 		add	r1, r1, #24576
- 223              	.LVL5:
+ 215              		.loc 1 113 0
+ 216 0004 4900     		lsls	r1, r1, #1
+ 217              	.LVL4:
+ 218 0006 01F18041 		add	r1, r1, #1073741824
+ 219 000a 01F5C041 		add	r1, r1, #24576
+ 220              	.LVL5:
  114:library/usb/usb.c ****     while(nBytes--)
- 224              		.loc 1 114 0
- 225 000e 04E0     		b	.L11
- 226              	.LVL6:
- 227              	.L12:
+ 221              		.loc 1 114 0
+ 222 000e 04E0     		b	.L11
+ 223              	.LVL6:
+ 224              	.L12:
  115:library/usb/usb.c ****         *buff++ = *addrRx++;
- 228              		.loc 1 115 0
- 229 0010 0A68     		ldr	r2, [r1]
- 230 0012 0280     		strh	r2, [r0]	@ movhi
+ 225              		.loc 1 115 0
+ 226 0010 0A68     		ldr	r2, [r1]
+ 227 0012 0280     		strh	r2, [r0]	@ movhi
  114:library/usb/usb.c ****     while(nBytes--)
- 231              		.loc 1 114 0
- 232 0014 1A46     		mov	r2, r3
- 233              		.loc 1 115 0
-ARM GAS  /tmp/ccPVOqSL.s 			page 7
+ 228              		.loc 1 114 0
+ 229 0014 1A46     		mov	r2, r3
+ 230              		.loc 1 115 0
+ 231 0016 0431     		adds	r1, r1, #4
+ 232              	.LVL7:
+ 233 0018 0230     		adds	r0, r0, #2
+ARM GAS  /tmp/ccddVxxl.s 			page 7
 
 
- 234 0016 0431     		adds	r1, r1, #4
- 235              	.LVL7:
- 236 0018 0230     		adds	r0, r0, #2
- 237              	.LVL8:
- 238              	.L11:
+ 234              	.LVL8:
+ 235              	.L11:
  114:library/usb/usb.c ****     while(nBytes--)
- 239              		.loc 1 114 0
- 240 001a 531E     		subs	r3, r2, #1
- 241              	.LVL9:
- 242 001c 002A     		cmp	r2, #0
- 243 001e F7D1     		bne	.L12
+ 236              		.loc 1 114 0
+ 237 001a 531E     		subs	r3, r2, #1
+ 238              	.LVL9:
+ 239 001c 002A     		cmp	r2, #0
+ 240 001e F7D1     		bne	.L12
  116:library/usb/usb.c **** }
- 244              		.loc 1 116 0
- 245 0020 7047     		bx	lr
- 246              		.cfi_endproc
- 247              	.LFE32:
- 249 0022 00BF     		.section	.text.USBWritePMA,"ax",%progbits
- 250              		.align	2
- 251              		.global	USBWritePMA
- 252              		.thumb
- 253              		.thumb_func
- 255              	USBWritePMA:
- 256              	.LFB33:
+ 241              		.loc 1 116 0
+ 242 0020 7047     		bx	lr
+ 243              		.cfi_endproc
+ 244              	.LFE32:
+ 246 0022 00BF     		.section	.text.USBWritePMA,"ax",%progbits
+ 247              		.align	2
+ 248              		.global	USBWritePMA
+ 249              		.thumb
+ 250              		.thumb_func
+ 252              	USBWritePMA:
+ 253              	.LFB33:
  117:library/usb/usb.c **** /*
  118:library/usb/usb.c ****  * Name: USBWritePMA
  119:library/usb/usb.c ****  * Description: Write data in PMA
@@ -392,575 +389,534 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
  122:library/usb/usb.c ****  *            numBytes - number bytes for write
  123:library/usb/usb.c ****  */
  124:library/usb/usb.c **** void USBWritePMA(uint16_t *buff, uint16_t offset, uint16_t numBytes){
- 257              		.loc 1 124 0
- 258              		.cfi_startproc
- 259              		@ args = 0, pretend = 0, frame = 0
- 260              		@ frame_needed = 0, uses_anonymous_args = 0
- 261              		@ link register save eliminated.
- 262              	.LVL10:
+ 254              		.loc 1 124 0
+ 255              		.cfi_startproc
+ 256              		@ args = 0, pretend = 0, frame = 0
+ 257              		@ frame_needed = 0, uses_anonymous_args = 0
+ 258              		@ link register save eliminated.
+ 259              	.LVL10:
  125:library/usb/usb.c ****     uint32_t nBytes = (numBytes + 1) >> 1;
- 263              		.loc 1 125 0
- 264 0000 0132     		adds	r2, r2, #1
- 265              	.LVL11:
- 266 0002 5210     		asrs	r2, r2, #1
- 267              	.LVL12:
+ 260              		.loc 1 125 0
+ 261 0000 0132     		adds	r2, r2, #1
+ 262              	.LVL11:
+ 263 0002 5210     		asrs	r2, r2, #1
+ 264              	.LVL12:
  126:library/usb/usb.c ****     uint32_t *addrTx = (uint32_t *)(offset * 2 + USB_PMAADDR);
- 268              		.loc 1 126 0
- 269 0004 4900     		lsls	r1, r1, #1
- 270              	.LVL13:
- 271 0006 01F18041 		add	r1, r1, #1073741824
- 272 000a 01F5C041 		add	r1, r1, #24576
- 273              	.LVL14:
+ 265              		.loc 1 126 0
+ 266 0004 4900     		lsls	r1, r1, #1
+ 267              	.LVL13:
+ 268 0006 01F18041 		add	r1, r1, #1073741824
+ 269 000a 01F5C041 		add	r1, r1, #24576
+ 270              	.LVL14:
  127:library/usb/usb.c ****     while(nBytes--)
- 274              		.loc 1 127 0
- 275 000e 04E0     		b	.L14
- 276              	.LVL15:
- 277              	.L15:
+ 271              		.loc 1 127 0
+ 272 000e 04E0     		b	.L14
+ 273              	.LVL15:
+ 274              	.L15:
  128:library/usb/usb.c ****         *addrTx++ = *buff++;
- 278              		.loc 1 128 0
-ARM GAS  /tmp/ccPVOqSL.s 			page 8
+ 275              		.loc 1 128 0
+ 276 0010 0288     		ldrh	r2, [r0]
+ 277 0012 0A60     		str	r2, [r1]
+ 127:library/usb/usb.c ****     while(nBytes--)
+ARM GAS  /tmp/ccddVxxl.s 			page 8
 
 
- 279 0010 0288     		ldrh	r2, [r0]
- 280 0012 0A60     		str	r2, [r1]
+ 278              		.loc 1 127 0
+ 279 0014 1A46     		mov	r2, r3
+ 280              		.loc 1 128 0
+ 281 0016 0431     		adds	r1, r1, #4
+ 282              	.LVL16:
+ 283 0018 0230     		adds	r0, r0, #2
+ 284              	.LVL17:
+ 285              	.L14:
  127:library/usb/usb.c ****     while(nBytes--)
- 281              		.loc 1 127 0
- 282 0014 1A46     		mov	r2, r3
- 283              		.loc 1 128 0
- 284 0016 0431     		adds	r1, r1, #4
- 285              	.LVL16:
- 286 0018 0230     		adds	r0, r0, #2
- 287              	.LVL17:
- 288              	.L14:
- 127:library/usb/usb.c ****     while(nBytes--)
- 289              		.loc 1 127 0
- 290 001a 531E     		subs	r3, r2, #1
- 291              	.LVL18:
- 292 001c 002A     		cmp	r2, #0
- 293 001e F7D1     		bne	.L15
+ 286              		.loc 1 127 0
+ 287 001a 531E     		subs	r3, r2, #1
+ 288              	.LVL18:
+ 289 001c 002A     		cmp	r2, #0
+ 290 001e F7D1     		bne	.L15
  129:library/usb/usb.c **** }
- 294              		.loc 1 129 0
- 295 0020 7047     		bx	lr
- 296              		.cfi_endproc
- 297              	.LFE33:
- 299 0022 00BF     		.section	.text.USBSetup,"ax",%progbits
- 300              		.align	2
- 301              		.global	USBSetup
- 302              		.thumb
- 303              		.thumb_func
- 305              	USBSetup:
- 306              	.LFB34:
+ 291              		.loc 1 129 0
+ 292 0020 7047     		bx	lr
+ 293              		.cfi_endproc
+ 294              	.LFE33:
+ 296 0022 00BF     		.section	.text.USBSetup,"ax",%progbits
+ 297              		.align	2
+ 298              		.global	USBSetup
+ 299              		.thumb
+ 300              		.thumb_func
+ 302              	USBSetup:
+ 303              	.LFB34:
  130:library/usb/usb.c **** /*
  131:library/usb/usb.c ****  * Name: USBSetup
  132:library/usb/usb.c ****  * Description: Hanbler SETUP packet
  133:library/usb/usb.c ****  * Parametrs: none
  134:library/usb/usb.c ****  */
  135:library/usb/usb.c **** void USBSetup(void){
- 307              		.loc 1 135 0
- 308              		.cfi_startproc
- 309              		@ args = 0, pretend = 0, frame = 0
- 310              		@ frame_needed = 0, uses_anonymous_args = 0
- 311 0000 38B5     		push	{r3, r4, r5, lr}
- 312              	.LCFI2:
- 313              		.cfi_def_cfa_offset 16
- 314              		.cfi_offset 3, -16
- 315              		.cfi_offset 4, -12
- 316              		.cfi_offset 5, -8
- 317              		.cfi_offset 14, -4
+ 304              		.loc 1 135 0
+ 305              		.cfi_startproc
+ 306              		@ args = 0, pretend = 0, frame = 0
+ 307              		@ frame_needed = 0, uses_anonymous_args = 0
+ 308 0000 38B5     		push	{r3, r4, r5, lr}
+ 309              	.LCFI2:
+ 310              		.cfi_def_cfa_offset 16
+ 311              		.cfi_offset 3, -16
+ 312              		.cfi_offset 4, -12
+ 313              		.cfi_offset 5, -8
+ 314              		.cfi_offset 14, -4
  136:library/usb/usb.c ****     USB->ISTR &= ~USB_ISTR_CTR;
- 318              		.loc 1 136 0
- 319 0002 9B4B     		ldr	r3, .L40
- 320 0004 B3F84420 		ldrh	r2, [r3, #68]
- 321 0008 C2F30E02 		ubfx	r2, r2, #0, #15
- 322 000c A3F84420 		strh	r2, [r3, #68]	@ movhi
+ 315              		.loc 1 136 0
+ 316 0002 8B4B     		ldr	r3, .L38
+ 317 0004 B3F84420 		ldrh	r2, [r3, #68]
+ 318 0008 C2F30E02 		ubfx	r2, r2, #0, #15
+ 319 000c A3F84420 		strh	r2, [r3, #68]	@ movhi
  137:library/usb/usb.c ****     USB->EP0R &= ~USB_EP_CTR_RX;
- 323              		.loc 1 137 0
- 324 0010 1A88     		ldrh	r2, [r3]
- 325 0012 C2F30E02 		ubfx	r2, r2, #0, #15
- 326 0016 1A80     		strh	r2, [r3]	@ movhi
-ARM GAS  /tmp/ccPVOqSL.s 			page 9
-
-
+ 320              		.loc 1 137 0
+ 321 0010 1A88     		ldrh	r2, [r3]
+ 322 0012 C2F30E02 		ubfx	r2, r2, #0, #15
+ 323 0016 1A80     		strh	r2, [r3]	@ movhi
  138:library/usb/usb.c ****     USB->EP0R |= USB_EP_DTOG_TX;
- 327              		.loc 1 138 0
- 328 0018 1A88     		ldrh	r2, [r3]
- 329 001a 92B2     		uxth	r2, r2
- 330 001c 42F04002 		orr	r2, r2, #64
- 331 0020 1A80     		strh	r2, [r3]	@ movhi
+ 324              		.loc 1 138 0
+ 325 0018 1A88     		ldrh	r2, [r3]
+ARM GAS  /tmp/ccddVxxl.s 			page 9
+
+
+ 326 001a 92B2     		uxth	r2, r2
+ 327 001c 42F04002 		orr	r2, r2, #64
+ 328 0020 1A80     		strh	r2, [r3]	@ movhi
  139:library/usb/usb.c ****     USBReadPMA((uint16_t *)bufferSetup, USB_EP0_RX, 8);
- 332              		.loc 1 139 0
- 333 0022 944D     		ldr	r5, .L40+4
- 334 0024 0822     		movs	r2, #8
- 335 0026 8021     		movs	r1, #128
- 336 0028 2846     		mov	r0, r5
- 337 002a FFF7FEFF 		bl	USBReadPMA
- 338              	.LVL19:
+ 329              		.loc 1 139 0
+ 330 0022 844D     		ldr	r5, .L38+4
+ 331 0024 0822     		movs	r2, #8
+ 332 0026 8021     		movs	r1, #128
+ 333 0028 2846     		mov	r0, r5
+ 334 002a FFF7FEFF 		bl	USBReadPMA
+ 335              	.LVL19:
  140:library/usb/usb.c ****     USBRequest(&SetupPacket, (uint8_t *)bufferSetup);
- 339              		.loc 1 140 0
- 340 002e 924C     		ldr	r4, .L40+8
- 341 0030 2946     		mov	r1, r5
- 342 0032 2046     		mov	r0, r4
- 343 0034 FFF7FEFF 		bl	USBRequest
- 344              	.LVL20:
+ 336              		.loc 1 140 0
+ 337 002e 824C     		ldr	r4, .L38+8
+ 338 0030 2946     		mov	r1, r5
+ 339 0032 2046     		mov	r0, r4
+ 340 0034 FFF7FEFF 		bl	USBRequest
+ 341              	.LVL20:
  141:library/usb/usb.c ****     if(SetupPacket.bmRequestType == 0x00){
- 345              		.loc 1 141 0
- 346 0038 2378     		ldrb	r3, [r4]	@ zero_extendqisi2
- 347 003a A3B9     		cbnz	r3, .L17
+ 342              		.loc 1 141 0
+ 343 0038 2378     		ldrb	r3, [r4]	@ zero_extendqisi2
+ 344 003a A3B9     		cbnz	r3, .L17
  142:library/usb/usb.c ****     	if(SetupPacket.bRequest == USB_REQ_SET_ADDRESS){
- 348              		.loc 1 142 0
- 349 003c 6378     		ldrb	r3, [r4, #1]	@ zero_extendqisi2
- 350 003e 052B     		cmp	r3, #5
- 351 0040 0BD1     		bne	.L18
+ 345              		.loc 1 142 0
+ 346 003c 6378     		ldrb	r3, [r4, #1]	@ zero_extendqisi2
+ 347 003e 052B     		cmp	r3, #5
+ 348 0040 0BD1     		bne	.L18
  143:library/usb/usb.c ****           	devAddress = SetupPacket.wValue.low;
- 352              		.loc 1 143 0
- 353 0042 E378     		ldrb	r3, [r4, #3]	@ zero_extendqisi2
- 354 0044 8D4C     		ldr	r4, .L40+12
- 355 0046 2370     		strb	r3, [r4]
+ 349              		.loc 1 143 0
+ 350 0042 E378     		ldrb	r3, [r4, #3]	@ zero_extendqisi2
+ 351 0044 7D4C     		ldr	r4, .L38+12
+ 352 0046 2370     		strb	r3, [r4]
  144:library/usb/usb.c ****            	USBZeroLengthPacket();
- 356              		.loc 1 144 0
- 357 0048 FFF7FEFF 		bl	USBZeroLengthPacket
- 358              	.LVL21:
+ 353              		.loc 1 144 0
+ 354 0048 FFF7FEFF 		bl	USBZeroLengthPacket
+ 355              	.LVL21:
  145:library/usb/usb.c ****            	USB->DADDR = devAddress | USB_DADDR_EF;
- 359              		.loc 1 145 0
- 360 004c 2378     		ldrb	r3, [r4]	@ zero_extendqisi2
- 361 004e 43F08003 		orr	r3, r3, #128
- 362 0052 874A     		ldr	r2, .L40
- 363 0054 A2F84C30 		strh	r3, [r2, #76]	@ movhi
- 364 0058 04E1     		b	.L19
- 365              	.L18:
+ 356              		.loc 1 145 0
+ 357 004c 2378     		ldrb	r3, [r4]	@ zero_extendqisi2
+ 358 004e 43F08003 		orr	r3, r3, #128
+ 359 0052 774A     		ldr	r2, .L38
+ 360 0054 A2F84C30 		strh	r3, [r2, #76]	@ movhi
+ 361 0058 E5E0     		b	.L19
+ 362              	.L18:
  146:library/usb/usb.c ****     	}else if(SetupPacket.bRequest == USB_REQ_SET_CONFIGURATION){
- 366              		.loc 1 146 0
- 367 005a 092B     		cmp	r3, #9
- 368 005c 40F00281 		bne	.L19
+ 363              		.loc 1 146 0
+ 364 005a 092B     		cmp	r3, #9
+ 365 005c 40F0E380 		bne	.L19
  147:library/usb/usb.c ****     		USBZeroLengthPacket();
- 369              		.loc 1 147 0
- 370 0060 FFF7FEFF 		bl	USBZeroLengthPacket
- 371              	.LVL22:
- 372 0064 FEE0     		b	.L19
- 373              	.L17:
-ARM GAS  /tmp/ccPVOqSL.s 			page 10
-
-
+ 366              		.loc 1 147 0
+ 367 0060 FFF7FEFF 		bl	USBZeroLengthPacket
+ 368              	.LVL22:
+ 369 0064 DFE0     		b	.L19
+ 370              	.L17:
  148:library/usb/usb.c ****     	}
  149:library/usb/usb.c ****     }else if(SetupPacket.bmRequestType == 0x21){
- 374              		.loc 1 149 0
- 375 0066 212B     		cmp	r3, #33
- 376 0068 00F0FC80 		beq	.L19
+ 371              		.loc 1 149 0
+ARM GAS  /tmp/ccddVxxl.s 			page 10
+
+
+ 372 0066 212B     		cmp	r3, #33
+ 373 0068 00F0DD80 		beq	.L19
  150:library/usb/usb.c **** 
  151:library/usb/usb.c ****     }else if(SetupPacket.bmRequestType == 0x80){
- 377              		.loc 1 151 0
- 378 006c 802B     		cmp	r3, #128
- 379 006e 40F0DB80 		bne	.L20
+ 374              		.loc 1 151 0
+ 375 006c 802B     		cmp	r3, #128
+ 376 006e 40F0DA80 		bne	.L19
  152:library/usb/usb.c ****     	if(SetupPacket.bRequest == USB_REQ_GET_DESCRIPTOR){
- 380              		.loc 1 152 0
- 381 0072 814B     		ldr	r3, .L40+8
- 382 0074 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
- 383 0076 062B     		cmp	r3, #6
- 384 0078 40F0F480 		bne	.L19
+ 377              		.loc 1 152 0
+ 378 0072 714B     		ldr	r3, .L38+8
+ 379 0074 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 380 0076 062B     		cmp	r3, #6
+ 381 0078 40F0D580 		bne	.L19
  153:library/usb/usb.c ****     		if(SetupPacket.wValue.high == USB_DESC_TYPE_DEVICE){
- 385              		.loc 1 153 0
- 386 007c 7E4B     		ldr	r3, .L40+8
- 387 007e 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
- 388 0080 012B     		cmp	r3, #1
- 389 0082 14D1     		bne	.L21
+ 382              		.loc 1 153 0
+ 383 007c 6E4B     		ldr	r3, .L38+8
+ 384 007e 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 385 0080 012B     		cmp	r3, #1
+ 386 0082 14D1     		bne	.L20
  154:library/usb/usb.c ****     			USBWritePMA((uint16_t *)descDevice, USB_EP0_TX, USB_DESC_SIZE_DEVICE);
- 390              		.loc 1 154 0
- 391 0084 1222     		movs	r2, #18
- 392 0086 8021     		movs	r1, #128
- 393 0088 7D48     		ldr	r0, .L40+16
- 394 008a FFF7FEFF 		bl	USBWritePMA
- 395              	.LVL23:
+ 387              		.loc 1 154 0
+ 388 0084 1222     		movs	r2, #18
+ 389 0086 8021     		movs	r1, #128
+ 390 0088 6D48     		ldr	r0, .L38+16
+ 391 008a FFF7FEFF 		bl	USBWritePMA
+ 392              	.LVL23:
  155:library/usb/usb.c ****     			USB_COUNT0_TX = USB_DESC_SIZE_DEVICE;
- 396              		.loc 1 155 0
- 397 008e 1222     		movs	r2, #18
- 398 0090 7C4B     		ldr	r3, .L40+20
- 399 0092 1A60     		str	r2, [r3]
+ 393              		.loc 1 155 0
+ 394 008e 1222     		movs	r2, #18
+ 395 0090 6C4B     		ldr	r3, .L38+20
+ 396 0092 1A60     		str	r2, [r3]
  156:library/usb/usb.c ****     			USB->EP0R = USB_EP_TX_VALID | USB_EP_CONTROL;
- 400              		.loc 1 156 0
- 401 0094 4FF40C72 		mov	r2, #560
- 402 0098 A3F20443 		subw	r3, r3, #1028
- 403 009c 1A80     		strh	r2, [r3]	@ movhi
- 404              	.L22:
+ 397              		.loc 1 156 0
+ 398 0094 4FF40C72 		mov	r2, #560
+ 399 0098 A3F20443 		subw	r3, r3, #1028
+ 400 009c 1A80     		strh	r2, [r3]	@ movhi
+ 401              	.L21:
  157:library/usb/usb.c ****     			while(!(USB->EP0R & USB_EP_CTR_TX)){} 
- 405              		.loc 1 157 0 discriminator 1
- 406 009e 744B     		ldr	r3, .L40
- 407 00a0 1B88     		ldrh	r3, [r3]
- 408 00a2 03F08003 		and	r3, r3, #128
- 409 00a6 9BB2     		uxth	r3, r3
- 410 00a8 002B     		cmp	r3, #0
- 411 00aa F8D0     		beq	.L22
- 412 00ac DAE0     		b	.L19
- 413              	.L21:
+ 402              		.loc 1 157 0 discriminator 1
+ 403 009e 644B     		ldr	r3, .L38
+ 404 00a0 1B88     		ldrh	r3, [r3]
+ 405 00a2 03F08003 		and	r3, r3, #128
+ 406 00a6 9BB2     		uxth	r3, r3
+ 407 00a8 002B     		cmp	r3, #0
+ 408 00aa F8D0     		beq	.L21
+ 409 00ac BBE0     		b	.L19
+ 410              	.L20:
  158:library/usb/usb.c ****     		}else if(SetupPacket.wValue.high == USB_DESC_TYPE_DEVICE_QUALIFIER){
- 414              		.loc 1 158 0
- 415 00ae 062B     		cmp	r3, #6
- 416 00b0 14D1     		bne	.L23
+ 411              		.loc 1 158 0
+ 412 00ae 062B     		cmp	r3, #6
+ 413 00b0 14D1     		bne	.L22
  159:library/usb/usb.c ****     			USBWritePMA((uint16_t *)descDeviceQualifier, USB_EP0_TX, USB_DESC_SIZE_DEVICE_QUALIFIER);
- 417              		.loc 1 159 0
- 418 00b2 0A22     		movs	r2, #10
-ARM GAS  /tmp/ccPVOqSL.s 			page 11
+ 414              		.loc 1 159 0
+ 415 00b2 0A22     		movs	r2, #10
+ 416 00b4 8021     		movs	r1, #128
+ 417 00b6 6448     		ldr	r0, .L38+24
+ 418 00b8 FFF7FEFF 		bl	USBWritePMA
+ARM GAS  /tmp/ccddVxxl.s 			page 11
 
 
- 419 00b4 8021     		movs	r1, #128
- 420 00b6 7448     		ldr	r0, .L40+24
- 421 00b8 FFF7FEFF 		bl	USBWritePMA
- 422              	.LVL24:
+ 419              	.LVL24:
  160:library/usb/usb.c ****     			USB_COUNT0_TX = USB_DESC_SIZE_DEVICE_QUALIFIER;
- 423              		.loc 1 160 0
- 424 00bc 0A22     		movs	r2, #10
- 425 00be 714B     		ldr	r3, .L40+20
- 426 00c0 1A60     		str	r2, [r3]
+ 420              		.loc 1 160 0
+ 421 00bc 0A22     		movs	r2, #10
+ 422 00be 614B     		ldr	r3, .L38+20
+ 423 00c0 1A60     		str	r2, [r3]
  161:library/usb/usb.c ****     			USB->EP0R = USB_EP_TX_VALID | USB_EP_CONTROL;
- 427              		.loc 1 161 0
- 428 00c2 4FF40C72 		mov	r2, #560
- 429 00c6 A3F20443 		subw	r3, r3, #1028
- 430 00ca 1A80     		strh	r2, [r3]	@ movhi
- 431              	.L24:
+ 424              		.loc 1 161 0
+ 425 00c2 4FF40C72 		mov	r2, #560
+ 426 00c6 A3F20443 		subw	r3, r3, #1028
+ 427 00ca 1A80     		strh	r2, [r3]	@ movhi
+ 428              	.L23:
  162:library/usb/usb.c ****     			while(!(USB->EP0R & USB_EP_CTR_TX)){} 
- 432              		.loc 1 162 0 discriminator 1
- 433 00cc 684B     		ldr	r3, .L40
- 434 00ce 1B88     		ldrh	r3, [r3]
- 435 00d0 03F08003 		and	r3, r3, #128
- 436 00d4 9BB2     		uxth	r3, r3
- 437 00d6 002B     		cmp	r3, #0
- 438 00d8 F8D0     		beq	.L24
- 439 00da C3E0     		b	.L19
- 440              	.L23:
+ 429              		.loc 1 162 0 discriminator 1
+ 430 00cc 584B     		ldr	r3, .L38
+ 431 00ce 1B88     		ldrh	r3, [r3]
+ 432 00d0 03F08003 		and	r3, r3, #128
+ 433 00d4 9BB2     		uxth	r3, r3
+ 434 00d6 002B     		cmp	r3, #0
+ 435 00d8 F8D0     		beq	.L23
+ 436 00da A4E0     		b	.L19
+ 437              	.L22:
  163:library/usb/usb.c ****     		}else if(SetupPacket.wValue.high == USB_DESC_TYPE_CONFIGURATION){
- 441              		.loc 1 163 0
- 442 00dc 022B     		cmp	r3, #2
- 443 00de 15D1     		bne	.L25
+ 438              		.loc 1 163 0
+ 439 00dc 022B     		cmp	r3, #2
+ 440 00de 15D1     		bne	.L24
  164:library/usb/usb.c ****     			USBWritePMA((uint16_t *)descConfiguration, USB_EP0_TX, SetupPacket.wLength.low);
- 444              		.loc 1 164 0
- 445 00e0 654C     		ldr	r4, .L40+8
- 446 00e2 E279     		ldrb	r2, [r4, #7]	@ zero_extendqisi2
- 447 00e4 8021     		movs	r1, #128
- 448 00e6 6948     		ldr	r0, .L40+28
- 449 00e8 FFF7FEFF 		bl	USBWritePMA
- 450              	.LVL25:
+ 441              		.loc 1 164 0
+ 442 00e0 554C     		ldr	r4, .L38+8
+ 443 00e2 E279     		ldrb	r2, [r4, #7]	@ zero_extendqisi2
+ 444 00e4 8021     		movs	r1, #128
+ 445 00e6 5948     		ldr	r0, .L38+28
+ 446 00e8 FFF7FEFF 		bl	USBWritePMA
+ 447              	.LVL25:
  165:library/usb/usb.c ****     			USB_COUNT0_TX = SetupPacket.wLength.low;
- 451              		.loc 1 165 0
- 452 00ec E279     		ldrb	r2, [r4, #7]	@ zero_extendqisi2
- 453 00ee 654B     		ldr	r3, .L40+20
- 454 00f0 1A60     		str	r2, [r3]
+ 448              		.loc 1 165 0
+ 449 00ec E279     		ldrb	r2, [r4, #7]	@ zero_extendqisi2
+ 450 00ee 554B     		ldr	r3, .L38+20
+ 451 00f0 1A60     		str	r2, [r3]
  166:library/usb/usb.c ****     			USB->EP0R = USB_EP_TX_VALID | USB_EP_CONTROL;
- 455              		.loc 1 166 0
- 456 00f2 4FF40C72 		mov	r2, #560
- 457 00f6 A3F20443 		subw	r3, r3, #1028
- 458 00fa 1A80     		strh	r2, [r3]	@ movhi
- 459              	.L26:
+ 452              		.loc 1 166 0
+ 453 00f2 4FF40C72 		mov	r2, #560
+ 454 00f6 A3F20443 		subw	r3, r3, #1028
+ 455 00fa 1A80     		strh	r2, [r3]	@ movhi
+ 456              	.L25:
  167:library/usb/usb.c ****     			while(!(USB->EP0R & USB_EP_CTR_TX)){} 
- 460              		.loc 1 167 0 discriminator 1
- 461 00fc 5C4B     		ldr	r3, .L40
- 462 00fe 1B88     		ldrh	r3, [r3]
- 463 0100 03F08003 		and	r3, r3, #128
- 464 0104 9BB2     		uxth	r3, r3
- 465 0106 002B     		cmp	r3, #0
- 466 0108 F8D0     		beq	.L26
- 467 010a ABE0     		b	.L19
-ARM GAS  /tmp/ccPVOqSL.s 			page 12
-
-
- 468              	.L25:
+ 457              		.loc 1 167 0 discriminator 1
+ 458 00fc 4C4B     		ldr	r3, .L38
+ 459 00fe 1B88     		ldrh	r3, [r3]
+ 460 0100 03F08003 		and	r3, r3, #128
+ 461 0104 9BB2     		uxth	r3, r3
+ 462 0106 002B     		cmp	r3, #0
+ 463 0108 F8D0     		beq	.L25
+ 464 010a 8CE0     		b	.L19
+ 465              	.L24:
  168:library/usb/usb.c ****     		}else if(SetupPacket.wValue.high == USB_DESC_TYPE_STRING){
- 469              		.loc 1 168 0
- 470 010c 032B     		cmp	r3, #3
- 471 010e 40F0A980 		bne	.L19
+ 466              		.loc 1 168 0
+ARM GAS  /tmp/ccddVxxl.s 			page 12
+
+
+ 467 010c 032B     		cmp	r3, #3
+ 468 010e 40F08A80 		bne	.L19
  169:library/usb/usb.c ****     			if(SetupPacket.wValue.low == USB_IDX_LANGID_STR){
- 472              		.loc 1 169 0
- 473 0112 594B     		ldr	r3, .L40+8
- 474 0114 DB78     		ldrb	r3, [r3, #3]	@ zero_extendqisi2
- 475 0116 A3B9     		cbnz	r3, .L27
+ 469              		.loc 1 169 0
+ 470 0112 494B     		ldr	r3, .L38+8
+ 471 0114 DB78     		ldrb	r3, [r3, #3]	@ zero_extendqisi2
+ 472 0116 A3B9     		cbnz	r3, .L26
  170:library/usb/usb.c ****     				USBWritePMA((uint16_t *)descStringLangID, USB_EP0_TX, USB_STR_SIZE_LANGID);
- 476              		.loc 1 170 0
- 477 0118 0422     		movs	r2, #4
- 478 011a 8021     		movs	r1, #128
- 479 011c 5C48     		ldr	r0, .L40+32
- 480 011e FFF7FEFF 		bl	USBWritePMA
- 481              	.LVL26:
+ 473              		.loc 1 170 0
+ 474 0118 0422     		movs	r2, #4
+ 475 011a 8021     		movs	r1, #128
+ 476 011c 4C48     		ldr	r0, .L38+32
+ 477 011e FFF7FEFF 		bl	USBWritePMA
+ 478              	.LVL26:
  171:library/usb/usb.c ****     				USB_COUNT0_TX = USB_STR_SIZE_LANGID;
- 482              		.loc 1 171 0
- 483 0122 0422     		movs	r2, #4
- 484 0124 574B     		ldr	r3, .L40+20
- 485 0126 1A60     		str	r2, [r3]
+ 479              		.loc 1 171 0
+ 480 0122 0422     		movs	r2, #4
+ 481 0124 474B     		ldr	r3, .L38+20
+ 482 0126 1A60     		str	r2, [r3]
  172:library/usb/usb.c ****     				USB->EP0R = USB_EP_TX_VALID | USB_EP_CONTROL;
- 486              		.loc 1 172 0
- 487 0128 4FF40C72 		mov	r2, #560
- 488 012c A3F20443 		subw	r3, r3, #1028
- 489 0130 1A80     		strh	r2, [r3]	@ movhi
- 490              	.L28:
+ 483              		.loc 1 172 0
+ 484 0128 4FF40C72 		mov	r2, #560
+ 485 012c A3F20443 		subw	r3, r3, #1028
+ 486 0130 1A80     		strh	r2, [r3]	@ movhi
+ 487              	.L27:
  173:library/usb/usb.c ****     				while(!(USB->EP0R & USB_EP_CTR_TX)){}
- 491              		.loc 1 173 0 discriminator 1
- 492 0132 4F4B     		ldr	r3, .L40
- 493 0134 1B88     		ldrh	r3, [r3]
- 494 0136 03F08003 		and	r3, r3, #128
- 495 013a 9BB2     		uxth	r3, r3
- 496 013c 002B     		cmp	r3, #0
- 497 013e F8D0     		beq	.L28
- 498 0140 90E0     		b	.L19
- 499              	.L27:
+ 488              		.loc 1 173 0 discriminator 1
+ 489 0132 3F4B     		ldr	r3, .L38
+ 490 0134 1B88     		ldrh	r3, [r3]
+ 491 0136 03F08003 		and	r3, r3, #128
+ 492 013a 9BB2     		uxth	r3, r3
+ 493 013c 002B     		cmp	r3, #0
+ 494 013e F8D0     		beq	.L27
+ 495 0140 71E0     		b	.L19
+ 496              	.L26:
  174:library/usb/usb.c ****     			}else if(SetupPacket.wValue.low == USB_IDX_MFC_STR){
- 500              		.loc 1 174 0
- 501 0142 012B     		cmp	r3, #1
- 502 0144 14D1     		bne	.L29
+ 497              		.loc 1 174 0
+ 498 0142 012B     		cmp	r3, #1
+ 499 0144 14D1     		bne	.L28
  175:library/usb/usb.c ****     				USBWritePMA((uint16_t *)descStringMFC, USB_EP0_TX, USB_STR_SIZE_MFC);
- 503              		.loc 1 175 0
- 504 0146 0E22     		movs	r2, #14
- 505 0148 8021     		movs	r1, #128
- 506 014a 5248     		ldr	r0, .L40+36
- 507 014c FFF7FEFF 		bl	USBWritePMA
- 508              	.LVL27:
+ 500              		.loc 1 175 0
+ 501 0146 0E22     		movs	r2, #14
+ 502 0148 8021     		movs	r1, #128
+ 503 014a 4248     		ldr	r0, .L38+36
+ 504 014c FFF7FEFF 		bl	USBWritePMA
+ 505              	.LVL27:
  176:library/usb/usb.c ****     				USB_COUNT0_TX = USB_STR_SIZE_MFC;
- 509              		.loc 1 176 0
- 510 0150 0E22     		movs	r2, #14
- 511 0152 4C4B     		ldr	r3, .L40+20
- 512 0154 1A60     		str	r2, [r3]
+ 506              		.loc 1 176 0
+ 507 0150 0E22     		movs	r2, #14
+ 508 0152 3C4B     		ldr	r3, .L38+20
+ 509 0154 1A60     		str	r2, [r3]
  177:library/usb/usb.c ****     				USB->EP0R = USB_EP_TX_VALID | USB_EP_CONTROL;
- 513              		.loc 1 177 0
- 514 0156 4FF40C72 		mov	r2, #560
-ARM GAS  /tmp/ccPVOqSL.s 			page 13
+ 510              		.loc 1 177 0
+ 511 0156 4FF40C72 		mov	r2, #560
+ 512 015a A3F20443 		subw	r3, r3, #1028
+ 513 015e 1A80     		strh	r2, [r3]	@ movhi
+ 514              	.L29:
+ARM GAS  /tmp/ccddVxxl.s 			page 13
 
 
- 515 015a A3F20443 		subw	r3, r3, #1028
- 516 015e 1A80     		strh	r2, [r3]	@ movhi
- 517              	.L30:
  178:library/usb/usb.c ****     				while(!(USB->EP0R & USB_EP_CTR_TX)){}
- 518              		.loc 1 178 0 discriminator 1
- 519 0160 434B     		ldr	r3, .L40
- 520 0162 1B88     		ldrh	r3, [r3]
- 521 0164 03F08003 		and	r3, r3, #128
- 522 0168 9BB2     		uxth	r3, r3
- 523 016a 002B     		cmp	r3, #0
- 524 016c F8D0     		beq	.L30
- 525 016e 79E0     		b	.L19
- 526              	.L29:
+ 515              		.loc 1 178 0 discriminator 1
+ 516 0160 334B     		ldr	r3, .L38
+ 517 0162 1B88     		ldrh	r3, [r3]
+ 518 0164 03F08003 		and	r3, r3, #128
+ 519 0168 9BB2     		uxth	r3, r3
+ 520 016a 002B     		cmp	r3, #0
+ 521 016c F8D0     		beq	.L29
+ 522 016e 5AE0     		b	.L19
+ 523              	.L28:
  179:library/usb/usb.c ****     			}else if(SetupPacket.wValue.low == USB_IDX_PRODUCT_STR){
- 527              		.loc 1 179 0
- 528 0170 022B     		cmp	r3, #2
- 529 0172 14D1     		bne	.L31
+ 524              		.loc 1 179 0
+ 525 0170 022B     		cmp	r3, #2
+ 526 0172 14D1     		bne	.L30
  180:library/usb/usb.c ****     				USBWritePMA((uint16_t *)descStringProduct, USB_EP0_TX, USB_STR_SIZE_PRODUCT);
- 530              		.loc 1 180 0
- 531 0174 1222     		movs	r2, #18
- 532 0176 8021     		movs	r1, #128
- 533 0178 4748     		ldr	r0, .L40+40
- 534 017a FFF7FEFF 		bl	USBWritePMA
- 535              	.LVL28:
+ 527              		.loc 1 180 0
+ 528 0174 1222     		movs	r2, #18
+ 529 0176 8021     		movs	r1, #128
+ 530 0178 3748     		ldr	r0, .L38+40
+ 531 017a FFF7FEFF 		bl	USBWritePMA
+ 532              	.LVL28:
  181:library/usb/usb.c ****     				USB_COUNT0_TX = USB_STR_SIZE_PRODUCT;
- 536              		.loc 1 181 0
- 537 017e 1222     		movs	r2, #18
- 538 0180 404B     		ldr	r3, .L40+20
- 539 0182 1A60     		str	r2, [r3]
+ 533              		.loc 1 181 0
+ 534 017e 1222     		movs	r2, #18
+ 535 0180 304B     		ldr	r3, .L38+20
+ 536 0182 1A60     		str	r2, [r3]
  182:library/usb/usb.c ****     				USB->EP0R = USB_EP_TX_VALID | USB_EP_CONTROL;
- 540              		.loc 1 182 0
- 541 0184 4FF40C72 		mov	r2, #560
- 542 0188 A3F20443 		subw	r3, r3, #1028
- 543 018c 1A80     		strh	r2, [r3]	@ movhi
- 544              	.L32:
+ 537              		.loc 1 182 0
+ 538 0184 4FF40C72 		mov	r2, #560
+ 539 0188 A3F20443 		subw	r3, r3, #1028
+ 540 018c 1A80     		strh	r2, [r3]	@ movhi
+ 541              	.L31:
  183:library/usb/usb.c ****     				while(!(USB->EP0R & USB_EP_CTR_TX)){}
- 545              		.loc 1 183 0 discriminator 1
- 546 018e 384B     		ldr	r3, .L40
- 547 0190 1B88     		ldrh	r3, [r3]
- 548 0192 03F08003 		and	r3, r3, #128
- 549 0196 9BB2     		uxth	r3, r3
- 550 0198 002B     		cmp	r3, #0
- 551 019a F8D0     		beq	.L32
- 552 019c 62E0     		b	.L19
- 553              	.L31:
+ 542              		.loc 1 183 0 discriminator 1
+ 543 018e 284B     		ldr	r3, .L38
+ 544 0190 1B88     		ldrh	r3, [r3]
+ 545 0192 03F08003 		and	r3, r3, #128
+ 546 0196 9BB2     		uxth	r3, r3
+ 547 0198 002B     		cmp	r3, #0
+ 548 019a F8D0     		beq	.L31
+ 549 019c 43E0     		b	.L19
+ 550              	.L30:
  184:library/usb/usb.c ****     			}else if(SetupPacket.wValue.low == USB_IDX_SERIAL_STR){
- 554              		.loc 1 184 0
- 555 019e 032B     		cmp	r3, #3
- 556 01a0 14D1     		bne	.L33
+ 551              		.loc 1 184 0
+ 552 019e 032B     		cmp	r3, #3
+ 553 01a0 14D1     		bne	.L32
  185:library/usb/usb.c ****     				USBWritePMA((uint16_t *)descStringSerialNumber, USB_EP0_TX, USB_STR_SIZE_SERIALNUMBER);
- 557              		.loc 1 185 0
- 558 01a2 0E22     		movs	r2, #14
- 559 01a4 8021     		movs	r1, #128
- 560 01a6 3D48     		ldr	r0, .L40+44
- 561 01a8 FFF7FEFF 		bl	USBWritePMA
- 562              	.LVL29:
+ 554              		.loc 1 185 0
+ 555 01a2 0E22     		movs	r2, #14
+ 556 01a4 8021     		movs	r1, #128
+ 557 01a6 2D48     		ldr	r0, .L38+44
+ 558 01a8 FFF7FEFF 		bl	USBWritePMA
+ 559              	.LVL29:
  186:library/usb/usb.c ****     				USB_COUNT0_TX = USB_STR_SIZE_SERIALNUMBER;
-ARM GAS  /tmp/ccPVOqSL.s 			page 14
+ 560              		.loc 1 186 0
+ 561 01ac 0E22     		movs	r2, #14
+ 562 01ae 254B     		ldr	r3, .L38+20
+ARM GAS  /tmp/ccddVxxl.s 			page 14
 
 
- 563              		.loc 1 186 0
- 564 01ac 0E22     		movs	r2, #14
- 565 01ae 354B     		ldr	r3, .L40+20
- 566 01b0 1A60     		str	r2, [r3]
+ 563 01b0 1A60     		str	r2, [r3]
  187:library/usb/usb.c ****     				USB->EP0R = USB_EP_TX_VALID | USB_EP_CONTROL;
- 567              		.loc 1 187 0
- 568 01b2 4FF40C72 		mov	r2, #560
- 569 01b6 A3F20443 		subw	r3, r3, #1028
- 570 01ba 1A80     		strh	r2, [r3]	@ movhi
- 571              	.L34:
+ 564              		.loc 1 187 0
+ 565 01b2 4FF40C72 		mov	r2, #560
+ 566 01b6 A3F20443 		subw	r3, r3, #1028
+ 567 01ba 1A80     		strh	r2, [r3]	@ movhi
+ 568              	.L33:
  188:library/usb/usb.c ****     				while(!(USB->EP0R & USB_EP_CTR_TX)){}
- 572              		.loc 1 188 0 discriminator 1
- 573 01bc 2C4B     		ldr	r3, .L40
- 574 01be 1B88     		ldrh	r3, [r3]
- 575 01c0 03F08003 		and	r3, r3, #128
- 576 01c4 9BB2     		uxth	r3, r3
- 577 01c6 002B     		cmp	r3, #0
- 578 01c8 F8D0     		beq	.L34
- 579 01ca 4BE0     		b	.L19
- 580              	.L33:
+ 569              		.loc 1 188 0 discriminator 1
+ 570 01bc 1C4B     		ldr	r3, .L38
+ 571 01be 1B88     		ldrh	r3, [r3]
+ 572 01c0 03F08003 		and	r3, r3, #128
+ 573 01c4 9BB2     		uxth	r3, r3
+ 574 01c6 002B     		cmp	r3, #0
+ 575 01c8 F8D0     		beq	.L33
+ 576 01ca 2CE0     		b	.L19
+ 577              	.L32:
  189:library/usb/usb.c ****     			}else if(SetupPacket.wValue.low == USB_IDX_CONFIG_STR){
- 581              		.loc 1 189 0
- 582 01cc 042B     		cmp	r3, #4
- 583 01ce 14D1     		bne	.L35
+ 578              		.loc 1 189 0
+ 579 01cc 042B     		cmp	r3, #4
+ 580 01ce 14D1     		bne	.L34
  190:library/usb/usb.c ****     				USBWritePMA((uint16_t *)descStringConfig, USB_EP0_TX, USB_STR_SIZE_CONFIG);
- 584              		.loc 1 190 0
- 585 01d0 1322     		movs	r2, #19
- 586 01d2 8021     		movs	r1, #128
- 587 01d4 3248     		ldr	r0, .L40+48
- 588 01d6 FFF7FEFF 		bl	USBWritePMA
- 589              	.LVL30:
+ 581              		.loc 1 190 0
+ 582 01d0 1322     		movs	r2, #19
+ 583 01d2 8021     		movs	r1, #128
+ 584 01d4 2248     		ldr	r0, .L38+48
+ 585 01d6 FFF7FEFF 		bl	USBWritePMA
+ 586              	.LVL30:
  191:library/usb/usb.c ****     				USB_COUNT0_TX = USB_STR_SIZE_CONFIG;
- 590              		.loc 1 191 0
- 591 01da 1322     		movs	r2, #19
- 592 01dc 294B     		ldr	r3, .L40+20
- 593 01de 1A60     		str	r2, [r3]
+ 587              		.loc 1 191 0
+ 588 01da 1322     		movs	r2, #19
+ 589 01dc 194B     		ldr	r3, .L38+20
+ 590 01de 1A60     		str	r2, [r3]
  192:library/usb/usb.c ****     				USB->EP0R = USB_EP_TX_VALID | USB_EP_CONTROL;
- 594              		.loc 1 192 0
- 595 01e0 4FF40C72 		mov	r2, #560
- 596 01e4 A3F20443 		subw	r3, r3, #1028
- 597 01e8 1A80     		strh	r2, [r3]	@ movhi
- 598              	.L36:
+ 591              		.loc 1 192 0
+ 592 01e0 4FF40C72 		mov	r2, #560
+ 593 01e4 A3F20443 		subw	r3, r3, #1028
+ 594 01e8 1A80     		strh	r2, [r3]	@ movhi
+ 595              	.L35:
  193:library/usb/usb.c ****     				while(!(USB->EP0R & USB_EP_CTR_TX)){}
- 599              		.loc 1 193 0 discriminator 1
- 600 01ea 214B     		ldr	r3, .L40
- 601 01ec 1B88     		ldrh	r3, [r3]
- 602 01ee 03F08003 		and	r3, r3, #128
- 603 01f2 9BB2     		uxth	r3, r3
- 604 01f4 002B     		cmp	r3, #0
- 605 01f6 F8D0     		beq	.L36
- 606 01f8 34E0     		b	.L19
- 607              	.L35:
+ 596              		.loc 1 193 0 discriminator 1
+ 597 01ea 114B     		ldr	r3, .L38
+ 598 01ec 1B88     		ldrh	r3, [r3]
+ 599 01ee 03F08003 		and	r3, r3, #128
+ 600 01f2 9BB2     		uxth	r3, r3
+ 601 01f4 002B     		cmp	r3, #0
+ 602 01f6 F8D0     		beq	.L35
+ 603 01f8 15E0     		b	.L19
+ 604              	.L34:
  194:library/usb/usb.c ****     			}else if(SetupPacket.wValue.low == USB_IDX_INTERFACE_STR){
- 608              		.loc 1 194 0
- 609 01fa 052B     		cmp	r3, #5
- 610 01fc 32D1     		bne	.L19
+ 605              		.loc 1 194 0
+ 606 01fa 052B     		cmp	r3, #5
+ 607 01fc 13D1     		bne	.L19
  195:library/usb/usb.c ****     				USBWritePMA((uint16_t *)descStringInterface, USB_EP0_TX, USB_STR_SIZE_INTERFACE);
-ARM GAS  /tmp/ccPVOqSL.s 			page 15
+ 608              		.loc 1 195 0
+ 609 01fe 1622     		movs	r2, #22
+ 610 0200 8021     		movs	r1, #128
+ARM GAS  /tmp/ccddVxxl.s 			page 15
 
 
- 611              		.loc 1 195 0
- 612 01fe 1622     		movs	r2, #22
- 613 0200 8021     		movs	r1, #128
- 614 0202 2848     		ldr	r0, .L40+52
- 615 0204 FFF7FEFF 		bl	USBWritePMA
- 616              	.LVL31:
+ 611 0202 1848     		ldr	r0, .L38+52
+ 612 0204 FFF7FEFF 		bl	USBWritePMA
+ 613              	.LVL31:
  196:library/usb/usb.c ****     				USB_COUNT0_TX = USB_STR_SIZE_INTERFACE;
- 617              		.loc 1 196 0
- 618 0208 1622     		movs	r2, #22
- 619 020a 1E4B     		ldr	r3, .L40+20
- 620 020c 1A60     		str	r2, [r3]
+ 614              		.loc 1 196 0
+ 615 0208 1622     		movs	r2, #22
+ 616 020a 0E4B     		ldr	r3, .L38+20
+ 617 020c 1A60     		str	r2, [r3]
  197:library/usb/usb.c ****     				USB->EP0R = USB_EP_TX_VALID | USB_EP_CONTROL;
- 621              		.loc 1 197 0
- 622 020e 4FF40C72 		mov	r2, #560
- 623 0212 A3F20443 		subw	r3, r3, #1028
- 624 0216 1A80     		strh	r2, [r3]	@ movhi
- 625              	.L37:
+ 618              		.loc 1 197 0
+ 619 020e 4FF40C72 		mov	r2, #560
+ 620 0212 A3F20443 		subw	r3, r3, #1028
+ 621 0216 1A80     		strh	r2, [r3]	@ movhi
+ 622              	.L36:
  198:library/usb/usb.c ****     				while(!(USB->EP0R & USB_EP_CTR_TX)){}
- 626              		.loc 1 198 0 discriminator 1
- 627 0218 154B     		ldr	r3, .L40
- 628 021a 1B88     		ldrh	r3, [r3]
- 629 021c 03F08003 		and	r3, r3, #128
- 630 0220 9BB2     		uxth	r3, r3
- 631 0222 002B     		cmp	r3, #0
- 632 0224 F8D0     		beq	.L37
- 633 0226 1DE0     		b	.L19
- 634              	.L20:
+ 623              		.loc 1 198 0 discriminator 1
+ 624 0218 054B     		ldr	r3, .L38
+ 625 021a 1B88     		ldrh	r3, [r3]
+ 626 021c 03F08003 		and	r3, r3, #128
+ 627 0220 9BB2     		uxth	r3, r3
+ 628 0222 002B     		cmp	r3, #0
+ 629 0224 F8D0     		beq	.L36
+ 630              	.L19:
  199:library/usb/usb.c ****     			}
  200:library/usb/usb.c ****     		}
  201:library/usb/usb.c **** 		}
  202:library/usb/usb.c **** 	}else if(SetupPacket.bmRequestType == 0x81){
- 635              		.loc 1 202 0
- 636 0228 812B     		cmp	r3, #129
- 637 022a 1BD1     		bne	.L19
- 203:library/usb/usb.c ****         if(SetupPacket.bRequest == USB_REQ_GET_DESCRIPTOR){
- 638              		.loc 1 203 0
- 639 022c 124B     		ldr	r3, .L40+8
- 640 022e 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
- 641 0230 062B     		cmp	r3, #6
- 642 0232 17D1     		bne	.L19
- 204:library/usb/usb.c ****             if(SetupPacket.wValue.high == USB_DESC_HID_REPORT){
- 643              		.loc 1 204 0
- 644 0234 104B     		ldr	r3, .L40+8
- 645 0236 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
- 646 0238 222B     		cmp	r3, #34
- 647 023a 13D1     		bne	.L19
- 205:library/usb/usb.c ****                 USBWritePMA((uint16_t *)descHIDReport, USB_EP0_TX, USB_DESC_SIZE_HID_REPORT);
- 648              		.loc 1 205 0
- 649 023c 4F22     		movs	r2, #79
- 650 023e 8021     		movs	r1, #128
- 651 0240 1948     		ldr	r0, .L40+56
- 652 0242 FFF7FEFF 		bl	USBWritePMA
- 653              	.LVL32:
- 206:library/usb/usb.c ****                 USB_COUNT0_TX = USB_DESC_SIZE_HID_REPORT;
- 654              		.loc 1 206 0
- 655 0246 4F22     		movs	r2, #79
- 656 0248 0E4B     		ldr	r3, .L40+20
-ARM GAS  /tmp/ccPVOqSL.s 			page 16
-
-
- 657 024a 1A60     		str	r2, [r3]
- 207:library/usb/usb.c ****                 USB->EP0R = USB_EP_TX_VALID | USB_EP_CONTROL;
- 658              		.loc 1 207 0
- 659 024c 4FF40C72 		mov	r2, #560
- 660 0250 A3F20443 		subw	r3, r3, #1028
- 661 0254 1A80     		strh	r2, [r3]	@ movhi
- 662              	.L38:
- 208:library/usb/usb.c ****                 while(!(USB->EP0R & USB_EP_CTR_TX)){}
- 663              		.loc 1 208 0 discriminator 1
- 664 0256 064B     		ldr	r3, .L40
- 665 0258 1B88     		ldrh	r3, [r3]
- 666 025a 03F08003 		and	r3, r3, #128
- 667 025e 9BB2     		uxth	r3, r3
- 668 0260 002B     		cmp	r3, #0
- 669 0262 F8D0     		beq	.L38
- 670              	.L19:
- 209:library/usb/usb.c ****             }
- 210:library/usb/usb.c ****         }
+ 203:library/usb/usb.c ****         // if(SetupPacket.bRequest == USB_REQ_GET_DESCRIPTOR){
+ 204:library/usb/usb.c ****         //     if(SetupPacket.wValue.high == USB_DESC_HID_REPORT){
+ 205:library/usb/usb.c ****         //         USBWritePMA((uint16_t *)descHIDReport, USB_EP0_TX, USB_DESC_SIZE_HID_REPORT);
+ 206:library/usb/usb.c ****         //         USB_COUNT0_TX = USB_DESC_SIZE_HID_REPORT;
+ 207:library/usb/usb.c ****         //         USB->EP0R = USB_EP_TX_VALID | USB_EP_CONTROL;
+ 208:library/usb/usb.c ****         //         while(!(USB->EP0R & USB_EP_CTR_TX)){}
+ 209:library/usb/usb.c ****         //     }
+ 210:library/usb/usb.c ****         // }
  211:library/usb/usb.c **** 	}
  212:library/usb/usb.c **** 	USB->EP0R = USB_EP_CONTROL | USB_EP_RX_VALID;
- 671              		.loc 1 212 0
- 672 0264 4FF44852 		mov	r2, #12800
- 673 0268 014B     		ldr	r3, .L40
- 674 026a 1A80     		strh	r2, [r3]	@ movhi
- 675 026c 38BD     		pop	{r3, r4, r5, pc}
- 676              	.L41:
- 677 026e 00BF     		.align	2
- 678              	.L40:
- 679 0270 005C0040 		.word	1073765376
- 680 0274 00000000 		.word	bufferSetup
- 681 0278 00000000 		.word	SetupPacket
- 682 027c 00000000 		.word	.LANCHOR0
- 683 0280 00000000 		.word	descDevice
- 684 0284 04600040 		.word	1073766404
- 685 0288 00000000 		.word	descDeviceQualifier
- 686 028c 00000000 		.word	descConfiguration
- 687 0290 00000000 		.word	descStringLangID
- 688 0294 00000000 		.word	descStringMFC
- 689 0298 00000000 		.word	descStringProduct
- 690 029c 00000000 		.word	descStringSerialNumber
- 691 02a0 00000000 		.word	descStringConfig
- 692 02a4 00000000 		.word	descStringInterface
- 693 02a8 00000000 		.word	descHIDReport
- 694              		.cfi_endproc
- 695              	.LFE34:
- 697              		.section	.text.USBConfig,"ax",%progbits
- 698              		.align	2
- 699              		.global	USBConfig
- 700              		.thumb
- 701              		.thumb_func
- 703              	USBConfig:
- 704              	.LFB35:
+ 631              		.loc 1 212 0
+ 632 0226 4FF44852 		mov	r2, #12800
+ 633 022a 014B     		ldr	r3, .L38
+ 634 022c 1A80     		strh	r2, [r3]	@ movhi
+ 635 022e 38BD     		pop	{r3, r4, r5, pc}
+ 636              	.L39:
+ 637              		.align	2
+ 638              	.L38:
+ 639 0230 005C0040 		.word	1073765376
+ 640 0234 00000000 		.word	bufferSetup
+ 641 0238 00000000 		.word	SetupPacket
+ 642 023c 00000000 		.word	.LANCHOR0
+ 643 0240 00000000 		.word	descDevice
+ 644 0244 04600040 		.word	1073766404
+ 645 0248 00000000 		.word	descDeviceQualifier
+ 646 024c 00000000 		.word	descConfiguration
+ 647 0250 00000000 		.word	descStringLangID
+ 648 0254 00000000 		.word	descStringMFC
+ 649 0258 00000000 		.word	descStringProduct
+ 650 025c 00000000 		.word	descStringSerialNumber
+ARM GAS  /tmp/ccddVxxl.s 			page 16
+
+
+ 651 0260 00000000 		.word	descStringConfig
+ 652 0264 00000000 		.word	descStringInterface
+ 653              		.cfi_endproc
+ 654              	.LFE34:
+ 656              		.section	.text.USBConfig,"ax",%progbits
+ 657              		.align	2
+ 658              		.global	USBConfig
+ 659              		.thumb
+ 660              		.thumb_func
+ 662              	USBConfig:
+ 663              	.LFB35:
  213:library/usb/usb.c **** }
  214:library/usb/usb.c **** /*
  215:library/usb/usb.c ****  ***********************************************************
  216:library/usb/usb.c ****  ******************* Public functoin ***********************
  217:library/usb/usb.c ****  ***********************************************************
-ARM GAS  /tmp/ccPVOqSL.s 			page 17
-
-
  218:library/usb/usb.c ****  */
  219:library/usb/usb.c **** /*
  220:library/usb/usb.c ****  * Name: USBConfig
@@ -968,59 +924,59 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
  222:library/usb/usb.c ****  * Parametrs: none
  223:library/usb/usb.c ****  */
  224:library/usb/usb.c **** void USBConfig(void){
- 705              		.loc 1 224 0
- 706              		.cfi_startproc
- 707              		@ args = 0, pretend = 0, frame = 0
- 708              		@ frame_needed = 0, uses_anonymous_args = 0
- 709              		@ link register save eliminated.
+ 664              		.loc 1 224 0
+ 665              		.cfi_startproc
+ 666              		@ args = 0, pretend = 0, frame = 0
+ 667              		@ frame_needed = 0, uses_anonymous_args = 0
+ 668              		@ link register save eliminated.
  225:library/usb/usb.c ****     RCC->APB1ENR |= RCC_APB1ENR_USBEN; /* USB clock enable */
- 710              		.loc 1 225 0
- 711 0000 114A     		ldr	r2, .L43
- 712 0002 D369     		ldr	r3, [r2, #28]
- 713 0004 43F40003 		orr	r3, r3, #8388608
- 714 0008 D361     		str	r3, [r2, #28]
+ 669              		.loc 1 225 0
+ 670 0000 114A     		ldr	r2, .L41
+ 671 0002 D369     		ldr	r3, [r2, #28]
+ 672 0004 43F40003 		orr	r3, r3, #8388608
+ 673 0008 D361     		str	r3, [r2, #28]
  226:library/usb/usb.c **** 
  227:library/usb/usb.c **** 	USB->CNTR = USB_CNTR_FRES;/* CNTR_FRES = 1 */
- 715              		.loc 1 227 0
- 716 000a 104B     		ldr	r3, .L43+4
- 717 000c 0122     		movs	r2, #1
- 718 000e A3F84020 		strh	r2, [r3, #64]	@ movhi
+ 674              		.loc 1 227 0
+ 675 000a 104B     		ldr	r3, .L41+4
+ 676 000c 0122     		movs	r2, #1
+ 677 000e A3F84020 		strh	r2, [r3, #64]	@ movhi
  228:library/usb/usb.c ****      
  229:library/usb/usb.c ****     USB->CNTR = 0; /* CNTR_FRES = 0 */
- 719              		.loc 1 229 0
- 720 0012 0021     		movs	r1, #0
- 721 0014 A3F84010 		strh	r1, [r3, #64]	@ movhi
+ 678              		.loc 1 229 0
+ 679 0012 0021     		movs	r1, #0
+ 680 0014 A3F84010 		strh	r1, [r3, #64]	@ movhi
  230:library/usb/usb.c **** 
  231:library/usb/usb.c **** 	USB->CNTR |= USB_CNTR_PDWN; 
- 722              		.loc 1 231 0
- 723 0018 B3F84020 		ldrh	r2, [r3, #64]
- 724 001c 92B2     		uxth	r2, r2
- 725 001e 42F00202 		orr	r2, r2, #2
- 726 0022 A3F84020 		strh	r2, [r3, #64]	@ movhi
+ 681              		.loc 1 231 0
+ 682 0018 B3F84020 		ldrh	r2, [r3, #64]
+ 683 001c 92B2     		uxth	r2, r2
+ 684 001e 42F00202 		orr	r2, r2, #2
+ 685 0022 A3F84020 		strh	r2, [r3, #64]	@ movhi
  232:library/usb/usb.c **** 
  233:library/usb/usb.c **** 	/* Reset driver */
  234:library/usb/usb.c **** 	USB->CNTR = 0x0;
- 727              		.loc 1 234 0
- 728 0026 A3F84010 		strh	r1, [r3, #64]	@ movhi
+ 686              		.loc 1 234 0
+ 687 0026 A3F84010 		strh	r1, [r3, #64]	@ movhi
+ARM GAS  /tmp/ccddVxxl.s 			page 17
+
+
  235:library/usb/usb.c **** 
  236:library/usb/usb.c ****     /* Reset registr flag interrput */
  237:library/usb/usb.c **** 	USB->ISTR = 0x0;
- 729              		.loc 1 237 0
- 730 002a A3F84410 		strh	r1, [r3, #68]	@ movhi
+ 688              		.loc 1 237 0
+ 689 002a A3F84410 		strh	r1, [r3, #68]	@ movhi
  238:library/usb/usb.c **** 
  239:library/usb/usb.c ****     /* Allow interrput */
  240:library/usb/usb.c ****     //USB->CNTR |= USB_CNTR_RESETM | USB_CNTR_SUSPM | USB_CNTR_WKUPM | USB_CNTR_SOFM | USB_CNTR_ESO
  241:library/usb/usb.c **** 	USB->CNTR = USB_CNTR_RESETM | USB_CNTR_SUSPM | USB_CNTR_WKUPM | USB_CNTR_CTRM;
- 731              		.loc 1 241 0
- 732 002e 4FF41C42 		mov	r2, #39936
- 733 0032 A3F84020 		strh	r2, [r3, #64]	@ movhi
- 734              	.LVL33:
- 735              	.LBB6:
- 736              	.LBB7:
- 737              		.file 2 "library/usb/../cmsis/inc/core_cm3.h"
-ARM GAS  /tmp/ccPVOqSL.s 			page 18
-
-
+ 690              		.loc 1 241 0
+ 691 002e 4FF41C42 		mov	r2, #39936
+ 692 0032 A3F84020 		strh	r2, [r3, #64]	@ movhi
+ 693              	.LVL32:
+ 694              	.LBB6:
+ 695              	.LBB7:
+ 696              		.file 2 "library/usb/../cmsis/inc/core_cm3.h"
    1:library/usb/../cmsis/inc/core_cm3.h **** /**************************************************************************//**
    2:library/usb/../cmsis/inc/core_cm3.h ****  * @file     core_cm3.h
    3:library/usb/../cmsis/inc/core_cm3.h ****  * @brief    CMSIS Cortex-M3 Core Peripheral Access Layer Header File
@@ -1062,6 +1018,9 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
   39:library/usb/../cmsis/inc/core_cm3.h ****  *     __regBasePri = (basePri & 0x1ff); \n
   40:library/usb/../cmsis/inc/core_cm3.h ****  *     Warning 550: Symbol '__regBasePri' (line 271) not accessed
   41:library/usb/../cmsis/inc/core_cm3.h ****  * .
+ARM GAS  /tmp/ccddVxxl.s 			page 18
+
+
   42:library/usb/../cmsis/inc/core_cm3.h ****  *   - Error 754: \n
   43:library/usb/../cmsis/inc/core_cm3.h ****  *     uint32_t RESERVED0[24]; \n
   44:library/usb/../cmsis/inc/core_cm3.h ****  *     Info 754: local structure member '<some, not used in the HAL>' (line 109, file ./cm3_core.h)
@@ -1078,9 +1037,6 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
   55:library/usb/../cmsis/inc/core_cm3.h ****  *     } InterruptType_Type; \n
   56:library/usb/../cmsis/inc/core_cm3.h ****  *     Info 751: local typedef 'InterruptType_Type' (line 170, file ./cm3_core.h) not referenced
   57:library/usb/../cmsis/inc/core_cm3.h ****  * .
-ARM GAS  /tmp/ccPVOqSL.s 			page 19
-
-
   58:library/usb/../cmsis/inc/core_cm3.h ****  * Note:  To re-enable a Message, insert a space before 'lint' *
   59:library/usb/../cmsis/inc/core_cm3.h ****  *
   60:library/usb/../cmsis/inc/core_cm3.h ****  */
@@ -1122,6 +1078,9 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
   96:library/usb/../cmsis/inc/core_cm3.h **** 
   97:library/usb/../cmsis/inc/core_cm3.h **** #ifndef __NVIC_PRIO_BITS
   98:library/usb/../cmsis/inc/core_cm3.h ****   #define __NVIC_PRIO_BITS    4               /*!< standard definition for NVIC Priority Bits */
+ARM GAS  /tmp/ccddVxxl.s 			page 19
+
+
   99:library/usb/../cmsis/inc/core_cm3.h **** #endif
  100:library/usb/../cmsis/inc/core_cm3.h **** 
  101:library/usb/../cmsis/inc/core_cm3.h **** 
@@ -1138,9 +1097,6 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
  112:library/usb/../cmsis/inc/core_cm3.h **** #else
  113:library/usb/../cmsis/inc/core_cm3.h ****   #define     __I     volatile const          /*!< defines 'read only' permissions      */
  114:library/usb/../cmsis/inc/core_cm3.h **** #endif
-ARM GAS  /tmp/ccPVOqSL.s 			page 20
-
-
  115:library/usb/../cmsis/inc/core_cm3.h **** #define     __O     volatile                  /*!< defines 'write only' permissions     */
  116:library/usb/../cmsis/inc/core_cm3.h **** #define     __IO    volatile                  /*!< defines 'read / write' permissions   */
  117:library/usb/../cmsis/inc/core_cm3.h **** 
@@ -1182,6 +1138,9 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
  153:library/usb/../cmsis/inc/core_cm3.h ****   @{
  154:library/usb/../cmsis/inc/core_cm3.h ****  */
  155:library/usb/../cmsis/inc/core_cm3.h **** typedef struct
+ARM GAS  /tmp/ccddVxxl.s 			page 20
+
+
  156:library/usb/../cmsis/inc/core_cm3.h **** {
  157:library/usb/../cmsis/inc/core_cm3.h ****   __I  uint32_t CPUID;                        /*!< Offset: 0x00  CPU ID Base Register              
  158:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t ICSR;                         /*!< Offset: 0x04  Interrupt Control State Register  
@@ -1198,9 +1157,6 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
  169:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t BFAR;                         /*!< Offset: 0x38  Bus Fault Address Register        
  170:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t AFSR;                         /*!< Offset: 0x3C  Auxiliary Fault Status Register   
  171:library/usb/../cmsis/inc/core_cm3.h ****   __I  uint32_t PFR[2];                       /*!< Offset: 0x40  Processor Feature Register        
-ARM GAS  /tmp/ccPVOqSL.s 			page 21
-
-
  172:library/usb/../cmsis/inc/core_cm3.h ****   __I  uint32_t DFR;                          /*!< Offset: 0x48  Debug Feature Register            
  173:library/usb/../cmsis/inc/core_cm3.h ****   __I  uint32_t ADR;                          /*!< Offset: 0x4C  Auxiliary Feature Register        
  174:library/usb/../cmsis/inc/core_cm3.h ****   __I  uint32_t MMFR[4];                      /*!< Offset: 0x50  Memory Model Feature Register     
@@ -1242,6 +1198,9 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
  210:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_ICSR_ISRPENDING_Pos            22                                             /*!< SCB 
  211:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_ICSR_ISRPENDING_Msk            (1ul << SCB_ICSR_ISRPENDING_Pos)               /*!< SCB 
  212:library/usb/../cmsis/inc/core_cm3.h **** 
+ARM GAS  /tmp/ccddVxxl.s 			page 21
+
+
  213:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_ICSR_VECTPENDING_Pos           12                                             /*!< SCB 
  214:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_ICSR_VECTPENDING_Msk           (0x1FFul << SCB_ICSR_VECTPENDING_Pos)          /*!< SCB 
  215:library/usb/../cmsis/inc/core_cm3.h **** 
@@ -1258,9 +1217,6 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
  226:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_VTOR_TBLOFF_Pos                 7                                             /*!< SCB 
  227:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_VTOR_TBLOFF_Msk                (0x3FFFFFul << SCB_VTOR_TBLOFF_Pos)            /*!< SCB 
  228:library/usb/../cmsis/inc/core_cm3.h **** 
-ARM GAS  /tmp/ccPVOqSL.s 			page 22
-
-
  229:library/usb/../cmsis/inc/core_cm3.h **** /* SCB Application Interrupt and Reset Control Register Definitions */
  230:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_AIRCR_VECTKEY_Pos              16                                             /*!< SCB 
  231:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_AIRCR_VECTKEY_Msk              (0xFFFFul << SCB_AIRCR_VECTKEY_Pos)            /*!< SCB 
@@ -1302,6 +1258,9 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
  267:library/usb/../cmsis/inc/core_cm3.h **** 
  268:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_CCR_DIV_0_TRP_Pos               4                                             /*!< SCB 
  269:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_CCR_DIV_0_TRP_Msk              (1ul << SCB_CCR_DIV_0_TRP_Pos)                 /*!< SCB 
+ARM GAS  /tmp/ccddVxxl.s 			page 22
+
+
  270:library/usb/../cmsis/inc/core_cm3.h **** 
  271:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_CCR_UNALIGN_TRP_Pos             3                                             /*!< SCB 
  272:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_CCR_UNALIGN_TRP_Msk            (1ul << SCB_CCR_UNALIGN_TRP_Pos)               /*!< SCB 
@@ -1318,9 +1277,6 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
  283:library/usb/../cmsis/inc/core_cm3.h **** 
  284:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_SHCSR_BUSFAULTENA_Pos          17                                             /*!< SCB 
  285:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_SHCSR_BUSFAULTENA_Msk          (1ul << SCB_SHCSR_BUSFAULTENA_Pos)             /*!< SCB 
-ARM GAS  /tmp/ccPVOqSL.s 			page 23
-
-
  286:library/usb/../cmsis/inc/core_cm3.h **** 
  287:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_SHCSR_MEMFAULTENA_Pos          16                                             /*!< SCB 
  288:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_SHCSR_MEMFAULTENA_Msk          (1ul << SCB_SHCSR_MEMFAULTENA_Pos)             /*!< SCB 
@@ -1362,6 +1318,9 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
  324:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_CFSR_USGFAULTSR_Pos            16                                             /*!< SCB 
  325:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_CFSR_USGFAULTSR_Msk            (0xFFFFul << SCB_CFSR_USGFAULTSR_Pos)          /*!< SCB 
  326:library/usb/../cmsis/inc/core_cm3.h **** 
+ARM GAS  /tmp/ccddVxxl.s 			page 23
+
+
  327:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_CFSR_BUSFAULTSR_Pos             8                                             /*!< SCB 
  328:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_CFSR_BUSFAULTSR_Msk            (0xFFul << SCB_CFSR_BUSFAULTSR_Pos)            /*!< SCB 
  329:library/usb/../cmsis/inc/core_cm3.h **** 
@@ -1378,9 +1337,6 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
  340:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_HFSR_VECTTBL_Pos                1                                             /*!< SCB 
  341:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_HFSR_VECTTBL_Msk               (1ul << SCB_HFSR_VECTTBL_Pos)                  /*!< SCB 
  342:library/usb/../cmsis/inc/core_cm3.h **** 
-ARM GAS  /tmp/ccPVOqSL.s 			page 24
-
-
  343:library/usb/../cmsis/inc/core_cm3.h **** /* SCB Debug Fault Status Register Definitions */
  344:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_DFSR_EXTERNAL_Pos               4                                             /*!< SCB 
  345:library/usb/../cmsis/inc/core_cm3.h **** #define SCB_DFSR_EXTERNAL_Msk              (1ul << SCB_DFSR_EXTERNAL_Pos)                 /*!< SCB 
@@ -1422,6 +1378,9 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
  381:library/usb/../cmsis/inc/core_cm3.h **** #define SysTick_CTRL_TICKINT_Msk           (1ul << SysTick_CTRL_TICKINT_Pos)              /*!< SysT
  382:library/usb/../cmsis/inc/core_cm3.h **** 
  383:library/usb/../cmsis/inc/core_cm3.h **** #define SysTick_CTRL_ENABLE_Pos             0                                             /*!< SysT
+ARM GAS  /tmp/ccddVxxl.s 			page 24
+
+
  384:library/usb/../cmsis/inc/core_cm3.h **** #define SysTick_CTRL_ENABLE_Msk            (1ul << SysTick_CTRL_ENABLE_Pos)               /*!< SysT
  385:library/usb/../cmsis/inc/core_cm3.h **** 
  386:library/usb/../cmsis/inc/core_cm3.h **** /* SysTick Reload Register Definitions */
@@ -1438,9 +1397,6 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
  397:library/usb/../cmsis/inc/core_cm3.h **** 
  398:library/usb/../cmsis/inc/core_cm3.h **** #define SysTick_CALIB_SKEW_Pos             30                                             /*!< SysT
  399:library/usb/../cmsis/inc/core_cm3.h **** #define SysTick_CALIB_SKEW_Msk             (1ul << SysTick_CALIB_SKEW_Pos)                /*!< SysT
-ARM GAS  /tmp/ccPVOqSL.s 			page 25
-
-
  400:library/usb/../cmsis/inc/core_cm3.h **** 
  401:library/usb/../cmsis/inc/core_cm3.h **** #define SysTick_CALIB_TENMS_Pos             0                                             /*!< SysT
  402:library/usb/../cmsis/inc/core_cm3.h **** #define SysTick_CALIB_TENMS_Msk            (0xFFFFFFul << SysTick_VAL_CURRENT_Pos)        /*!< SysT
@@ -1482,6 +1438,9 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
  438:library/usb/../cmsis/inc/core_cm3.h ****   __I  uint32_t PID2;                         /*!< Offset:       ITM Peripheral Identification Regi
  439:library/usb/../cmsis/inc/core_cm3.h ****   __I  uint32_t PID3;                         /*!< Offset:       ITM Peripheral Identification Regi
  440:library/usb/../cmsis/inc/core_cm3.h ****   __I  uint32_t CID0;                         /*!< Offset:       ITM Component  Identification Regi
+ARM GAS  /tmp/ccddVxxl.s 			page 25
+
+
  441:library/usb/../cmsis/inc/core_cm3.h ****   __I  uint32_t CID1;                         /*!< Offset:       ITM Component  Identification Regi
  442:library/usb/../cmsis/inc/core_cm3.h ****   __I  uint32_t CID2;                         /*!< Offset:       ITM Component  Identification Regi
  443:library/usb/../cmsis/inc/core_cm3.h ****   __I  uint32_t CID3;                         /*!< Offset:       ITM Component  Identification Regi
@@ -1498,9 +1457,6 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
  454:library/usb/../cmsis/inc/core_cm3.h **** #define ITM_TCR_ATBID_Pos                  16                                             /*!< ITM 
  455:library/usb/../cmsis/inc/core_cm3.h **** #define ITM_TCR_ATBID_Msk                  (0x7Ful << ITM_TCR_ATBID_Pos)                  /*!< ITM 
  456:library/usb/../cmsis/inc/core_cm3.h **** 
-ARM GAS  /tmp/ccPVOqSL.s 			page 26
-
-
  457:library/usb/../cmsis/inc/core_cm3.h **** #define ITM_TCR_TSPrescale_Pos              8                                             /*!< ITM 
  458:library/usb/../cmsis/inc/core_cm3.h **** #define ITM_TCR_TSPrescale_Msk             (3ul << ITM_TCR_TSPrescale_Pos)                /*!< ITM 
  459:library/usb/../cmsis/inc/core_cm3.h **** 
@@ -1542,6 +1498,9 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
  495:library/usb/../cmsis/inc/core_cm3.h **** #define ITM_LSR_Present_Msk                (1ul << ITM_LSR_Present_Pos)                   /*!< ITM 
  496:library/usb/../cmsis/inc/core_cm3.h **** /*@}*/ /* end of group CMSIS_CM3_ITM */
  497:library/usb/../cmsis/inc/core_cm3.h **** 
+ARM GAS  /tmp/ccddVxxl.s 			page 26
+
+
  498:library/usb/../cmsis/inc/core_cm3.h **** 
  499:library/usb/../cmsis/inc/core_cm3.h **** /** @addtogroup CMSIS_CM3_InterruptType CMSIS CM3 Interrupt Type
  500:library/usb/../cmsis/inc/core_cm3.h ****   memory mapped structure for Interrupt Type
@@ -1558,9 +1517,6 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
  511:library/usb/../cmsis/inc/core_cm3.h **** #endif
  512:library/usb/../cmsis/inc/core_cm3.h **** } InterruptType_Type;
  513:library/usb/../cmsis/inc/core_cm3.h **** 
-ARM GAS  /tmp/ccPVOqSL.s 			page 27
-
-
  514:library/usb/../cmsis/inc/core_cm3.h **** /* Interrupt Controller Type Register Definitions */
  515:library/usb/../cmsis/inc/core_cm3.h **** #define InterruptType_ICTR_INTLINESNUM_Pos  0                                             /*!< Inte
  516:library/usb/../cmsis/inc/core_cm3.h **** #define InterruptType_ICTR_INTLINESNUM_Msk (0x1Ful << InterruptType_ICTR_INTLINESNUM_Pos) /*!< Inte
@@ -1602,6 +1558,9 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
  552:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_TYPE_IREGION_Msk               (0xFFul << MPU_TYPE_IREGION_Pos)               /*!< MPU 
  553:library/usb/../cmsis/inc/core_cm3.h **** 
  554:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_TYPE_DREGION_Pos                8                                             /*!< MPU 
+ARM GAS  /tmp/ccddVxxl.s 			page 27
+
+
  555:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_TYPE_DREGION_Msk               (0xFFul << MPU_TYPE_DREGION_Pos)               /*!< MPU 
  556:library/usb/../cmsis/inc/core_cm3.h **** 
  557:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_TYPE_SEPARATE_Pos               0                                             /*!< MPU 
@@ -1618,9 +1577,6 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
  568:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_CTRL_ENABLE_Msk                (1ul << MPU_CTRL_ENABLE_Pos)                   /*!< MPU 
  569:library/usb/../cmsis/inc/core_cm3.h **** 
  570:library/usb/../cmsis/inc/core_cm3.h **** /* MPU Region Number Register */
-ARM GAS  /tmp/ccPVOqSL.s 			page 28
-
-
  571:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_RNR_REGION_Pos                  0                                             /*!< MPU 
  572:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_RNR_REGION_Msk                 (0xFFul << MPU_RNR_REGION_Pos)                 /*!< MPU 
  573:library/usb/../cmsis/inc/core_cm3.h **** 
@@ -1662,6 +1618,9 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
  609:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_RASR_ENA_Pos                     0                                            /*!< MPU 
  610:library/usb/../cmsis/inc/core_cm3.h **** #define MPU_RASR_ENA_Msk                    (0x1Ful << MPU_RASR_ENA_Pos)                  /*!< MPU 
  611:library/usb/../cmsis/inc/core_cm3.h **** 
+ARM GAS  /tmp/ccddVxxl.s 			page 28
+
+
  612:library/usb/../cmsis/inc/core_cm3.h **** /*@}*/ /* end of group CMSIS_CM3_MPU */
  613:library/usb/../cmsis/inc/core_cm3.h **** #endif
  614:library/usb/../cmsis/inc/core_cm3.h **** 
@@ -1678,9 +1637,6 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
  625:library/usb/../cmsis/inc/core_cm3.h ****   __IO uint32_t DEMCR;                        /*!< Offset: 0x0C  Debug Exception and Monitor Contro
  626:library/usb/../cmsis/inc/core_cm3.h **** } CoreDebug_Type;
  627:library/usb/../cmsis/inc/core_cm3.h **** 
-ARM GAS  /tmp/ccPVOqSL.s 			page 29
-
-
  628:library/usb/../cmsis/inc/core_cm3.h **** /* Debug Halting Control and Status Register */
  629:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DHCSR_DBGKEY_Pos         16                                             /*!< Core
  630:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DHCSR_DBGKEY_Msk         (0xFFFFul << CoreDebug_DHCSR_DBGKEY_Pos)       /*!< Core
@@ -1722,6 +1678,9 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
  666:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DCRSR_REGWnR_Pos         16                                             /*!< Core
  667:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DCRSR_REGWnR_Msk         (1ul << CoreDebug_DCRSR_REGWnR_Pos)            /*!< Core
  668:library/usb/../cmsis/inc/core_cm3.h **** 
+ARM GAS  /tmp/ccddVxxl.s 			page 29
+
+
  669:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DCRSR_REGSEL_Pos          0                                             /*!< Core
  670:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DCRSR_REGSEL_Msk         (0x1Ful << CoreDebug_DCRSR_REGSEL_Pos)         /*!< Core
  671:library/usb/../cmsis/inc/core_cm3.h **** 
@@ -1738,9 +1697,6 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
  682:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DEMCR_MON_PEND_Pos       17                                             /*!< Core
  683:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DEMCR_MON_PEND_Msk       (1ul << CoreDebug_DEMCR_MON_PEND_Pos)          /*!< Core
  684:library/usb/../cmsis/inc/core_cm3.h **** 
-ARM GAS  /tmp/ccPVOqSL.s 			page 30
-
-
  685:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DEMCR_MON_EN_Pos         16                                             /*!< Core
  686:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug_DEMCR_MON_EN_Msk         (1ul << CoreDebug_DEMCR_MON_EN_Pos)            /*!< Core
  687:library/usb/../cmsis/inc/core_cm3.h **** 
@@ -1782,6 +1738,9 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
  723:library/usb/../cmsis/inc/core_cm3.h **** #define SCB                 ((SCB_Type *)           SCB_BASE)         /*!< SCB configuration struct
  724:library/usb/../cmsis/inc/core_cm3.h **** #define SysTick             ((SysTick_Type *)       SysTick_BASE)     /*!< SysTick configuration st
  725:library/usb/../cmsis/inc/core_cm3.h **** #define NVIC                ((NVIC_Type *)          NVIC_BASE)        /*!< NVIC configuration struc
+ARM GAS  /tmp/ccddVxxl.s 			page 30
+
+
  726:library/usb/../cmsis/inc/core_cm3.h **** #define ITM                 ((ITM_Type *)           ITM_BASE)         /*!< ITM configuration struct
  727:library/usb/../cmsis/inc/core_cm3.h **** #define CoreDebug           ((CoreDebug_Type *)     CoreDebug_BASE)   /*!< Core Debug configuration
  728:library/usb/../cmsis/inc/core_cm3.h **** 
@@ -1798,9 +1757,6 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
  739:library/usb/../cmsis/inc/core_cm3.h ****  ******************************************************************************/
  740:library/usb/../cmsis/inc/core_cm3.h **** 
  741:library/usb/../cmsis/inc/core_cm3.h **** #if defined ( __CC_ARM   )
-ARM GAS  /tmp/ccPVOqSL.s 			page 31
-
-
  742:library/usb/../cmsis/inc/core_cm3.h ****   #define __ASM            __asm                                      /*!< asm keyword for ARM Comp
  743:library/usb/../cmsis/inc/core_cm3.h ****   #define __INLINE         __inline                                   /*!< inline keyword for ARM C
  744:library/usb/../cmsis/inc/core_cm3.h **** 
@@ -1842,6 +1798,9 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
  780:library/usb/../cmsis/inc/core_cm3.h **** #define __STREXB(value, ptr)              __strex(value, ptr)
  781:library/usb/../cmsis/inc/core_cm3.h **** #define __STREXH(value, ptr)              __strex(value, ptr)
  782:library/usb/../cmsis/inc/core_cm3.h **** #define __STREXW(value, ptr)              __strex(value, ptr)
+ARM GAS  /tmp/ccddVxxl.s 			page 31
+
+
  783:library/usb/../cmsis/inc/core_cm3.h **** 
  784:library/usb/../cmsis/inc/core_cm3.h **** 
  785:library/usb/../cmsis/inc/core_cm3.h **** /* intrinsic unsigned long long __ldrexd(volatile void *ptr) */
@@ -1858,9 +1817,6 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
  796:library/usb/../cmsis/inc/core_cm3.h ****  * Return the actual process stack pointer
  797:library/usb/../cmsis/inc/core_cm3.h ****  */
  798:library/usb/../cmsis/inc/core_cm3.h **** extern uint32_t __get_PSP(void);
-ARM GAS  /tmp/ccPVOqSL.s 			page 32
-
-
  799:library/usb/../cmsis/inc/core_cm3.h **** 
  800:library/usb/../cmsis/inc/core_cm3.h **** /**
  801:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Set the Process Stack Pointer
@@ -1902,6 +1858,9 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
  837:library/usb/../cmsis/inc/core_cm3.h ****  */
  838:library/usb/../cmsis/inc/core_cm3.h **** extern uint32_t __REV16(uint16_t value);
  839:library/usb/../cmsis/inc/core_cm3.h **** 
+ARM GAS  /tmp/ccddVxxl.s 			page 32
+
+
  840:library/usb/../cmsis/inc/core_cm3.h **** /**
  841:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Reverse byte order in signed short value with sign extension to integer
  842:library/usb/../cmsis/inc/core_cm3.h ****  *
@@ -1918,9 +1877,6 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
  853:library/usb/../cmsis/inc/core_cm3.h **** /**
  854:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Remove the exclusive lock created by ldrex
  855:library/usb/../cmsis/inc/core_cm3.h ****  *
-ARM GAS  /tmp/ccPVOqSL.s 			page 33
-
-
  856:library/usb/../cmsis/inc/core_cm3.h ****  * Removes the exclusive lock which is created by ldrex.
  857:library/usb/../cmsis/inc/core_cm3.h ****  */
  858:library/usb/../cmsis/inc/core_cm3.h **** extern void __CLREX(void);
@@ -1962,6 +1918,9 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
  894:library/usb/../cmsis/inc/core_cm3.h **** extern void __set_PRIMASK(uint32_t priMask);
  895:library/usb/../cmsis/inc/core_cm3.h **** 
  896:library/usb/../cmsis/inc/core_cm3.h **** /**
+ARM GAS  /tmp/ccddVxxl.s 			page 33
+
+
  897:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Return the Fault Mask value
  898:library/usb/../cmsis/inc/core_cm3.h ****  *
  899:library/usb/../cmsis/inc/core_cm3.h ****  * @return FaultMask
@@ -1978,9 +1937,6 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
  910:library/usb/../cmsis/inc/core_cm3.h ****  * Set the fault mask register
  911:library/usb/../cmsis/inc/core_cm3.h ****  */
  912:library/usb/../cmsis/inc/core_cm3.h **** extern void __set_FAULTMASK(uint32_t faultMask);
-ARM GAS  /tmp/ccPVOqSL.s 			page 34
-
-
  913:library/usb/../cmsis/inc/core_cm3.h **** 
  914:library/usb/../cmsis/inc/core_cm3.h **** /**
  915:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Return the Control Register value
@@ -2022,6 +1978,9 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
  951:library/usb/../cmsis/inc/core_cm3.h ****   return(__regBasePri);
  952:library/usb/../cmsis/inc/core_cm3.h **** }
  953:library/usb/../cmsis/inc/core_cm3.h **** 
+ARM GAS  /tmp/ccddVxxl.s 			page 34
+
+
  954:library/usb/../cmsis/inc/core_cm3.h **** /**
  955:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Set the Base Priority value
  956:library/usb/../cmsis/inc/core_cm3.h ****  *
@@ -2038,9 +1997,6 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
  967:library/usb/../cmsis/inc/core_cm3.h **** /**
  968:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Return the Priority Mask value
  969:library/usb/../cmsis/inc/core_cm3.h ****  *
-ARM GAS  /tmp/ccPVOqSL.s 			page 35
-
-
  970:library/usb/../cmsis/inc/core_cm3.h ****  * @return PriMask
  971:library/usb/../cmsis/inc/core_cm3.h ****  *
  972:library/usb/../cmsis/inc/core_cm3.h ****  * Return state of the priority mask bit from the priority mask register
@@ -2082,6 +2038,9 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
 1008:library/usb/../cmsis/inc/core_cm3.h ****  *
 1009:library/usb/../cmsis/inc/core_cm3.h ****  * @param  faultMask  faultMask value
 1010:library/usb/../cmsis/inc/core_cm3.h ****  *
+ARM GAS  /tmp/ccddVxxl.s 			page 35
+
+
 1011:library/usb/../cmsis/inc/core_cm3.h ****  * Set the fault mask register
 1012:library/usb/../cmsis/inc/core_cm3.h ****  */
 1013:library/usb/../cmsis/inc/core_cm3.h **** static __INLINE void __set_FAULTMASK(uint32_t faultMask)
@@ -2098,9 +2057,6 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
 1024:library/usb/../cmsis/inc/core_cm3.h ****  * Return the content of the control register
 1025:library/usb/../cmsis/inc/core_cm3.h ****  */
 1026:library/usb/../cmsis/inc/core_cm3.h **** static __INLINE uint32_t __get_CONTROL(void)
-ARM GAS  /tmp/ccPVOqSL.s 			page 36
-
-
 1027:library/usb/../cmsis/inc/core_cm3.h **** {
 1028:library/usb/../cmsis/inc/core_cm3.h ****   register uint32_t __regControl         __ASM("control");
 1029:library/usb/../cmsis/inc/core_cm3.h ****   return(__regControl);
@@ -2142,6 +2098,9 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
 1065:library/usb/../cmsis/inc/core_cm3.h **** /* intrinsic void __DSB(void)                                     */
 1066:library/usb/../cmsis/inc/core_cm3.h **** /* intrinsic void __DMB(void)                                     */
 1067:library/usb/../cmsis/inc/core_cm3.h **** /* intrinsic void __set_PRIMASK();                                */
+ARM GAS  /tmp/ccddVxxl.s 			page 36
+
+
 1068:library/usb/../cmsis/inc/core_cm3.h **** /* intrinsic void __get_PRIMASK();                                */
 1069:library/usb/../cmsis/inc/core_cm3.h **** /* intrinsic void __set_FAULTMASK();                              */
 1070:library/usb/../cmsis/inc/core_cm3.h **** /* intrinsic void __get_FAULTMASK();                              */
@@ -2158,9 +2117,6 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
 1081:library/usb/../cmsis/inc/core_cm3.h ****  *
 1082:library/usb/../cmsis/inc/core_cm3.h ****  * Return the actual process stack pointer
 1083:library/usb/../cmsis/inc/core_cm3.h ****  */
-ARM GAS  /tmp/ccPVOqSL.s 			page 37
-
-
 1084:library/usb/../cmsis/inc/core_cm3.h **** extern uint32_t __get_PSP(void);
 1085:library/usb/../cmsis/inc/core_cm3.h **** 
 1086:library/usb/../cmsis/inc/core_cm3.h **** /**
@@ -2202,6 +2158,9 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
 1122:library/usb/../cmsis/inc/core_cm3.h ****  * Reverse byte order in unsigned short value
 1123:library/usb/../cmsis/inc/core_cm3.h ****  */
 1124:library/usb/../cmsis/inc/core_cm3.h **** extern uint32_t __REV16(uint16_t value);
+ARM GAS  /tmp/ccddVxxl.s 			page 37
+
+
 1125:library/usb/../cmsis/inc/core_cm3.h **** 
 1126:library/usb/../cmsis/inc/core_cm3.h **** /**
 1127:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Reverse bit order of value
@@ -2218,9 +2177,6 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
 1138:library/usb/../cmsis/inc/core_cm3.h ****  *
 1139:library/usb/../cmsis/inc/core_cm3.h ****  * @param  *addr  address pointer
 1140:library/usb/../cmsis/inc/core_cm3.h ****  * @return        value of (*address)
-ARM GAS  /tmp/ccPVOqSL.s 			page 38
-
-
 1141:library/usb/../cmsis/inc/core_cm3.h ****  *
 1142:library/usb/../cmsis/inc/core_cm3.h ****  * Exclusive LDR command for 8 bit values)
 1143:library/usb/../cmsis/inc/core_cm3.h ****  */
@@ -2262,6 +2218,9 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
 1179:library/usb/../cmsis/inc/core_cm3.h ****  *
 1180:library/usb/../cmsis/inc/core_cm3.h ****  * @param  value  value to store
 1181:library/usb/../cmsis/inc/core_cm3.h ****  * @param  *addr  address pointer
+ARM GAS  /tmp/ccddVxxl.s 			page 38
+
+
 1182:library/usb/../cmsis/inc/core_cm3.h ****  * @return        successful / failed
 1183:library/usb/../cmsis/inc/core_cm3.h ****  *
 1184:library/usb/../cmsis/inc/core_cm3.h ****  * Exclusive STR command for 16 bit values
@@ -2278,9 +2237,6 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
 1195:library/usb/../cmsis/inc/core_cm3.h ****  * Exclusive STR command for 32 bit values
 1196:library/usb/../cmsis/inc/core_cm3.h ****  */
 1197:library/usb/../cmsis/inc/core_cm3.h **** extern uint32_t __STREXW(uint32_t value, uint32_t *addr);
-ARM GAS  /tmp/ccPVOqSL.s 			page 39
-
-
 1198:library/usb/../cmsis/inc/core_cm3.h **** 
 1199:library/usb/../cmsis/inc/core_cm3.h **** 
 1200:library/usb/../cmsis/inc/core_cm3.h **** 
@@ -2322,6 +2278,9 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
 1236:library/usb/../cmsis/inc/core_cm3.h ****  */
 1237:library/usb/../cmsis/inc/core_cm3.h **** extern void __set_PSP(uint32_t topOfProcStack);
 1238:library/usb/../cmsis/inc/core_cm3.h **** 
+ARM GAS  /tmp/ccddVxxl.s 			page 39
+
+
 1239:library/usb/../cmsis/inc/core_cm3.h **** /**
 1240:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Return the Main Stack Pointer
 1241:library/usb/../cmsis/inc/core_cm3.h ****  *
@@ -2338,9 +2297,6 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
 1252:library/usb/../cmsis/inc/core_cm3.h ****  * @param  topOfMainStack  Main Stack Pointer
 1253:library/usb/../cmsis/inc/core_cm3.h ****  *
 1254:library/usb/../cmsis/inc/core_cm3.h ****  * Assign the value mainStackPointer to the MSP 
-ARM GAS  /tmp/ccPVOqSL.s 			page 40
-
-
 1255:library/usb/../cmsis/inc/core_cm3.h ****  * (main stack pointer) Cortex processor register
 1256:library/usb/../cmsis/inc/core_cm3.h ****  */
 1257:library/usb/../cmsis/inc/core_cm3.h **** extern void __set_MSP(uint32_t topOfMainStack);
@@ -2382,6 +2338,9 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
 1293:library/usb/../cmsis/inc/core_cm3.h **** extern void __set_PRIMASK(uint32_t priMask);
 1294:library/usb/../cmsis/inc/core_cm3.h **** 
 1295:library/usb/../cmsis/inc/core_cm3.h **** /**
+ARM GAS  /tmp/ccddVxxl.s 			page 40
+
+
 1296:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Return the Fault Mask value
 1297:library/usb/../cmsis/inc/core_cm3.h ****  *
 1298:library/usb/../cmsis/inc/core_cm3.h ****  * @return FaultMask
@@ -2398,9 +2357,6 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
 1309:library/usb/../cmsis/inc/core_cm3.h ****  * Set the fault mask register
 1310:library/usb/../cmsis/inc/core_cm3.h ****  */
 1311:library/usb/../cmsis/inc/core_cm3.h **** extern void __set_FAULTMASK(uint32_t faultMask);
-ARM GAS  /tmp/ccPVOqSL.s 			page 41
-
-
 1312:library/usb/../cmsis/inc/core_cm3.h **** 
 1313:library/usb/../cmsis/inc/core_cm3.h **** /**
 1314:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Return the Control Register value
@@ -2442,6 +2398,9 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
 1350:library/usb/../cmsis/inc/core_cm3.h **** 
 1351:library/usb/../cmsis/inc/core_cm3.h **** /**
 1352:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Reverse byte order in signed short value with sign extension to integer
+ARM GAS  /tmp/ccddVxxl.s 			page 41
+
+
 1353:library/usb/../cmsis/inc/core_cm3.h ****  *
 1354:library/usb/../cmsis/inc/core_cm3.h ****  * @param  value  value to reverse
 1355:library/usb/../cmsis/inc/core_cm3.h ****  * @return        reversed value
@@ -2458,9 +2417,6 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
 1366:library/usb/../cmsis/inc/core_cm3.h ****  *
 1367:library/usb/../cmsis/inc/core_cm3.h ****  * Reverse bit order of value
 1368:library/usb/../cmsis/inc/core_cm3.h ****  */
-ARM GAS  /tmp/ccPVOqSL.s 			page 42
-
-
 1369:library/usb/../cmsis/inc/core_cm3.h **** extern uint32_t __RBIT(uint32_t value);
 1370:library/usb/../cmsis/inc/core_cm3.h **** 
 1371:library/usb/../cmsis/inc/core_cm3.h **** /**
@@ -2502,6 +2458,9 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
 1407:library/usb/../cmsis/inc/core_cm3.h ****  *
 1408:library/usb/../cmsis/inc/core_cm3.h ****  * Exclusive STR command for 8 bit values
 1409:library/usb/../cmsis/inc/core_cm3.h ****  */
+ARM GAS  /tmp/ccddVxxl.s 			page 42
+
+
 1410:library/usb/../cmsis/inc/core_cm3.h **** extern uint32_t __STREXB(uint8_t value, uint8_t *addr);
 1411:library/usb/../cmsis/inc/core_cm3.h **** 
 1412:library/usb/../cmsis/inc/core_cm3.h **** /**
@@ -2518,9 +2477,6 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
 1423:library/usb/../cmsis/inc/core_cm3.h **** /**
 1424:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  STR Exclusive (32 bit)
 1425:library/usb/../cmsis/inc/core_cm3.h ****  *
-ARM GAS  /tmp/ccPVOqSL.s 			page 43
-
-
 1426:library/usb/../cmsis/inc/core_cm3.h ****  * @param  value  value to store
 1427:library/usb/../cmsis/inc/core_cm3.h ****  * @param  *addr  address pointer
 1428:library/usb/../cmsis/inc/core_cm3.h ****  * @return        successful / failed
@@ -2562,6 +2518,9 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
 1464:library/usb/../cmsis/inc/core_cm3.h ****  * SCB->AIRCR [10:8] PRIGROUP field. Only values from 0..7 are used.
 1465:library/usb/../cmsis/inc/core_cm3.h ****  * In case of a conflict between priority grouping and available
 1466:library/usb/../cmsis/inc/core_cm3.h ****  * priority bits (__NVIC_PRIO_BITS) the smallest possible priority group is set.
+ARM GAS  /tmp/ccddVxxl.s 			page 43
+
+
 1467:library/usb/../cmsis/inc/core_cm3.h ****  */
 1468:library/usb/../cmsis/inc/core_cm3.h **** static __INLINE void NVIC_SetPriorityGrouping(uint32_t PriorityGroup)
 1469:library/usb/../cmsis/inc/core_cm3.h **** {
@@ -2578,9 +2537,6 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
 1480:library/usb/../cmsis/inc/core_cm3.h **** 
 1481:library/usb/../cmsis/inc/core_cm3.h **** /**
 1482:library/usb/../cmsis/inc/core_cm3.h ****  * @brief  Get the Priority Grouping from NVIC Interrupt Controller
-ARM GAS  /tmp/ccPVOqSL.s 			page 44
-
-
 1483:library/usb/../cmsis/inc/core_cm3.h ****  *
 1484:library/usb/../cmsis/inc/core_cm3.h ****  * @return priority grouping field 
 1485:library/usb/../cmsis/inc/core_cm3.h ****  *
@@ -2603,44 +2559,44 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
 1502:library/usb/../cmsis/inc/core_cm3.h **** static __INLINE void NVIC_EnableIRQ(IRQn_Type IRQn)
 1503:library/usb/../cmsis/inc/core_cm3.h **** {
 1504:library/usb/../cmsis/inc/core_cm3.h ****   NVIC->ISER[((uint32_t)(IRQn) >> 5)] = (1 << ((uint32_t)(IRQn) & 0x1F)); /* enable interrupt */
- 738              		.loc 2 1504 0
- 739 0036 064B     		ldr	r3, .L43+8
- 740 0038 4FF48062 		mov	r2, #1024
- 741 003c 5A60     		str	r2, [r3, #4]
- 742              	.LVL34:
- 743              	.LBE7:
- 744              	.LBE6:
- 745              	.LBB8:
- 746              	.LBB9:
- 747 003e 4FF48012 		mov	r2, #1048576
- 748 0042 1A60     		str	r2, [r3]
- 749              	.LVL35:
- 750 0044 7047     		bx	lr
- 751              	.L44:
- 752 0046 00BF     		.align	2
- 753              	.L43:
- 754 0048 00100240 		.word	1073876992
- 755 004c 005C0040 		.word	1073765376
- 756 0050 00E100E0 		.word	-536813312
- 757              	.LBE9:
- 758              	.LBE8:
- 759              		.cfi_endproc
- 760              	.LFE35:
- 762              		.section	.text.USBSendData,"ax",%progbits
- 763              		.align	2
- 764              		.global	USBSendData
- 765              		.thumb
- 766              		.thumb_func
- 768              	USBSendData:
- 769              	.LFB36:
+ 697              		.loc 2 1504 0
+ 698 0036 064B     		ldr	r3, .L41+8
+ 699 0038 4FF48062 		mov	r2, #1024
+ 700 003c 5A60     		str	r2, [r3, #4]
+ 701              	.LVL33:
+ 702              	.LBE7:
+ 703              	.LBE6:
+ 704              	.LBB8:
+ 705              	.LBB9:
+ 706 003e 4FF48012 		mov	r2, #1048576
+ 707 0042 1A60     		str	r2, [r3]
+ 708              	.LVL34:
+ 709 0044 7047     		bx	lr
+ 710              	.L42:
+ 711 0046 00BF     		.align	2
+ 712              	.L41:
+ 713 0048 00100240 		.word	1073876992
+ 714 004c 005C0040 		.word	1073765376
+ 715 0050 00E100E0 		.word	-536813312
+ARM GAS  /tmp/ccddVxxl.s 			page 44
+
+
+ 716              	.LBE9:
+ 717              	.LBE8:
+ 718              		.cfi_endproc
+ 719              	.LFE35:
+ 721              		.section	.text.USBSendData,"ax",%progbits
+ 722              		.align	2
+ 723              		.global	USBSendData
+ 724              		.thumb
+ 725              		.thumb_func
+ 727              	USBSendData:
+ 728              	.LFB36:
  242:library/usb/usb.c **** 
  243:library/usb/usb.c ****     /* Clean up buffer */
  244:library/usb/usb.c **** 	// for(uint16_t *i = USB_PMAADDR; i <= USB_PMAADDR + 0x3FF; i+=2) *i = 0;
  245:library/usb/usb.c **** 
  246:library/usb/usb.c ****    	/* Activation interrput */
-ARM GAS  /tmp/ccPVOqSL.s 			page 45
-
-
  247:library/usb/usb.c **** 	NVIC_EnableIRQ(USBWakeUp_IRQn);
  248:library/usb/usb.c **** 	// NVIC_EnableIRQ(USB_HP_CAN1_TX_IRQn);
  249:library/usb/usb.c **** 	NVIC_EnableIRQ(USB_LP_CAN1_RX0_IRQn);
@@ -2652,275 +2608,275 @@ ARM GAS  /tmp/ccPVOqSL.s 			page 1
  255:library/usb/usb.c ****  * Parametrs: buff - buffer data for send on host
  256:library/usb/usb.c ****  */
  257:library/usb/usb.c **** void USBSendData(uint8_t *buff){
- 770              		.loc 1 257 0
- 771              		.cfi_startproc
- 772              		@ args = 0, pretend = 0, frame = 0
- 773              		@ frame_needed = 0, uses_anonymous_args = 0
- 774              	.LVL36:
- 775 0000 08B5     		push	{r3, lr}
- 776              	.LCFI3:
- 777              		.cfi_def_cfa_offset 8
- 778              		.cfi_offset 3, -8
- 779              		.cfi_offset 14, -4
+ 729              		.loc 1 257 0
+ 730              		.cfi_startproc
+ 731              		@ args = 0, pretend = 0, frame = 0
+ 732              		@ frame_needed = 0, uses_anonymous_args = 0
+ 733              	.LVL35:
+ 734 0000 08B5     		push	{r3, lr}
+ 735              	.LCFI3:
+ 736              		.cfi_def_cfa_offset 8
+ 737              		.cfi_offset 3, -8
+ 738              		.cfi_offset 14, -4
  258:library/usb/usb.c ****     USBWritePMA((uint16_t *)buff, USB_EP1_TX, sizeof(buff));
- 780              		.loc 1 258 0
- 781 0002 0422     		movs	r2, #4
- 782 0004 8021     		movs	r1, #128
- 783 0006 FFF7FEFF 		bl	USBWritePMA
- 784              	.LVL37:
+ 739              		.loc 1 258 0
+ 740 0002 0422     		movs	r2, #4
+ 741 0004 8021     		movs	r1, #128
+ 742 0006 FFF7FEFF 		bl	USBWritePMA
+ 743              	.LVL36:
  259:library/usb/usb.c ****     USB_COUNT1_TX = sizeof(buff);
- 785              		.loc 1 259 0
- 786 000a 0422     		movs	r2, #4
- 787 000c 044B     		ldr	r3, .L48
- 788 000e 1A60     		str	r2, [r3]
- 789              	.L46:
+ 744              		.loc 1 259 0
+ 745 000a 0422     		movs	r2, #4
+ 746 000c 044B     		ldr	r3, .L46
+ 747 000e 1A60     		str	r2, [r3]
+ 748              	.L44:
  260:library/usb/usb.c ****     while(!(USB->EP1R & USB_EP_CTR_TX)){}
- 790              		.loc 1 260 0 discriminator 1
- 791 0010 044B     		ldr	r3, .L48+4
- 792 0012 9B88     		ldrh	r3, [r3, #4]
- 793 0014 03F08003 		and	r3, r3, #128
- 794 0018 9BB2     		uxth	r3, r3
- 795 001a 002B     		cmp	r3, #0
- 796 001c F8D0     		beq	.L46
+ 749              		.loc 1 260 0 discriminator 1
+ 750 0010 044B     		ldr	r3, .L46+4
+ 751 0012 9B88     		ldrh	r3, [r3, #4]
+ 752 0014 03F08003 		and	r3, r3, #128
+ 753 0018 9BB2     		uxth	r3, r3
+ 754 001a 002B     		cmp	r3, #0
+ 755 001c F8D0     		beq	.L44
+ARM GAS  /tmp/ccddVxxl.s 			page 45
+
+
  261:library/usb/usb.c **** }
- 797              		.loc 1 261 0
- 798 001e 08BD     		pop	{r3, pc}
- 799              	.L49:
- 800              		.align	2
- 801              	.L48:
- 802 0020 14600040 		.word	1073766420
- 803 0024 005C0040 		.word	1073765376
- 804              		.cfi_endproc
- 805              	.LFE36:
- 807              		.section	.text.USB_LP_CAN1_RX0_IRQHandler,"ax",%progbits
- 808              		.align	2
- 809              		.global	USB_LP_CAN1_RX0_IRQHandler
- 810              		.thumb
- 811              		.thumb_func
- 813              	USB_LP_CAN1_RX0_IRQHandler:
-ARM GAS  /tmp/ccPVOqSL.s 			page 46
-
-
- 814              	.LFB37:
+ 756              		.loc 1 261 0
+ 757 001e 08BD     		pop	{r3, pc}
+ 758              	.L47:
+ 759              		.align	2
+ 760              	.L46:
+ 761 0020 14600040 		.word	1073766420
+ 762 0024 005C0040 		.word	1073765376
+ 763              		.cfi_endproc
+ 764              	.LFE36:
+ 766              		.section	.text.USB_LP_CAN1_RX0_IRQHandler,"ax",%progbits
+ 767              		.align	2
+ 768              		.global	USB_LP_CAN1_RX0_IRQHandler
+ 769              		.thumb
+ 770              		.thumb_func
+ 772              	USB_LP_CAN1_RX0_IRQHandler:
+ 773              	.LFB37:
  262:library/usb/usb.c **** /*
  263:library/usb/usb.c ****  ***********************************************************
  264:library/usb/usb.c ****  ********************** Interrput **************************
  265:library/usb/usb.c ****  ***********************************************************
  266:library/usb/usb.c ****  */
  267:library/usb/usb.c **** void USB_LP_IRQHandler(void){
- 815              		.loc 1 267 0
- 816              		.cfi_startproc
- 817              		@ args = 0, pretend = 0, frame = 0
- 818              		@ frame_needed = 0, uses_anonymous_args = 0
- 819 0000 08B5     		push	{r3, lr}
- 820              	.LCFI4:
- 821              		.cfi_def_cfa_offset 8
- 822              		.cfi_offset 3, -8
- 823              		.cfi_offset 14, -4
+ 774              		.loc 1 267 0
+ 775              		.cfi_startproc
+ 776              		@ args = 0, pretend = 0, frame = 0
+ 777              		@ frame_needed = 0, uses_anonymous_args = 0
+ 778 0000 08B5     		push	{r3, lr}
+ 779              	.LCFI4:
+ 780              		.cfi_def_cfa_offset 8
+ 781              		.cfi_offset 3, -8
+ 782              		.cfi_offset 14, -4
  268:library/usb/usb.c ****     uint32_t num;
  269:library/usb/usb.c **** 	if(USB->ISTR & USB_ISTR_RESET){ 
- 824              		.loc 1 269 0
- 825 0002 324B     		ldr	r3, .L61
- 826 0004 B3F84430 		ldrh	r3, [r3, #68]
- 827 0008 03F48063 		and	r3, r3, #1024
- 828 000c 9BB2     		uxth	r3, r3
- 829 000e 0BB1     		cbz	r3, .L51
+ 783              		.loc 1 269 0
+ 784 0002 324B     		ldr	r3, .L59
+ 785 0004 B3F84430 		ldrh	r3, [r3, #68]
+ 786 0008 03F48063 		and	r3, r3, #1024
+ 787 000c 9BB2     		uxth	r3, r3
+ 788 000e 0BB1     		cbz	r3, .L49
  270:library/usb/usb.c ****     	USBReset();
- 830              		.loc 1 270 0
- 831 0010 FFF7FEFF 		bl	USBReset
- 832              	.LVL38:
- 833              	.L51:
+ 789              		.loc 1 270 0
+ 790 0010 FFF7FEFF 		bl	USBReset
+ 791              	.LVL37:
+ 792              	.L49:
  271:library/usb/usb.c **** 	}
  272:library/usb/usb.c ****     if(USB->ISTR & USB_ISTR_SUSP){
- 834              		.loc 1 272 0
- 835 0014 2D4B     		ldr	r3, .L61
- 836 0016 B3F84430 		ldrh	r3, [r3, #68]
- 837 001a 03F40063 		and	r3, r3, #2048
- 838 001e 9BB2     		uxth	r3, r3
- 839 0020 73B1     		cbz	r3, .L52
+ 793              		.loc 1 272 0
+ 794 0014 2D4B     		ldr	r3, .L59
+ 795 0016 B3F84430 		ldrh	r3, [r3, #68]
+ 796 001a 03F40063 		and	r3, r3, #2048
+ 797 001e 9BB2     		uxth	r3, r3
+ 798 0020 73B1     		cbz	r3, .L50
  273:library/usb/usb.c ****         USB->CNTR |= USB_CNTR_FSUSP; /* Force Suspend */
- 840              		.loc 1 273 0
- 841 0022 2A4A     		ldr	r2, .L61
- 842 0024 B2F84030 		ldrh	r3, [r2, #64]
- 843 0028 9BB2     		uxth	r3, r3
- 844 002a 43F00803 		orr	r3, r3, #8
- 845 002e A2F84030 		strh	r3, [r2, #64]	@ movhi
+ 799              		.loc 1 273 0
+ 800 0022 2A4A     		ldr	r2, .L59
+ 801 0024 B2F84030 		ldrh	r3, [r2, #64]
+ARM GAS  /tmp/ccddVxxl.s 			page 46
+
+
+ 802 0028 9BB2     		uxth	r3, r3
+ 803 002a 43F00803 		orr	r3, r3, #8
+ 804 002e A2F84030 		strh	r3, [r2, #64]	@ movhi
  274:library/usb/usb.c ****         USB->CNTR |= USB_CNTR_LP_MODE; /* Low Power Mode */
- 846              		.loc 1 274 0
- 847 0032 B2F84030 		ldrh	r3, [r2, #64]
- 848 0036 9BB2     		uxth	r3, r3
- 849 0038 43F00403 		orr	r3, r3, #4
- 850 003c A2F84030 		strh	r3, [r2, #64]	@ movhi
- 851              	.L52:
+ 805              		.loc 1 274 0
+ 806 0032 B2F84030 		ldrh	r3, [r2, #64]
+ 807 0036 9BB2     		uxth	r3, r3
+ 808 0038 43F00403 		orr	r3, r3, #4
+ 809 003c A2F84030 		strh	r3, [r2, #64]	@ movhi
+ 810              	.L50:
  275:library/usb/usb.c ****     }
  276:library/usb/usb.c ****     if(USB->ISTR & USB_ISTR_WKUP){  
- 852              		.loc 1 276 0
- 853 0040 224B     		ldr	r3, .L61
- 854 0042 B3F84430 		ldrh	r3, [r3, #68]
- 855 0046 03F48053 		and	r3, r3, #4096
-ARM GAS  /tmp/ccPVOqSL.s 			page 47
-
-
- 856 004a 9BB2     		uxth	r3, r3
- 857 004c 002B     		cmp	r3, #0
- 858 004e 32D0     		beq	.L54
+ 811              		.loc 1 276 0
+ 812 0040 224B     		ldr	r3, .L59
+ 813 0042 B3F84430 		ldrh	r3, [r3, #68]
+ 814 0046 03F48053 		and	r3, r3, #4096
+ 815 004a 9BB2     		uxth	r3, r3
+ 816 004c 002B     		cmp	r3, #0
+ 817 004e 32D0     		beq	.L52
  277:library/usb/usb.c ****         USB->CNTR &= ~USB_CNTR_FSUSP;
- 859              		.loc 1 277 0
- 860 0050 1E4A     		ldr	r2, .L61
- 861 0052 B2F84030 		ldrh	r3, [r2, #64]
- 862 0056 9BB2     		uxth	r3, r3
- 863 0058 23F00803 		bic	r3, r3, #8
- 864 005c 9BB2     		uxth	r3, r3
- 865 005e A2F84030 		strh	r3, [r2, #64]	@ movhi
- 866 0062 28E0     		b	.L54
- 867              	.L59:
+ 818              		.loc 1 277 0
+ 819 0050 1E4A     		ldr	r2, .L59
+ 820 0052 B2F84030 		ldrh	r3, [r2, #64]
+ 821 0056 9BB2     		uxth	r3, r3
+ 822 0058 23F00803 		bic	r3, r3, #8
+ 823 005c 9BB2     		uxth	r3, r3
+ 824 005e A2F84030 		strh	r3, [r2, #64]	@ movhi
+ 825 0062 28E0     		b	.L52
+ 826              	.L57:
  278:library/usb/usb.c ****     }
  279:library/usb/usb.c ****     while((USB->ISTR & USB_ISTR_CTR) != 0){
  280:library/usb/usb.c ****         num = USB->ISTR & USB_ISTR_EP_ID;
- 868              		.loc 1 280 0
- 869 0064 194B     		ldr	r3, .L61
- 870 0066 B3F84430 		ldrh	r3, [r3, #68]
- 871              	.LVL39:
+ 827              		.loc 1 280 0
+ 828 0064 194B     		ldr	r3, .L59
+ 829 0066 B3F84430 		ldrh	r3, [r3, #68]
+ 830              	.LVL38:
  281:library/usb/usb.c ****         if(num == USB_EP0){ /* Endpoint 0 (Control)*/
- 872              		.loc 1 281 0
- 873 006a 13F00F03 		ands	r3, r3, #15
- 874              	.LVL40:
- 875 006e 17D1     		bne	.L55
+ 831              		.loc 1 281 0
+ 832 006a 13F00F03 		ands	r3, r3, #15
+ 833              	.LVL39:
+ 834 006e 17D1     		bne	.L53
  282:library/usb/usb.c ****             if((USB->ISTR & USB_ISTR_DIR) != 0){
- 876              		.loc 1 282 0
- 877 0070 164B     		ldr	r3, .L61
- 878              	.LVL41:
- 879 0072 B3F84430 		ldrh	r3, [r3, #68]
- 880 0076 03F01003 		and	r3, r3, #16
- 881 007a 9BB2     		uxth	r3, r3
- 882 007c 43B1     		cbz	r3, .L56
+ 835              		.loc 1 282 0
+ 836 0070 164B     		ldr	r3, .L59
+ 837              	.LVL40:
+ 838 0072 B3F84430 		ldrh	r3, [r3, #68]
+ 839 0076 03F01003 		and	r3, r3, #16
+ 840 007a 9BB2     		uxth	r3, r3
+ 841 007c 43B1     		cbz	r3, .L54
  283:library/usb/usb.c ****                 if(USB->EP0R & USB_EP_SETUP){ /* SETUP */
- 883              		.loc 1 283 0
- 884 007e 134B     		ldr	r3, .L61
- 885 0080 1B88     		ldrh	r3, [r3]
- 886 0082 03F40063 		and	r3, r3, #2048
- 887 0086 9BB2     		uxth	r3, r3
- 888 0088 ABB1     		cbz	r3, .L54
+ 842              		.loc 1 283 0
+ 843 007e 134B     		ldr	r3, .L59
+ 844 0080 1B88     		ldrh	r3, [r3]
+ 845 0082 03F40063 		and	r3, r3, #2048
+ 846 0086 9BB2     		uxth	r3, r3
+ 847 0088 ABB1     		cbz	r3, .L52
  284:library/usb/usb.c ****                     USBSetup();
- 889              		.loc 1 284 0
- 890 008a FFF7FEFF 		bl	USBSetup
- 891              	.LVL42:
- 892 008e 12E0     		b	.L54
- 893              	.L56:
+ARM GAS  /tmp/ccddVxxl.s 			page 47
+
+
+ 848              		.loc 1 284 0
+ 849 008a FFF7FEFF 		bl	USBSetup
+ 850              	.LVL41:
+ 851 008e 12E0     		b	.L52
+ 852              	.L54:
  285:library/usb/usb.c ****                 }else{ /* OUT */
  286:library/usb/usb.c **** 
  287:library/usb/usb.c ****                 }
  288:library/usb/usb.c ****             }else{ /* IN */
  289:library/usb/usb.c ****                 USB->EP0R &= ~USB_EP_CTR_TX;
- 894              		.loc 1 289 0
- 895 0090 0E4A     		ldr	r2, .L61
- 896 0092 1388     		ldrh	r3, [r2]
- 897 0094 9BB2     		uxth	r3, r3
- 898 0096 23F08003 		bic	r3, r3, #128
- 899 009a 9BB2     		uxth	r3, r3
-ARM GAS  /tmp/ccPVOqSL.s 			page 48
-
-
- 900 009c 1380     		strh	r3, [r2]	@ movhi
- 901 009e 0AE0     		b	.L54
- 902              	.LVL43:
- 903              	.L55:
+ 853              		.loc 1 289 0
+ 854 0090 0E4A     		ldr	r2, .L59
+ 855 0092 1388     		ldrh	r3, [r2]
+ 856 0094 9BB2     		uxth	r3, r3
+ 857 0096 23F08003 		bic	r3, r3, #128
+ 858 009a 9BB2     		uxth	r3, r3
+ 859 009c 1380     		strh	r3, [r2]	@ movhi
+ 860 009e 0AE0     		b	.L52
+ 861              	.LVL42:
+ 862              	.L53:
  290:library/usb/usb.c ****             }
  291:library/usb/usb.c ****         }else if(num == USB_EP1){ /* Endpoint 1 (IN)*/
- 904              		.loc 1 291 0
- 905 00a0 012B     		cmp	r3, #1
- 906 00a2 03D1     		bne	.L58
+ 863              		.loc 1 291 0
+ 864 00a0 012B     		cmp	r3, #1
+ 865 00a2 03D1     		bne	.L56
  292:library/usb/usb.c ****             if((USB->ISTR & USB_ISTR_DIR) == 0){
- 907              		.loc 1 292 0
- 908 00a4 094B     		ldr	r3, .L61
- 909              	.LVL44:
- 910 00a6 B3F84430 		ldrh	r3, [r3, #68]
- 911 00aa 04E0     		b	.L54
- 912              	.LVL45:
- 913              	.L58:
+ 866              		.loc 1 292 0
+ 867 00a4 094B     		ldr	r3, .L59
+ 868              	.LVL43:
+ 869 00a6 B3F84430 		ldrh	r3, [r3, #68]
+ 870 00aa 04E0     		b	.L52
+ 871              	.LVL44:
+ 872              	.L56:
  293:library/usb/usb.c **** 
  294:library/usb/usb.c ****             }
  295:library/usb/usb.c ****         }else if(num == USB_EP2){ /* Endpoint 2 (OUT)*/
- 914              		.loc 1 295 0
- 915 00ac 022B     		cmp	r3, #2
- 916 00ae 02D1     		bne	.L54
+ 873              		.loc 1 295 0
+ 874 00ac 022B     		cmp	r3, #2
+ 875 00ae 02D1     		bne	.L52
  296:library/usb/usb.c ****             if((USB->ISTR & USB_ISTR_DIR) != 0){
- 917              		.loc 1 296 0
- 918 00b0 064B     		ldr	r3, .L61
- 919              	.LVL46:
- 920 00b2 B3F84430 		ldrh	r3, [r3, #68]
- 921              	.L54:
+ 876              		.loc 1 296 0
+ 877 00b0 064B     		ldr	r3, .L59
+ 878              	.LVL45:
+ 879 00b2 B3F84430 		ldrh	r3, [r3, #68]
+ 880              	.L52:
  279:library/usb/usb.c ****         num = USB->ISTR & USB_ISTR_EP_ID;
- 922              		.loc 1 279 0
- 923 00b6 054B     		ldr	r3, .L61
- 924 00b8 B3F84430 		ldrh	r3, [r3, #68]
- 925 00bc 13F4004F 		tst	r3, #32768
- 926 00c0 D0D1     		bne	.L59
+ 881              		.loc 1 279 0
+ 882 00b6 054B     		ldr	r3, .L59
+ 883 00b8 B3F84430 		ldrh	r3, [r3, #68]
+ 884 00bc 13F4004F 		tst	r3, #32768
+ 885 00c0 D0D1     		bne	.L57
  297:library/usb/usb.c ****                 
  298:library/usb/usb.c ****             }
  299:library/usb/usb.c ****         }
  300:library/usb/usb.c ****     }
  301:library/usb/usb.c ****     USB->ISTR = 0x0;
- 927              		.loc 1 301 0
- 928 00c2 0022     		movs	r2, #0
- 929 00c4 014B     		ldr	r3, .L61
- 930 00c6 A3F84420 		strh	r2, [r3, #68]	@ movhi
- 931 00ca 08BD     		pop	{r3, pc}
- 932              	.L62:
- 933              		.align	2
- 934              	.L61:
- 935 00cc 005C0040 		.word	1073765376
- 936              		.cfi_endproc
- 937              	.LFE37:
- 939              		.comm	bufferSetup,48,4
- 940              		.comm	SetupPacket,8,4
- 941              		.global	devAddress
- 942              		.section	.bss.devAddress,"aw",%nobits
- 943              		.set	.LANCHOR0,. + 0
- 946              	devAddress:
-ARM GAS  /tmp/ccPVOqSL.s 			page 49
+ 886              		.loc 1 301 0
+ARM GAS  /tmp/ccddVxxl.s 			page 48
 
 
- 947 0000 00       		.space	1
- 948              		.text
- 949              	.Letext0:
- 950              		.file 3 "library/usb/../cmsis/inc/stm32f103xb.h"
- 951              		.file 4 "/usr/include/newlib/machine/_default_types.h"
- 952              		.file 5 "/usr/include/newlib/sys/_stdint.h"
- 953              		.file 6 "library/usb/usb.h"
-ARM GAS  /tmp/ccPVOqSL.s 			page 50
+ 887 00c2 0022     		movs	r2, #0
+ 888 00c4 014B     		ldr	r3, .L59
+ 889 00c6 A3F84420 		strh	r2, [r3, #68]	@ movhi
+ 890 00ca 08BD     		pop	{r3, pc}
+ 891              	.L60:
+ 892              		.align	2
+ 893              	.L59:
+ 894 00cc 005C0040 		.word	1073765376
+ 895              		.cfi_endproc
+ 896              	.LFE37:
+ 898              		.comm	bufferSetup,48,4
+ 899              		.comm	SetupPacket,8,4
+ 900              		.global	devAddress
+ 901              		.section	.bss.devAddress,"aw",%nobits
+ 902              		.set	.LANCHOR0,. + 0
+ 905              	devAddress:
+ 906 0000 00       		.space	1
+ 907              		.text
+ 908              	.Letext0:
+ 909              		.file 3 "library/usb/../cmsis/inc/stm32f103xb.h"
+ 910              		.file 4 "/usr/include/newlib/machine/_default_types.h"
+ 911              		.file 5 "/usr/include/newlib/sys/_stdint.h"
+ 912              		.file 6 "library/usb/usb.h"
+ARM GAS  /tmp/ccddVxxl.s 			page 49
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 usb.c
-     /tmp/ccPVOqSL.s:20     .text.USBReset:0000000000000000 $t
-     /tmp/ccPVOqSL.s:25     .text.USBReset:0000000000000000 USBReset
-     /tmp/ccPVOqSL.s:111    .text.USBReset:0000000000000078 $d
-     /tmp/ccPVOqSL.s:119    .text.USBZeroLengthPacket:0000000000000000 $t
-     /tmp/ccPVOqSL.s:124    .text.USBZeroLengthPacket:0000000000000000 USBZeroLengthPacket
-     /tmp/ccPVOqSL.s:152    .text.USBZeroLengthPacket:0000000000000020 $d
-     /tmp/ccPVOqSL.s:158    .text.USBRequest:0000000000000000 $t
-     /tmp/ccPVOqSL.s:163    .text.USBRequest:0000000000000000 USBRequest
-     /tmp/ccPVOqSL.s:200    .text.USBReadPMA:0000000000000000 $t
-     /tmp/ccPVOqSL.s:205    .text.USBReadPMA:0000000000000000 USBReadPMA
-     /tmp/ccPVOqSL.s:250    .text.USBWritePMA:0000000000000000 $t
-     /tmp/ccPVOqSL.s:255    .text.USBWritePMA:0000000000000000 USBWritePMA
-     /tmp/ccPVOqSL.s:300    .text.USBSetup:0000000000000000 $t
-     /tmp/ccPVOqSL.s:305    .text.USBSetup:0000000000000000 USBSetup
-     /tmp/ccPVOqSL.s:679    .text.USBSetup:0000000000000270 $d
+     /tmp/ccddVxxl.s:20     .text.USBReset:0000000000000000 $t
+     /tmp/ccddVxxl.s:25     .text.USBReset:0000000000000000 USBReset
+     /tmp/ccddVxxl.s:108    .text.USBReset:0000000000000074 $d
+     /tmp/ccddVxxl.s:116    .text.USBZeroLengthPacket:0000000000000000 $t
+     /tmp/ccddVxxl.s:121    .text.USBZeroLengthPacket:0000000000000000 USBZeroLengthPacket
+     /tmp/ccddVxxl.s:149    .text.USBZeroLengthPacket:0000000000000020 $d
+     /tmp/ccddVxxl.s:155    .text.USBRequest:0000000000000000 $t
+     /tmp/ccddVxxl.s:160    .text.USBRequest:0000000000000000 USBRequest
+     /tmp/ccddVxxl.s:197    .text.USBReadPMA:0000000000000000 $t
+     /tmp/ccddVxxl.s:202    .text.USBReadPMA:0000000000000000 USBReadPMA
+     /tmp/ccddVxxl.s:247    .text.USBWritePMA:0000000000000000 $t
+     /tmp/ccddVxxl.s:252    .text.USBWritePMA:0000000000000000 USBWritePMA
+     /tmp/ccddVxxl.s:297    .text.USBSetup:0000000000000000 $t
+     /tmp/ccddVxxl.s:302    .text.USBSetup:0000000000000000 USBSetup
+     /tmp/ccddVxxl.s:639    .text.USBSetup:0000000000000230 $d
                             *COM*:0000000000000030 bufferSetup
                             *COM*:0000000000000008 SetupPacket
-     /tmp/ccPVOqSL.s:698    .text.USBConfig:0000000000000000 $t
-     /tmp/ccPVOqSL.s:703    .text.USBConfig:0000000000000000 USBConfig
-     /tmp/ccPVOqSL.s:754    .text.USBConfig:0000000000000048 $d
-     /tmp/ccPVOqSL.s:763    .text.USBSendData:0000000000000000 $t
-     /tmp/ccPVOqSL.s:768    .text.USBSendData:0000000000000000 USBSendData
-     /tmp/ccPVOqSL.s:802    .text.USBSendData:0000000000000020 $d
-     /tmp/ccPVOqSL.s:808    .text.USB_LP_CAN1_RX0_IRQHandler:0000000000000000 $t
-     /tmp/ccPVOqSL.s:813    .text.USB_LP_CAN1_RX0_IRQHandler:0000000000000000 USB_LP_CAN1_RX0_IRQHandler
-     /tmp/ccPVOqSL.s:935    .text.USB_LP_CAN1_RX0_IRQHandler:00000000000000cc $d
-     /tmp/ccPVOqSL.s:946    .bss.devAddress:0000000000000000 devAddress
-     /tmp/ccPVOqSL.s:947    .bss.devAddress:0000000000000000 $d
+     /tmp/ccddVxxl.s:657    .text.USBConfig:0000000000000000 $t
+     /tmp/ccddVxxl.s:662    .text.USBConfig:0000000000000000 USBConfig
+     /tmp/ccddVxxl.s:713    .text.USBConfig:0000000000000048 $d
+     /tmp/ccddVxxl.s:722    .text.USBSendData:0000000000000000 $t
+     /tmp/ccddVxxl.s:727    .text.USBSendData:0000000000000000 USBSendData
+     /tmp/ccddVxxl.s:761    .text.USBSendData:0000000000000020 $d
+     /tmp/ccddVxxl.s:767    .text.USB_LP_CAN1_RX0_IRQHandler:0000000000000000 $t
+     /tmp/ccddVxxl.s:772    .text.USB_LP_CAN1_RX0_IRQHandler:0000000000000000 USB_LP_CAN1_RX0_IRQHandler
+     /tmp/ccddVxxl.s:894    .text.USB_LP_CAN1_RX0_IRQHandler:00000000000000cc $d
+     /tmp/ccddVxxl.s:905    .bss.devAddress:0000000000000000 devAddress
+     /tmp/ccddVxxl.s:906    .bss.devAddress:0000000000000000 $d
                      .debug_frame:0000000000000010 $d
 
 UNDEFINED SYMBOLS
@@ -2933,4 +2889,3 @@ descStringProduct
 descStringSerialNumber
 descStringConfig
 descStringInterface
-descHIDReport
