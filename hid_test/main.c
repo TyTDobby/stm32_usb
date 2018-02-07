@@ -1,5 +1,5 @@
-#include "library/cmsis/inc/stm32f103xb.h"
-#include "library/cmsis/inc/system_stm32f1xx.h"
+#include "library/cmsis/stm32f10x.h"
+#include "library/cmsis/system_stm32f10x.h"
 #include "library/usb/usb.h"
 
 uint16_t *buffSend[64];
@@ -31,7 +31,7 @@ void RCCConfig(void){
 	RCC->CFGR &= ~RCC_CFGR_USBPRE; 	  		/* Prescaler USB 1.5 */
 	RCC->APB2ENR |= RCC_APB2ENR_IOPAEN | RCC_APB2ENR_IOPCEN | RCC_APB2ENR_AFIOEN; /* GPIO clock enable */
 
-
+	RCC->APB1ENR |= RCC_APB1ENR_USBEN; /* USB clock enable */
 }
 /*
  * Name: GPIOConfig
@@ -54,11 +54,11 @@ void Config(void){
 	RCCConfig();
 	GPIOConfig();
 	USBConfig();
-
 }
 
 int main(void){
 	Config(); 
+
 	// *buffSend = 0x30;
 	// *(buffSend + 1) = 0x31;
 	// *(buffSend + 2) = 0x32;
@@ -69,6 +69,7 @@ int main(void){
 		// {
 		// 	/* code */
 		// }
+		
 	}
 	return 0;
 

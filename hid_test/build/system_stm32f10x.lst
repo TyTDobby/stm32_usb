@@ -1,0 +1,1510 @@
+ARM GAS  /tmp/cc9oiZ0O.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"system_stm32f10x.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.SetSysClockTo72,"ax",%progbits
+  20              		.align	2
+  21              		.thumb
+  22              		.thumb_func
+  24              	SetSysClockTo72:
+  25              	.LFB32:
+  26              		.file 1 "library/cmsis/system_stm32f10x.c"
+   1:library/cmsis/system_stm32f10x.c **** /**
+   2:library/cmsis/system_stm32f10x.c ****   ******************************************************************************
+   3:library/cmsis/system_stm32f10x.c ****   * @file    system_stm32f10x.c
+   4:library/cmsis/system_stm32f10x.c ****   * @author  MCD Application Team
+   5:library/cmsis/system_stm32f10x.c ****   * @version V3.3.0
+   6:library/cmsis/system_stm32f10x.c ****   * @date    04/16/2010
+   7:library/cmsis/system_stm32f10x.c ****   * @brief   CMSIS Cortex-M3 Device Peripheral Access Layer System Source File.
+   8:library/cmsis/system_stm32f10x.c ****   ******************************************************************************  
+   9:library/cmsis/system_stm32f10x.c ****   *
+  10:library/cmsis/system_stm32f10x.c ****   * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+  11:library/cmsis/system_stm32f10x.c ****   * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
+  12:library/cmsis/system_stm32f10x.c ****   * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
+  13:library/cmsis/system_stm32f10x.c ****   * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
+  14:library/cmsis/system_stm32f10x.c ****   * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
+  15:library/cmsis/system_stm32f10x.c ****   * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+  16:library/cmsis/system_stm32f10x.c ****   *
+  17:library/cmsis/system_stm32f10x.c ****   * <h2><center>&copy; COPYRIGHT 2010 STMicroelectronics</center></h2>
+  18:library/cmsis/system_stm32f10x.c ****   ******************************************************************************
+  19:library/cmsis/system_stm32f10x.c ****   */
+  20:library/cmsis/system_stm32f10x.c **** 
+  21:library/cmsis/system_stm32f10x.c **** /** @addtogroup CMSIS
+  22:library/cmsis/system_stm32f10x.c ****   * @{
+  23:library/cmsis/system_stm32f10x.c ****   */
+  24:library/cmsis/system_stm32f10x.c **** 
+  25:library/cmsis/system_stm32f10x.c **** /** @addtogroup stm32f10x_system
+  26:library/cmsis/system_stm32f10x.c ****   * @{
+  27:library/cmsis/system_stm32f10x.c ****   */  
+  28:library/cmsis/system_stm32f10x.c ****   
+  29:library/cmsis/system_stm32f10x.c **** /** @addtogroup STM32F10x_System_Private_Includes
+  30:library/cmsis/system_stm32f10x.c ****   * @{
+  31:library/cmsis/system_stm32f10x.c ****   */
+  32:library/cmsis/system_stm32f10x.c **** 
+ARM GAS  /tmp/cc9oiZ0O.s 			page 2
+
+
+  33:library/cmsis/system_stm32f10x.c **** #include "stm32f10x.h"
+  34:library/cmsis/system_stm32f10x.c **** 
+  35:library/cmsis/system_stm32f10x.c **** /**
+  36:library/cmsis/system_stm32f10x.c ****   * @}
+  37:library/cmsis/system_stm32f10x.c ****   */
+  38:library/cmsis/system_stm32f10x.c **** 
+  39:library/cmsis/system_stm32f10x.c **** /** @addtogroup STM32F10x_System_Private_TypesDefinitions
+  40:library/cmsis/system_stm32f10x.c ****   * @{
+  41:library/cmsis/system_stm32f10x.c ****   */
+  42:library/cmsis/system_stm32f10x.c **** 
+  43:library/cmsis/system_stm32f10x.c **** /**
+  44:library/cmsis/system_stm32f10x.c ****   * @}
+  45:library/cmsis/system_stm32f10x.c ****   */
+  46:library/cmsis/system_stm32f10x.c **** 
+  47:library/cmsis/system_stm32f10x.c **** /** @addtogroup STM32F10x_System_Private_Defines
+  48:library/cmsis/system_stm32f10x.c ****   * @{
+  49:library/cmsis/system_stm32f10x.c ****   */
+  50:library/cmsis/system_stm32f10x.c **** 
+  51:library/cmsis/system_stm32f10x.c **** /*!< Uncomment the line corresponding to the desired System clock (SYSCLK)
+  52:library/cmsis/system_stm32f10x.c ****    frequency (after reset the HSI is used as SYSCLK source)
+  53:library/cmsis/system_stm32f10x.c ****    
+  54:library/cmsis/system_stm32f10x.c ****    IMPORTANT NOTE:
+  55:library/cmsis/system_stm32f10x.c ****    ============== 
+  56:library/cmsis/system_stm32f10x.c ****    1. After each device reset the HSI is used as System clock source.
+  57:library/cmsis/system_stm32f10x.c **** 
+  58:library/cmsis/system_stm32f10x.c ****    2. Please make sure that the selected System clock doesn't exceed your device's
+  59:library/cmsis/system_stm32f10x.c ****       maximum frequency.
+  60:library/cmsis/system_stm32f10x.c ****       
+  61:library/cmsis/system_stm32f10x.c ****    3. If none of the define below is enabled, the HSI is used as System clock
+  62:library/cmsis/system_stm32f10x.c ****     source.
+  63:library/cmsis/system_stm32f10x.c **** 
+  64:library/cmsis/system_stm32f10x.c ****    4. The System clock configuration functions provided within this file assume that:
+  65:library/cmsis/system_stm32f10x.c ****         - For Low and Medium density Value line devices an external 8MHz crystal 
+  66:library/cmsis/system_stm32f10x.c ****           is used to drive the System clock.
+  67:library/cmsis/system_stm32f10x.c ****         - For Low, Medium and High density devices an external 8MHz crystal is
+  68:library/cmsis/system_stm32f10x.c ****           used to drive the System clock.
+  69:library/cmsis/system_stm32f10x.c ****         - For Connectivity line devices an external 25MHz crystal is used to drive
+  70:library/cmsis/system_stm32f10x.c ****           the System clock.
+  71:library/cmsis/system_stm32f10x.c ****      If you are using different crystal you have to adapt those functions accordingly.
+  72:library/cmsis/system_stm32f10x.c ****     */
+  73:library/cmsis/system_stm32f10x.c ****     
+  74:library/cmsis/system_stm32f10x.c **** #if defined (STM32F10X_LD_VL) || (defined STM32F10X_MD_VL) 
+  75:library/cmsis/system_stm32f10x.c **** /* #define SYSCLK_FREQ_HSE    HSE_Value */
+  76:library/cmsis/system_stm32f10x.c ****  #define SYSCLK_FREQ_24MHz  24000000
+  77:library/cmsis/system_stm32f10x.c **** #else
+  78:library/cmsis/system_stm32f10x.c **** /* #define SYSCLK_FREQ_HSE    HSE_Value */
+  79:library/cmsis/system_stm32f10x.c **** /* #define SYSCLK_FREQ_24MHz  24000000 */ 
+  80:library/cmsis/system_stm32f10x.c **** /* #define SYSCLK_FREQ_36MHz  36000000 */
+  81:library/cmsis/system_stm32f10x.c **** /* #define SYSCLK_FREQ_48MHz  48000000 */
+  82:library/cmsis/system_stm32f10x.c **** /* #define SYSCLK_FREQ_56MHz  56000000 */
+  83:library/cmsis/system_stm32f10x.c **** #define SYSCLK_FREQ_72MHz  72000000
+  84:library/cmsis/system_stm32f10x.c **** #endif
+  85:library/cmsis/system_stm32f10x.c **** 
+  86:library/cmsis/system_stm32f10x.c **** /*!< Uncomment the following line if you need to use external SRAM mounted
+  87:library/cmsis/system_stm32f10x.c ****      on STM3210E-EVAL board (STM32 High density and XL-density devices) as data memory  */ 
+  88:library/cmsis/system_stm32f10x.c **** #if defined (STM32F10X_HD) || (defined STM32F10X_XL)
+  89:library/cmsis/system_stm32f10x.c **** /* #define DATA_IN_ExtSRAM */
+ARM GAS  /tmp/cc9oiZ0O.s 			page 3
+
+
+  90:library/cmsis/system_stm32f10x.c **** #endif
+  91:library/cmsis/system_stm32f10x.c **** 
+  92:library/cmsis/system_stm32f10x.c **** /**
+  93:library/cmsis/system_stm32f10x.c ****   * @}
+  94:library/cmsis/system_stm32f10x.c ****   */
+  95:library/cmsis/system_stm32f10x.c **** 
+  96:library/cmsis/system_stm32f10x.c **** /** @addtogroup STM32F10x_System_Private_Macros
+  97:library/cmsis/system_stm32f10x.c ****   * @{
+  98:library/cmsis/system_stm32f10x.c ****   */
+  99:library/cmsis/system_stm32f10x.c **** 
+ 100:library/cmsis/system_stm32f10x.c **** /**
+ 101:library/cmsis/system_stm32f10x.c ****   * @}
+ 102:library/cmsis/system_stm32f10x.c ****   */
+ 103:library/cmsis/system_stm32f10x.c **** 
+ 104:library/cmsis/system_stm32f10x.c **** /** @addtogroup STM32F10x_System_Private_Variables
+ 105:library/cmsis/system_stm32f10x.c ****   * @{
+ 106:library/cmsis/system_stm32f10x.c ****   */
+ 107:library/cmsis/system_stm32f10x.c **** 
+ 108:library/cmsis/system_stm32f10x.c **** /*******************************************************************************
+ 109:library/cmsis/system_stm32f10x.c **** *  Clock Definitions
+ 110:library/cmsis/system_stm32f10x.c **** *******************************************************************************/
+ 111:library/cmsis/system_stm32f10x.c **** #ifdef SYSCLK_FREQ_HSE
+ 112:library/cmsis/system_stm32f10x.c ****   uint32_t SystemCoreClock         = SYSCLK_FREQ_HSE;        /*!< System Clock Frequency (Core Cloc
+ 113:library/cmsis/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_24MHz
+ 114:library/cmsis/system_stm32f10x.c ****   uint32_t SystemCoreClock         = SYSCLK_FREQ_24MHz;        /*!< System Clock Frequency (Core Cl
+ 115:library/cmsis/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_36MHz
+ 116:library/cmsis/system_stm32f10x.c ****   uint32_t SystemCoreClock         = SYSCLK_FREQ_36MHz;        /*!< System Clock Frequency (Core Cl
+ 117:library/cmsis/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_48MHz
+ 118:library/cmsis/system_stm32f10x.c ****   uint32_t SystemCoreClock         = SYSCLK_FREQ_48MHz;        /*!< System Clock Frequency (Core Cl
+ 119:library/cmsis/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_56MHz
+ 120:library/cmsis/system_stm32f10x.c ****   uint32_t SystemCoreClock         = SYSCLK_FREQ_56MHz;        /*!< System Clock Frequency (Core Cl
+ 121:library/cmsis/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_72MHz
+ 122:library/cmsis/system_stm32f10x.c ****   uint32_t SystemCoreClock         = SYSCLK_FREQ_72MHz;        /*!< System Clock Frequency (Core Cl
+ 123:library/cmsis/system_stm32f10x.c **** #else /*!< HSI Selected as System Clock source */
+ 124:library/cmsis/system_stm32f10x.c ****   uint32_t SystemCoreClock         = HSI_Value;        /*!< System Clock Frequency (Core Clock) */
+ 125:library/cmsis/system_stm32f10x.c **** #endif
+ 126:library/cmsis/system_stm32f10x.c **** 
+ 127:library/cmsis/system_stm32f10x.c **** __I uint8_t AHBPrescTable[16] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 6, 7, 8, 9};
+ 128:library/cmsis/system_stm32f10x.c **** /**
+ 129:library/cmsis/system_stm32f10x.c ****   * @}
+ 130:library/cmsis/system_stm32f10x.c ****   */
+ 131:library/cmsis/system_stm32f10x.c **** 
+ 132:library/cmsis/system_stm32f10x.c **** /** @addtogroup STM32F10x_System_Private_FunctionPrototypes
+ 133:library/cmsis/system_stm32f10x.c ****   * @{
+ 134:library/cmsis/system_stm32f10x.c ****   */
+ 135:library/cmsis/system_stm32f10x.c **** 
+ 136:library/cmsis/system_stm32f10x.c **** static void SetSysClock(void);
+ 137:library/cmsis/system_stm32f10x.c **** 
+ 138:library/cmsis/system_stm32f10x.c **** #ifdef SYSCLK_FREQ_HSE
+ 139:library/cmsis/system_stm32f10x.c ****   static void SetSysClockToHSE(void);
+ 140:library/cmsis/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_24MHz
+ 141:library/cmsis/system_stm32f10x.c ****   static void SetSysClockTo24(void);
+ 142:library/cmsis/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_36MHz
+ 143:library/cmsis/system_stm32f10x.c ****   static void SetSysClockTo36(void);
+ 144:library/cmsis/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_48MHz
+ 145:library/cmsis/system_stm32f10x.c ****   static void SetSysClockTo48(void);
+ 146:library/cmsis/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_56MHz
+ARM GAS  /tmp/cc9oiZ0O.s 			page 4
+
+
+ 147:library/cmsis/system_stm32f10x.c ****   static void SetSysClockTo56(void);  
+ 148:library/cmsis/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_72MHz
+ 149:library/cmsis/system_stm32f10x.c ****   static void SetSysClockTo72(void);
+ 150:library/cmsis/system_stm32f10x.c **** #endif
+ 151:library/cmsis/system_stm32f10x.c **** 
+ 152:library/cmsis/system_stm32f10x.c **** #ifdef DATA_IN_ExtSRAM
+ 153:library/cmsis/system_stm32f10x.c ****   static void SystemInit_ExtMemCtl(void); 
+ 154:library/cmsis/system_stm32f10x.c **** #endif /* DATA_IN_ExtSRAM */
+ 155:library/cmsis/system_stm32f10x.c **** 
+ 156:library/cmsis/system_stm32f10x.c **** /**
+ 157:library/cmsis/system_stm32f10x.c ****   * @}
+ 158:library/cmsis/system_stm32f10x.c ****   */
+ 159:library/cmsis/system_stm32f10x.c **** 
+ 160:library/cmsis/system_stm32f10x.c **** /** @addtogroup STM32F10x_System_Private_Functions
+ 161:library/cmsis/system_stm32f10x.c ****   * @{
+ 162:library/cmsis/system_stm32f10x.c ****   */
+ 163:library/cmsis/system_stm32f10x.c **** 
+ 164:library/cmsis/system_stm32f10x.c **** /**
+ 165:library/cmsis/system_stm32f10x.c ****   * @brief  Setup the microcontroller system
+ 166:library/cmsis/system_stm32f10x.c ****   *         Initialize the Embedded Flash Interface, the PLL and update the 
+ 167:library/cmsis/system_stm32f10x.c ****   *         SystemCoreClock variable.
+ 168:library/cmsis/system_stm32f10x.c ****   * @note   This function should be used only after reset.
+ 169:library/cmsis/system_stm32f10x.c ****   * @param  None
+ 170:library/cmsis/system_stm32f10x.c ****   * @retval None
+ 171:library/cmsis/system_stm32f10x.c ****   */
+ 172:library/cmsis/system_stm32f10x.c **** void SystemInit (void)
+ 173:library/cmsis/system_stm32f10x.c **** {
+ 174:library/cmsis/system_stm32f10x.c ****   /* Reset the RCC clock configuration to the default reset state(for debug purpose) */
+ 175:library/cmsis/system_stm32f10x.c ****   /* Set HSION bit */
+ 176:library/cmsis/system_stm32f10x.c ****   RCC->CR |= (uint32_t)0x00000001;
+ 177:library/cmsis/system_stm32f10x.c **** 
+ 178:library/cmsis/system_stm32f10x.c ****   /* Reset SW, HPRE, PPRE1, PPRE2, ADCPRE and MCO bits */
+ 179:library/cmsis/system_stm32f10x.c **** #ifndef STM32F10X_CL
+ 180:library/cmsis/system_stm32f10x.c ****   RCC->CFGR &= (uint32_t)0xF8FF0000;
+ 181:library/cmsis/system_stm32f10x.c **** #else
+ 182:library/cmsis/system_stm32f10x.c ****   RCC->CFGR &= (uint32_t)0xF0FF0000;
+ 183:library/cmsis/system_stm32f10x.c **** #endif /* STM32F10X_CL */   
+ 184:library/cmsis/system_stm32f10x.c ****   
+ 185:library/cmsis/system_stm32f10x.c ****   /* Reset HSEON, CSSON and PLLON bits */
+ 186:library/cmsis/system_stm32f10x.c ****   RCC->CR &= (uint32_t)0xFEF6FFFF;
+ 187:library/cmsis/system_stm32f10x.c **** 
+ 188:library/cmsis/system_stm32f10x.c ****   /* Reset HSEBYP bit */
+ 189:library/cmsis/system_stm32f10x.c ****   RCC->CR &= (uint32_t)0xFFFBFFFF;
+ 190:library/cmsis/system_stm32f10x.c **** 
+ 191:library/cmsis/system_stm32f10x.c ****   /* Reset PLLSRC, PLLXTPRE, PLLMUL and USBPRE/OTGFSPRE bits */
+ 192:library/cmsis/system_stm32f10x.c ****   RCC->CFGR &= (uint32_t)0xFF80FFFF;
+ 193:library/cmsis/system_stm32f10x.c **** 
+ 194:library/cmsis/system_stm32f10x.c **** #ifdef STM32F10X_CL
+ 195:library/cmsis/system_stm32f10x.c ****   /* Reset PLL2ON and PLL3ON bits */
+ 196:library/cmsis/system_stm32f10x.c ****   RCC->CR &= (uint32_t)0xEBFFFFFF;
+ 197:library/cmsis/system_stm32f10x.c **** 
+ 198:library/cmsis/system_stm32f10x.c ****   /* Disable all interrupts and clear pending bits  */
+ 199:library/cmsis/system_stm32f10x.c ****   RCC->CIR = 0x00FF0000;
+ 200:library/cmsis/system_stm32f10x.c **** 
+ 201:library/cmsis/system_stm32f10x.c ****   /* Reset CFGR2 register */
+ 202:library/cmsis/system_stm32f10x.c ****   RCC->CFGR2 = 0x00000000;
+ 203:library/cmsis/system_stm32f10x.c **** #elif defined (STM32F10X_LD_VL) || defined (STM32F10X_MD_VL) 
+ARM GAS  /tmp/cc9oiZ0O.s 			page 5
+
+
+ 204:library/cmsis/system_stm32f10x.c ****   /* Disable all interrupts and clear pending bits  */
+ 205:library/cmsis/system_stm32f10x.c ****   RCC->CIR = 0x009F0000;
+ 206:library/cmsis/system_stm32f10x.c **** 
+ 207:library/cmsis/system_stm32f10x.c ****   /* Reset CFGR2 register */
+ 208:library/cmsis/system_stm32f10x.c ****   RCC->CFGR2 = 0x00000000;      
+ 209:library/cmsis/system_stm32f10x.c **** #else
+ 210:library/cmsis/system_stm32f10x.c ****   /* Disable all interrupts and clear pending bits  */
+ 211:library/cmsis/system_stm32f10x.c ****   RCC->CIR = 0x009F0000;
+ 212:library/cmsis/system_stm32f10x.c **** #endif /* STM32F10X_CL */
+ 213:library/cmsis/system_stm32f10x.c ****     
+ 214:library/cmsis/system_stm32f10x.c **** #if defined (STM32F10X_HD) || (defined STM32F10X_XL)
+ 215:library/cmsis/system_stm32f10x.c ****   #ifdef DATA_IN_ExtSRAM
+ 216:library/cmsis/system_stm32f10x.c ****     SystemInit_ExtMemCtl(); 
+ 217:library/cmsis/system_stm32f10x.c ****   #endif /* DATA_IN_ExtSRAM */
+ 218:library/cmsis/system_stm32f10x.c **** #endif 
+ 219:library/cmsis/system_stm32f10x.c **** 
+ 220:library/cmsis/system_stm32f10x.c ****   /* Configure the System clock frequency, HCLK, PCLK2 and PCLK1 prescalers */
+ 221:library/cmsis/system_stm32f10x.c ****   /* Configure the Flash Latency cycles and enable prefetch buffer */
+ 222:library/cmsis/system_stm32f10x.c ****   SetSysClock();
+ 223:library/cmsis/system_stm32f10x.c **** }
+ 224:library/cmsis/system_stm32f10x.c **** 
+ 225:library/cmsis/system_stm32f10x.c **** /**
+ 226:library/cmsis/system_stm32f10x.c ****   * @brief  Update SystemCoreClock according to Clock Register Values
+ 227:library/cmsis/system_stm32f10x.c ****   * @note   None
+ 228:library/cmsis/system_stm32f10x.c ****   * @param  None
+ 229:library/cmsis/system_stm32f10x.c ****   * @retval None
+ 230:library/cmsis/system_stm32f10x.c ****   */
+ 231:library/cmsis/system_stm32f10x.c **** void SystemCoreClockUpdate (void)
+ 232:library/cmsis/system_stm32f10x.c **** {
+ 233:library/cmsis/system_stm32f10x.c ****   uint32_t tmp = 0, pllmull = 0, pllsource = 0;
+ 234:library/cmsis/system_stm32f10x.c **** 
+ 235:library/cmsis/system_stm32f10x.c **** #ifdef  STM32F10X_CL
+ 236:library/cmsis/system_stm32f10x.c ****   uint32_t prediv1source = 0, prediv1factor = 0, prediv2factor = 0, pll2mull = 0;
+ 237:library/cmsis/system_stm32f10x.c **** #endif /* STM32F10X_CL */
+ 238:library/cmsis/system_stm32f10x.c **** 
+ 239:library/cmsis/system_stm32f10x.c **** #if defined (STM32F10X_LD_VL) || defined (STM32F10X_MD_VL)
+ 240:library/cmsis/system_stm32f10x.c ****   uint32_t prediv1factor = 0;
+ 241:library/cmsis/system_stm32f10x.c **** #endif /* STM32F10X_LD_VL or STM32F10X_MD_VL */
+ 242:library/cmsis/system_stm32f10x.c ****     
+ 243:library/cmsis/system_stm32f10x.c ****   /* Get SYSCLK source -------------------------------------------------------*/
+ 244:library/cmsis/system_stm32f10x.c ****   tmp = RCC->CFGR & RCC_CFGR_SWS;
+ 245:library/cmsis/system_stm32f10x.c ****   
+ 246:library/cmsis/system_stm32f10x.c ****   switch (tmp)
+ 247:library/cmsis/system_stm32f10x.c ****   {
+ 248:library/cmsis/system_stm32f10x.c ****     case 0x00:  /* HSI used as system clock */
+ 249:library/cmsis/system_stm32f10x.c ****       SystemCoreClock = HSI_Value;
+ 250:library/cmsis/system_stm32f10x.c ****       break;
+ 251:library/cmsis/system_stm32f10x.c ****     case 0x04:  /* HSE used as system clock */
+ 252:library/cmsis/system_stm32f10x.c ****       SystemCoreClock = HSE_Value;
+ 253:library/cmsis/system_stm32f10x.c ****       break;
+ 254:library/cmsis/system_stm32f10x.c ****     case 0x08:  /* PLL used as system clock */
+ 255:library/cmsis/system_stm32f10x.c **** 
+ 256:library/cmsis/system_stm32f10x.c ****       /* Get PLL clock source and multiplication factor ----------------------*/
+ 257:library/cmsis/system_stm32f10x.c ****       pllmull = RCC->CFGR & RCC_CFGR_PLLMULL;
+ 258:library/cmsis/system_stm32f10x.c ****       pllsource = RCC->CFGR & RCC_CFGR_PLLSRC;
+ 259:library/cmsis/system_stm32f10x.c ****       
+ 260:library/cmsis/system_stm32f10x.c **** #ifndef STM32F10X_CL      
+ARM GAS  /tmp/cc9oiZ0O.s 			page 6
+
+
+ 261:library/cmsis/system_stm32f10x.c ****       pllmull = ( pllmull >> 18) + 2;
+ 262:library/cmsis/system_stm32f10x.c ****       
+ 263:library/cmsis/system_stm32f10x.c ****       if (pllsource == 0x00)
+ 264:library/cmsis/system_stm32f10x.c ****       {
+ 265:library/cmsis/system_stm32f10x.c ****         /* HSI oscillator clock divided by 2 selected as PLL clock entry */
+ 266:library/cmsis/system_stm32f10x.c ****         SystemCoreClock = (HSI_Value >> 1) * pllmull;
+ 267:library/cmsis/system_stm32f10x.c ****       }
+ 268:library/cmsis/system_stm32f10x.c ****       else
+ 269:library/cmsis/system_stm32f10x.c ****       {
+ 270:library/cmsis/system_stm32f10x.c ****  #if defined (STM32F10X_LD_VL) || defined (STM32F10X_MD_VL)
+ 271:library/cmsis/system_stm32f10x.c ****        prediv1factor = (RCC->CFGR2 & RCC_CFGR2_PREDIV1) + 1;
+ 272:library/cmsis/system_stm32f10x.c ****        /* HSE oscillator clock selected as PREDIV1 clock entry */
+ 273:library/cmsis/system_stm32f10x.c ****        SystemCoreClock = (HSE_Value / prediv1factor) * pllmull; 
+ 274:library/cmsis/system_stm32f10x.c ****  #else
+ 275:library/cmsis/system_stm32f10x.c ****         /* HSE selected as PLL clock entry */
+ 276:library/cmsis/system_stm32f10x.c ****         if ((RCC->CFGR & RCC_CFGR_PLLXTPRE) != (uint32_t)RESET)
+ 277:library/cmsis/system_stm32f10x.c ****         {/* HSE oscillator clock divided by 2 */
+ 278:library/cmsis/system_stm32f10x.c ****           SystemCoreClock = (HSE_Value >> 1) * pllmull;
+ 279:library/cmsis/system_stm32f10x.c ****         }
+ 280:library/cmsis/system_stm32f10x.c ****         else
+ 281:library/cmsis/system_stm32f10x.c ****         {
+ 282:library/cmsis/system_stm32f10x.c ****           SystemCoreClock = HSE_Value * pllmull;
+ 283:library/cmsis/system_stm32f10x.c ****         }
+ 284:library/cmsis/system_stm32f10x.c ****  #endif
+ 285:library/cmsis/system_stm32f10x.c ****       }
+ 286:library/cmsis/system_stm32f10x.c **** #else
+ 287:library/cmsis/system_stm32f10x.c ****       pllmull = pllmull >> 18;
+ 288:library/cmsis/system_stm32f10x.c ****       
+ 289:library/cmsis/system_stm32f10x.c ****       if (pllmull != 0x0D)
+ 290:library/cmsis/system_stm32f10x.c ****       {
+ 291:library/cmsis/system_stm32f10x.c ****          pllmull += 2;
+ 292:library/cmsis/system_stm32f10x.c ****       }
+ 293:library/cmsis/system_stm32f10x.c ****       else
+ 294:library/cmsis/system_stm32f10x.c ****       { /* PLL multiplication factor = PLL input clock * 6.5 */
+ 295:library/cmsis/system_stm32f10x.c ****         pllmull = 13 / 2; 
+ 296:library/cmsis/system_stm32f10x.c ****       }
+ 297:library/cmsis/system_stm32f10x.c ****             
+ 298:library/cmsis/system_stm32f10x.c ****       if (pllsource == 0x00)
+ 299:library/cmsis/system_stm32f10x.c ****       {
+ 300:library/cmsis/system_stm32f10x.c ****         /* HSI oscillator clock divided by 2 selected as PLL clock entry */
+ 301:library/cmsis/system_stm32f10x.c ****         SystemCoreClock = (HSI_Value >> 1) * pllmull;
+ 302:library/cmsis/system_stm32f10x.c ****       }
+ 303:library/cmsis/system_stm32f10x.c ****       else
+ 304:library/cmsis/system_stm32f10x.c ****       {/* PREDIV1 selected as PLL clock entry */
+ 305:library/cmsis/system_stm32f10x.c ****         
+ 306:library/cmsis/system_stm32f10x.c ****         /* Get PREDIV1 clock source and division factor */
+ 307:library/cmsis/system_stm32f10x.c ****         prediv1source = RCC->CFGR2 & RCC_CFGR2_PREDIV1SRC;
+ 308:library/cmsis/system_stm32f10x.c ****         prediv1factor = (RCC->CFGR2 & RCC_CFGR2_PREDIV1) + 1;
+ 309:library/cmsis/system_stm32f10x.c ****         
+ 310:library/cmsis/system_stm32f10x.c ****         if (prediv1source == 0)
+ 311:library/cmsis/system_stm32f10x.c ****         { 
+ 312:library/cmsis/system_stm32f10x.c ****           /* HSE oscillator clock selected as PREDIV1 clock entry */
+ 313:library/cmsis/system_stm32f10x.c ****           SystemCoreClock = (HSE_Value / prediv1factor) * pllmull;          
+ 314:library/cmsis/system_stm32f10x.c ****         }
+ 315:library/cmsis/system_stm32f10x.c ****         else
+ 316:library/cmsis/system_stm32f10x.c ****         {/* PLL2 clock selected as PREDIV1 clock entry */
+ 317:library/cmsis/system_stm32f10x.c ****           
+ARM GAS  /tmp/cc9oiZ0O.s 			page 7
+
+
+ 318:library/cmsis/system_stm32f10x.c ****           /* Get PREDIV2 division factor and PLL2 multiplication factor */
+ 319:library/cmsis/system_stm32f10x.c ****           prediv2factor = ((RCC->CFGR2 & RCC_CFGR2_PREDIV2) >> 4) + 1;
+ 320:library/cmsis/system_stm32f10x.c ****           pll2mull = ((RCC->CFGR2 & RCC_CFGR2_PLL2MUL) >> 8 ) + 2; 
+ 321:library/cmsis/system_stm32f10x.c ****           SystemCoreClock = (((HSE_Value / prediv2factor) * pll2mull) / prediv1factor) * pllmull;  
+ 322:library/cmsis/system_stm32f10x.c ****         }
+ 323:library/cmsis/system_stm32f10x.c ****       }
+ 324:library/cmsis/system_stm32f10x.c **** #endif /* STM32F10X_CL */ 
+ 325:library/cmsis/system_stm32f10x.c ****       break;
+ 326:library/cmsis/system_stm32f10x.c **** 
+ 327:library/cmsis/system_stm32f10x.c ****     default:
+ 328:library/cmsis/system_stm32f10x.c ****       SystemCoreClock = HSI_Value;
+ 329:library/cmsis/system_stm32f10x.c ****       break;
+ 330:library/cmsis/system_stm32f10x.c ****   }
+ 331:library/cmsis/system_stm32f10x.c ****   
+ 332:library/cmsis/system_stm32f10x.c ****   /* Compute HCLK clock frequency ----------------*/
+ 333:library/cmsis/system_stm32f10x.c ****   /* Get HCLK prescaler */
+ 334:library/cmsis/system_stm32f10x.c ****   tmp = AHBPrescTable[((RCC->CFGR & RCC_CFGR_HPRE) >> 4)];
+ 335:library/cmsis/system_stm32f10x.c ****   /* HCLK clock frequency */
+ 336:library/cmsis/system_stm32f10x.c ****   SystemCoreClock >>= tmp;  
+ 337:library/cmsis/system_stm32f10x.c **** }
+ 338:library/cmsis/system_stm32f10x.c **** 
+ 339:library/cmsis/system_stm32f10x.c **** /**
+ 340:library/cmsis/system_stm32f10x.c ****   * @brief  Configures the System clock frequency, HCLK, PCLK2 and PCLK1 prescalers.
+ 341:library/cmsis/system_stm32f10x.c ****   * @param  None
+ 342:library/cmsis/system_stm32f10x.c ****   * @retval None
+ 343:library/cmsis/system_stm32f10x.c ****   */
+ 344:library/cmsis/system_stm32f10x.c **** static void SetSysClock(void)
+ 345:library/cmsis/system_stm32f10x.c **** {
+ 346:library/cmsis/system_stm32f10x.c **** #ifdef SYSCLK_FREQ_HSE
+ 347:library/cmsis/system_stm32f10x.c ****   SetSysClockToHSE();
+ 348:library/cmsis/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_24MHz
+ 349:library/cmsis/system_stm32f10x.c ****   SetSysClockTo24();
+ 350:library/cmsis/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_36MHz
+ 351:library/cmsis/system_stm32f10x.c ****   SetSysClockTo36();
+ 352:library/cmsis/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_48MHz
+ 353:library/cmsis/system_stm32f10x.c ****   SetSysClockTo48();
+ 354:library/cmsis/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_56MHz
+ 355:library/cmsis/system_stm32f10x.c ****   SetSysClockTo56();  
+ 356:library/cmsis/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_72MHz
+ 357:library/cmsis/system_stm32f10x.c ****   SetSysClockTo72();
+ 358:library/cmsis/system_stm32f10x.c **** #endif
+ 359:library/cmsis/system_stm32f10x.c ****  
+ 360:library/cmsis/system_stm32f10x.c ****  /* If none of the define above is enabled, the HSI is used as System clock
+ 361:library/cmsis/system_stm32f10x.c ****     source (default after reset) */ 
+ 362:library/cmsis/system_stm32f10x.c **** }
+ 363:library/cmsis/system_stm32f10x.c **** 
+ 364:library/cmsis/system_stm32f10x.c **** /**
+ 365:library/cmsis/system_stm32f10x.c ****   * @brief  Setup the external memory controller. Called in startup_stm32f10x.s 
+ 366:library/cmsis/system_stm32f10x.c ****   *          before jump to __main
+ 367:library/cmsis/system_stm32f10x.c ****   * @param  None
+ 368:library/cmsis/system_stm32f10x.c ****   * @retval None
+ 369:library/cmsis/system_stm32f10x.c ****   */ 
+ 370:library/cmsis/system_stm32f10x.c **** #ifdef DATA_IN_ExtSRAM
+ 371:library/cmsis/system_stm32f10x.c **** /**
+ 372:library/cmsis/system_stm32f10x.c ****   * @brief  Setup the external memory controller. 
+ 373:library/cmsis/system_stm32f10x.c ****   *         Called in startup_stm32f10x_xx.s/.c before jump to main.
+ 374:library/cmsis/system_stm32f10x.c ****   * 	      This function configures the external SRAM mounted on STM3210E-EVAL
+ARM GAS  /tmp/cc9oiZ0O.s 			page 8
+
+
+ 375:library/cmsis/system_stm32f10x.c ****   *         board (STM32 High density devices). This SRAM will be used as program
+ 376:library/cmsis/system_stm32f10x.c ****   *         data memory (including heap and stack).
+ 377:library/cmsis/system_stm32f10x.c ****   * @param  None
+ 378:library/cmsis/system_stm32f10x.c ****   * @retval None
+ 379:library/cmsis/system_stm32f10x.c ****   */ 
+ 380:library/cmsis/system_stm32f10x.c **** void SystemInit_ExtMemCtl(void) 
+ 381:library/cmsis/system_stm32f10x.c **** {
+ 382:library/cmsis/system_stm32f10x.c **** /*!< FSMC Bank1 NOR/SRAM3 is used for the STM3210E-EVAL, if another Bank is 
+ 383:library/cmsis/system_stm32f10x.c ****   required, then adjust the Register Addresses */
+ 384:library/cmsis/system_stm32f10x.c **** 
+ 385:library/cmsis/system_stm32f10x.c ****   /* Enable FSMC clock */
+ 386:library/cmsis/system_stm32f10x.c ****   RCC->AHBENR = 0x00000114;
+ 387:library/cmsis/system_stm32f10x.c ****   
+ 388:library/cmsis/system_stm32f10x.c ****   /* Enable GPIOD, GPIOE, GPIOF and GPIOG clocks */  
+ 389:library/cmsis/system_stm32f10x.c ****   RCC->APB2ENR = 0x000001E0;
+ 390:library/cmsis/system_stm32f10x.c ****   
+ 391:library/cmsis/system_stm32f10x.c **** /* ---------------  SRAM Data lines, NOE and NWE configuration ---------------*/
+ 392:library/cmsis/system_stm32f10x.c **** /*----------------  SRAM Address lines configuration -------------------------*/
+ 393:library/cmsis/system_stm32f10x.c **** /*----------------  NOE and NWE configuration --------------------------------*/  
+ 394:library/cmsis/system_stm32f10x.c **** /*----------------  NE3 configuration ----------------------------------------*/
+ 395:library/cmsis/system_stm32f10x.c **** /*----------------  NBL0, NBL1 configuration ---------------------------------*/
+ 396:library/cmsis/system_stm32f10x.c ****   
+ 397:library/cmsis/system_stm32f10x.c ****   GPIOD->CRL = 0x44BB44BB;  
+ 398:library/cmsis/system_stm32f10x.c ****   GPIOD->CRH = 0xBBBBBBBB;
+ 399:library/cmsis/system_stm32f10x.c **** 
+ 400:library/cmsis/system_stm32f10x.c ****   GPIOE->CRL = 0xB44444BB;  
+ 401:library/cmsis/system_stm32f10x.c ****   GPIOE->CRH = 0xBBBBBBBB;
+ 402:library/cmsis/system_stm32f10x.c **** 
+ 403:library/cmsis/system_stm32f10x.c ****   GPIOF->CRL = 0x44BBBBBB;  
+ 404:library/cmsis/system_stm32f10x.c ****   GPIOF->CRH = 0xBBBB4444;
+ 405:library/cmsis/system_stm32f10x.c **** 
+ 406:library/cmsis/system_stm32f10x.c ****   GPIOG->CRL = 0x44BBBBBB;  
+ 407:library/cmsis/system_stm32f10x.c ****   GPIOG->CRH = 0x44444B44;
+ 408:library/cmsis/system_stm32f10x.c ****    
+ 409:library/cmsis/system_stm32f10x.c **** /*----------------  FSMC Configuration ---------------------------------------*/  
+ 410:library/cmsis/system_stm32f10x.c **** /*----------------  Enable FSMC Bank1_SRAM Bank ------------------------------*/
+ 411:library/cmsis/system_stm32f10x.c ****   
+ 412:library/cmsis/system_stm32f10x.c ****   FSMC_Bank1->BTCR[4] = 0x00001011;
+ 413:library/cmsis/system_stm32f10x.c ****   FSMC_Bank1->BTCR[5] = 0x00000200;
+ 414:library/cmsis/system_stm32f10x.c **** }
+ 415:library/cmsis/system_stm32f10x.c **** #endif /* DATA_IN_ExtSRAM */
+ 416:library/cmsis/system_stm32f10x.c **** 
+ 417:library/cmsis/system_stm32f10x.c **** #ifdef SYSCLK_FREQ_HSE
+ 418:library/cmsis/system_stm32f10x.c **** /**
+ 419:library/cmsis/system_stm32f10x.c ****   * @brief  Selects HSE as System clock source and configure HCLK, PCLK2
+ 420:library/cmsis/system_stm32f10x.c ****   *          and PCLK1 prescalers.
+ 421:library/cmsis/system_stm32f10x.c ****   * @note   This function should be used only after reset.
+ 422:library/cmsis/system_stm32f10x.c ****   * @param  None
+ 423:library/cmsis/system_stm32f10x.c ****   * @retval None
+ 424:library/cmsis/system_stm32f10x.c ****   */
+ 425:library/cmsis/system_stm32f10x.c **** static void SetSysClockToHSE(void)
+ 426:library/cmsis/system_stm32f10x.c **** {
+ 427:library/cmsis/system_stm32f10x.c ****   __IO uint32_t StartUpCounter = 0, HSEStatus = 0;
+ 428:library/cmsis/system_stm32f10x.c ****   
+ 429:library/cmsis/system_stm32f10x.c ****   /* SYSCLK, HCLK, PCLK2 and PCLK1 configuration ---------------------------*/    
+ 430:library/cmsis/system_stm32f10x.c ****   /* Enable HSE */    
+ 431:library/cmsis/system_stm32f10x.c ****   RCC->CR |= ((uint32_t)RCC_CR_HSEON);
+ARM GAS  /tmp/cc9oiZ0O.s 			page 9
+
+
+ 432:library/cmsis/system_stm32f10x.c ****  
+ 433:library/cmsis/system_stm32f10x.c ****   /* Wait till HSE is ready and if Time out is reached exit */
+ 434:library/cmsis/system_stm32f10x.c ****   do
+ 435:library/cmsis/system_stm32f10x.c ****   {
+ 436:library/cmsis/system_stm32f10x.c ****     HSEStatus = RCC->CR & RCC_CR_HSERDY;
+ 437:library/cmsis/system_stm32f10x.c ****     StartUpCounter++;  
+ 438:library/cmsis/system_stm32f10x.c ****   } while((HSEStatus == 0) && (StartUpCounter != HSEStartUp_TimeOut));
+ 439:library/cmsis/system_stm32f10x.c **** 
+ 440:library/cmsis/system_stm32f10x.c ****   if ((RCC->CR & RCC_CR_HSERDY) != RESET)
+ 441:library/cmsis/system_stm32f10x.c ****   {
+ 442:library/cmsis/system_stm32f10x.c ****     HSEStatus = (uint32_t)0x01;
+ 443:library/cmsis/system_stm32f10x.c ****   }
+ 444:library/cmsis/system_stm32f10x.c ****   else
+ 445:library/cmsis/system_stm32f10x.c ****   {
+ 446:library/cmsis/system_stm32f10x.c ****     HSEStatus = (uint32_t)0x00;
+ 447:library/cmsis/system_stm32f10x.c ****   }  
+ 448:library/cmsis/system_stm32f10x.c **** 
+ 449:library/cmsis/system_stm32f10x.c ****   if (HSEStatus == (uint32_t)0x01)
+ 450:library/cmsis/system_stm32f10x.c ****   {
+ 451:library/cmsis/system_stm32f10x.c **** 
+ 452:library/cmsis/system_stm32f10x.c **** #if !defined STM32F10X_LD_VL && !defined STM32F10X_MD_VL 
+ 453:library/cmsis/system_stm32f10x.c ****     /* Enable Prefetch Buffer */
+ 454:library/cmsis/system_stm32f10x.c ****     FLASH->ACR |= FLASH_ACR_PRFTBE;
+ 455:library/cmsis/system_stm32f10x.c **** 
+ 456:library/cmsis/system_stm32f10x.c ****     /* Flash 0 wait state */
+ 457:library/cmsis/system_stm32f10x.c ****     FLASH->ACR &= (uint32_t)((uint32_t)~FLASH_ACR_LATENCY);
+ 458:library/cmsis/system_stm32f10x.c **** 
+ 459:library/cmsis/system_stm32f10x.c **** #ifndef STM32F10X_CL
+ 460:library/cmsis/system_stm32f10x.c ****     FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_0;
+ 461:library/cmsis/system_stm32f10x.c **** #else
+ 462:library/cmsis/system_stm32f10x.c ****     if (HSE_Value <= 24000000)
+ 463:library/cmsis/system_stm32f10x.c **** 	{
+ 464:library/cmsis/system_stm32f10x.c ****       FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_0;
+ 465:library/cmsis/system_stm32f10x.c **** 	}
+ 466:library/cmsis/system_stm32f10x.c **** 	else
+ 467:library/cmsis/system_stm32f10x.c **** 	{
+ 468:library/cmsis/system_stm32f10x.c ****       FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_1;
+ 469:library/cmsis/system_stm32f10x.c **** 	}
+ 470:library/cmsis/system_stm32f10x.c **** #endif /* STM32F10X_CL */
+ 471:library/cmsis/system_stm32f10x.c **** #endif
+ 472:library/cmsis/system_stm32f10x.c ****  
+ 473:library/cmsis/system_stm32f10x.c ****     /* HCLK = SYSCLK */
+ 474:library/cmsis/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_HPRE_DIV1;
+ 475:library/cmsis/system_stm32f10x.c ****       
+ 476:library/cmsis/system_stm32f10x.c ****     /* PCLK2 = HCLK */
+ 477:library/cmsis/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE2_DIV1;
+ 478:library/cmsis/system_stm32f10x.c ****     
+ 479:library/cmsis/system_stm32f10x.c ****     /* PCLK1 = HCLK */
+ 480:library/cmsis/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE1_DIV1;
+ 481:library/cmsis/system_stm32f10x.c ****     
+ 482:library/cmsis/system_stm32f10x.c ****     /* Select HSE as system clock source */
+ 483:library/cmsis/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_SW));
+ 484:library/cmsis/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_SW_HSE;    
+ 485:library/cmsis/system_stm32f10x.c **** 
+ 486:library/cmsis/system_stm32f10x.c ****     /* Wait till HSE is used as system clock source */
+ 487:library/cmsis/system_stm32f10x.c ****     while ((RCC->CFGR & (uint32_t)RCC_CFGR_SWS) != (uint32_t)0x04)
+ 488:library/cmsis/system_stm32f10x.c ****     {
+ARM GAS  /tmp/cc9oiZ0O.s 			page 10
+
+
+ 489:library/cmsis/system_stm32f10x.c ****     }
+ 490:library/cmsis/system_stm32f10x.c ****   }
+ 491:library/cmsis/system_stm32f10x.c ****   else
+ 492:library/cmsis/system_stm32f10x.c ****   { /* If HSE fails to start-up, the application will have wrong clock 
+ 493:library/cmsis/system_stm32f10x.c ****          configuration. User can add here some code to deal with this error */
+ 494:library/cmsis/system_stm32f10x.c ****   }  
+ 495:library/cmsis/system_stm32f10x.c **** }
+ 496:library/cmsis/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_24MHz
+ 497:library/cmsis/system_stm32f10x.c **** /**
+ 498:library/cmsis/system_stm32f10x.c ****   * @brief  Sets System clock frequency to 24MHz and configure HCLK, PCLK2 
+ 499:library/cmsis/system_stm32f10x.c ****   *          and PCLK1 prescalers.
+ 500:library/cmsis/system_stm32f10x.c ****   * @note   This function should be used only after reset.
+ 501:library/cmsis/system_stm32f10x.c ****   * @param  None
+ 502:library/cmsis/system_stm32f10x.c ****   * @retval None
+ 503:library/cmsis/system_stm32f10x.c ****   */
+ 504:library/cmsis/system_stm32f10x.c **** static void SetSysClockTo24(void)
+ 505:library/cmsis/system_stm32f10x.c **** {
+ 506:library/cmsis/system_stm32f10x.c ****   __IO uint32_t StartUpCounter = 0, HSEStatus = 0;
+ 507:library/cmsis/system_stm32f10x.c ****   
+ 508:library/cmsis/system_stm32f10x.c ****   /* SYSCLK, HCLK, PCLK2 and PCLK1 configuration ---------------------------*/    
+ 509:library/cmsis/system_stm32f10x.c ****   /* Enable HSE */    
+ 510:library/cmsis/system_stm32f10x.c ****   RCC->CR |= ((uint32_t)RCC_CR_HSEON);
+ 511:library/cmsis/system_stm32f10x.c ****  
+ 512:library/cmsis/system_stm32f10x.c ****   /* Wait till HSE is ready and if Time out is reached exit */
+ 513:library/cmsis/system_stm32f10x.c ****   do
+ 514:library/cmsis/system_stm32f10x.c ****   {
+ 515:library/cmsis/system_stm32f10x.c ****     HSEStatus = RCC->CR & RCC_CR_HSERDY;
+ 516:library/cmsis/system_stm32f10x.c ****     StartUpCounter++;  
+ 517:library/cmsis/system_stm32f10x.c ****   } while((HSEStatus == 0) && (StartUpCounter != HSEStartUp_TimeOut));
+ 518:library/cmsis/system_stm32f10x.c **** 
+ 519:library/cmsis/system_stm32f10x.c ****   if ((RCC->CR & RCC_CR_HSERDY) != RESET)
+ 520:library/cmsis/system_stm32f10x.c ****   {
+ 521:library/cmsis/system_stm32f10x.c ****     HSEStatus = (uint32_t)0x01;
+ 522:library/cmsis/system_stm32f10x.c ****   }
+ 523:library/cmsis/system_stm32f10x.c ****   else
+ 524:library/cmsis/system_stm32f10x.c ****   {
+ 525:library/cmsis/system_stm32f10x.c ****     HSEStatus = (uint32_t)0x00;
+ 526:library/cmsis/system_stm32f10x.c ****   }  
+ 527:library/cmsis/system_stm32f10x.c **** 
+ 528:library/cmsis/system_stm32f10x.c ****   if (HSEStatus == (uint32_t)0x01)
+ 529:library/cmsis/system_stm32f10x.c ****   {
+ 530:library/cmsis/system_stm32f10x.c **** #if !defined STM32F10X_LD_VL && !defined STM32F10X_MD_VL 
+ 531:library/cmsis/system_stm32f10x.c ****     /* Enable Prefetch Buffer */
+ 532:library/cmsis/system_stm32f10x.c ****     FLASH->ACR |= FLASH_ACR_PRFTBE;
+ 533:library/cmsis/system_stm32f10x.c **** 
+ 534:library/cmsis/system_stm32f10x.c ****     /* Flash 0 wait state */
+ 535:library/cmsis/system_stm32f10x.c ****     FLASH->ACR &= (uint32_t)((uint32_t)~FLASH_ACR_LATENCY);
+ 536:library/cmsis/system_stm32f10x.c ****     FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_0;    
+ 537:library/cmsis/system_stm32f10x.c **** #endif
+ 538:library/cmsis/system_stm32f10x.c ****  
+ 539:library/cmsis/system_stm32f10x.c ****     /* HCLK = SYSCLK */
+ 540:library/cmsis/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_HPRE_DIV1;
+ 541:library/cmsis/system_stm32f10x.c ****       
+ 542:library/cmsis/system_stm32f10x.c ****     /* PCLK2 = HCLK */
+ 543:library/cmsis/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE2_DIV1;
+ 544:library/cmsis/system_stm32f10x.c ****     
+ 545:library/cmsis/system_stm32f10x.c ****     /* PCLK1 = HCLK */
+ARM GAS  /tmp/cc9oiZ0O.s 			page 11
+
+
+ 546:library/cmsis/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE1_DIV1;
+ 547:library/cmsis/system_stm32f10x.c ****     
+ 548:library/cmsis/system_stm32f10x.c **** #ifdef STM32F10X_CL
+ 549:library/cmsis/system_stm32f10x.c ****     /* Configure PLLs ------------------------------------------------------*/
+ 550:library/cmsis/system_stm32f10x.c ****     /* PLL configuration: PLLCLK = PREDIV1 * 6 = 24 MHz */ 
+ 551:library/cmsis/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)~(RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLSRC | RCC_CFGR_PLLMULL);
+ 552:library/cmsis/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLXTPRE_PREDIV1 | RCC_CFGR_PLLSRC_PREDIV1 | 
+ 553:library/cmsis/system_stm32f10x.c ****                             RCC_CFGR_PLLMULL6); 
+ 554:library/cmsis/system_stm32f10x.c **** 
+ 555:library/cmsis/system_stm32f10x.c ****     /* PLL2 configuration: PLL2CLK = (HSE / 5) * 8 = 40 MHz */
+ 556:library/cmsis/system_stm32f10x.c ****     /* PREDIV1 configuration: PREDIV1CLK = PLL2 / 10 = 4 MHz */       
+ 557:library/cmsis/system_stm32f10x.c ****     RCC->CFGR2 &= (uint32_t)~(RCC_CFGR2_PREDIV2 | RCC_CFGR2_PLL2MUL |
+ 558:library/cmsis/system_stm32f10x.c ****                               RCC_CFGR2_PREDIV1 | RCC_CFGR2_PREDIV1SRC);
+ 559:library/cmsis/system_stm32f10x.c ****     RCC->CFGR2 |= (uint32_t)(RCC_CFGR2_PREDIV2_DIV5 | RCC_CFGR2_PLL2MUL8 |
+ 560:library/cmsis/system_stm32f10x.c ****                              RCC_CFGR2_PREDIV1SRC_PLL2 | RCC_CFGR2_PREDIV1_DIV10);
+ 561:library/cmsis/system_stm32f10x.c ****   
+ 562:library/cmsis/system_stm32f10x.c ****     /* Enable PLL2 */
+ 563:library/cmsis/system_stm32f10x.c ****     RCC->CR |= RCC_CR_PLL2ON;
+ 564:library/cmsis/system_stm32f10x.c ****     /* Wait till PLL2 is ready */
+ 565:library/cmsis/system_stm32f10x.c ****     while((RCC->CR & RCC_CR_PLL2RDY) == 0)
+ 566:library/cmsis/system_stm32f10x.c ****     {
+ 567:library/cmsis/system_stm32f10x.c ****     }   
+ 568:library/cmsis/system_stm32f10x.c **** #elif defined (STM32F10X_LD_VL) || defined (STM32F10X_MD_VL)
+ 569:library/cmsis/system_stm32f10x.c ****     /*  PLL configuration:  = (HSE / 2) * 6 = 24 MHz */
+ 570:library/cmsis/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_PLLSRC | RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLMULL));
+ 571:library/cmsis/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLSRC_PREDIV1 | RCC_CFGR_PLLXTPRE_PREDIV1_Div2 | RCC_CFGR_PLL
+ 572:library/cmsis/system_stm32f10x.c **** #else    
+ 573:library/cmsis/system_stm32f10x.c ****     /*  PLL configuration:  = (HSE / 2) * 6 = 24 MHz */
+ 574:library/cmsis/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_PLLSRC | RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLMULL));
+ 575:library/cmsis/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLSRC_HSE | RCC_CFGR_PLLXTPRE_HSE_Div2 | RCC_CFGR_PLLMULL6);
+ 576:library/cmsis/system_stm32f10x.c **** #endif /* STM32F10X_CL */
+ 577:library/cmsis/system_stm32f10x.c **** 
+ 578:library/cmsis/system_stm32f10x.c ****     /* Enable PLL */
+ 579:library/cmsis/system_stm32f10x.c ****     RCC->CR |= RCC_CR_PLLON;
+ 580:library/cmsis/system_stm32f10x.c **** 
+ 581:library/cmsis/system_stm32f10x.c ****     /* Wait till PLL is ready */
+ 582:library/cmsis/system_stm32f10x.c ****     while((RCC->CR & RCC_CR_PLLRDY) == 0)
+ 583:library/cmsis/system_stm32f10x.c ****     {
+ 584:library/cmsis/system_stm32f10x.c ****     }
+ 585:library/cmsis/system_stm32f10x.c **** 
+ 586:library/cmsis/system_stm32f10x.c ****     /* Select PLL as system clock source */
+ 587:library/cmsis/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_SW));
+ 588:library/cmsis/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_SW_PLL;    
+ 589:library/cmsis/system_stm32f10x.c **** 
+ 590:library/cmsis/system_stm32f10x.c ****     /* Wait till PLL is used as system clock source */
+ 591:library/cmsis/system_stm32f10x.c ****     while ((RCC->CFGR & (uint32_t)RCC_CFGR_SWS) != (uint32_t)0x08)
+ 592:library/cmsis/system_stm32f10x.c ****     {
+ 593:library/cmsis/system_stm32f10x.c ****     }
+ 594:library/cmsis/system_stm32f10x.c ****   }
+ 595:library/cmsis/system_stm32f10x.c ****   else
+ 596:library/cmsis/system_stm32f10x.c ****   { /* If HSE fails to start-up, the application will have wrong clock 
+ 597:library/cmsis/system_stm32f10x.c ****          configuration. User can add here some code to deal with this error */
+ 598:library/cmsis/system_stm32f10x.c ****   } 
+ 599:library/cmsis/system_stm32f10x.c **** }
+ 600:library/cmsis/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_36MHz
+ 601:library/cmsis/system_stm32f10x.c **** /**
+ 602:library/cmsis/system_stm32f10x.c ****   * @brief  Sets System clock frequency to 36MHz and configure HCLK, PCLK2 
+ARM GAS  /tmp/cc9oiZ0O.s 			page 12
+
+
+ 603:library/cmsis/system_stm32f10x.c ****   *          and PCLK1 prescalers. 
+ 604:library/cmsis/system_stm32f10x.c ****   * @note   This function should be used only after reset.
+ 605:library/cmsis/system_stm32f10x.c ****   * @param  None
+ 606:library/cmsis/system_stm32f10x.c ****   * @retval None
+ 607:library/cmsis/system_stm32f10x.c ****   */
+ 608:library/cmsis/system_stm32f10x.c **** static void SetSysClockTo36(void)
+ 609:library/cmsis/system_stm32f10x.c **** {
+ 610:library/cmsis/system_stm32f10x.c ****   __IO uint32_t StartUpCounter = 0, HSEStatus = 0;
+ 611:library/cmsis/system_stm32f10x.c ****   
+ 612:library/cmsis/system_stm32f10x.c ****   /* SYSCLK, HCLK, PCLK2 and PCLK1 configuration ---------------------------*/    
+ 613:library/cmsis/system_stm32f10x.c ****   /* Enable HSE */    
+ 614:library/cmsis/system_stm32f10x.c ****   RCC->CR |= ((uint32_t)RCC_CR_HSEON);
+ 615:library/cmsis/system_stm32f10x.c ****  
+ 616:library/cmsis/system_stm32f10x.c ****   /* Wait till HSE is ready and if Time out is reached exit */
+ 617:library/cmsis/system_stm32f10x.c ****   do
+ 618:library/cmsis/system_stm32f10x.c ****   {
+ 619:library/cmsis/system_stm32f10x.c ****     HSEStatus = RCC->CR & RCC_CR_HSERDY;
+ 620:library/cmsis/system_stm32f10x.c ****     StartUpCounter++;  
+ 621:library/cmsis/system_stm32f10x.c ****   } while((HSEStatus == 0) && (StartUpCounter != HSEStartUp_TimeOut));
+ 622:library/cmsis/system_stm32f10x.c **** 
+ 623:library/cmsis/system_stm32f10x.c ****   if ((RCC->CR & RCC_CR_HSERDY) != RESET)
+ 624:library/cmsis/system_stm32f10x.c ****   {
+ 625:library/cmsis/system_stm32f10x.c ****     HSEStatus = (uint32_t)0x01;
+ 626:library/cmsis/system_stm32f10x.c ****   }
+ 627:library/cmsis/system_stm32f10x.c ****   else
+ 628:library/cmsis/system_stm32f10x.c ****   {
+ 629:library/cmsis/system_stm32f10x.c ****     HSEStatus = (uint32_t)0x00;
+ 630:library/cmsis/system_stm32f10x.c ****   }  
+ 631:library/cmsis/system_stm32f10x.c **** 
+ 632:library/cmsis/system_stm32f10x.c ****   if (HSEStatus == (uint32_t)0x01)
+ 633:library/cmsis/system_stm32f10x.c ****   {
+ 634:library/cmsis/system_stm32f10x.c ****     /* Enable Prefetch Buffer */
+ 635:library/cmsis/system_stm32f10x.c ****     FLASH->ACR |= FLASH_ACR_PRFTBE;
+ 636:library/cmsis/system_stm32f10x.c **** 
+ 637:library/cmsis/system_stm32f10x.c ****     /* Flash 1 wait state */
+ 638:library/cmsis/system_stm32f10x.c ****     FLASH->ACR &= (uint32_t)((uint32_t)~FLASH_ACR_LATENCY);
+ 639:library/cmsis/system_stm32f10x.c ****     FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_1;    
+ 640:library/cmsis/system_stm32f10x.c ****  
+ 641:library/cmsis/system_stm32f10x.c ****     /* HCLK = SYSCLK */
+ 642:library/cmsis/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_HPRE_DIV1;
+ 643:library/cmsis/system_stm32f10x.c ****       
+ 644:library/cmsis/system_stm32f10x.c ****     /* PCLK2 = HCLK */
+ 645:library/cmsis/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE2_DIV1;
+ 646:library/cmsis/system_stm32f10x.c ****     
+ 647:library/cmsis/system_stm32f10x.c ****     /* PCLK1 = HCLK */
+ 648:library/cmsis/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE1_DIV1;
+ 649:library/cmsis/system_stm32f10x.c ****     
+ 650:library/cmsis/system_stm32f10x.c **** #ifdef STM32F10X_CL
+ 651:library/cmsis/system_stm32f10x.c ****     /* Configure PLLs ------------------------------------------------------*/
+ 652:library/cmsis/system_stm32f10x.c ****     
+ 653:library/cmsis/system_stm32f10x.c ****     /* PLL configuration: PLLCLK = PREDIV1 * 9 = 36 MHz */ 
+ 654:library/cmsis/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)~(RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLSRC | RCC_CFGR_PLLMULL);
+ 655:library/cmsis/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLXTPRE_PREDIV1 | RCC_CFGR_PLLSRC_PREDIV1 | 
+ 656:library/cmsis/system_stm32f10x.c ****                             RCC_CFGR_PLLMULL9); 
+ 657:library/cmsis/system_stm32f10x.c **** 
+ 658:library/cmsis/system_stm32f10x.c **** 	/*!< PLL2 configuration: PLL2CLK = (HSE / 5) * 8 = 40 MHz */
+ 659:library/cmsis/system_stm32f10x.c ****     /* PREDIV1 configuration: PREDIV1CLK = PLL2 / 10 = 4 MHz */
+ARM GAS  /tmp/cc9oiZ0O.s 			page 13
+
+
+ 660:library/cmsis/system_stm32f10x.c ****         
+ 661:library/cmsis/system_stm32f10x.c ****     RCC->CFGR2 &= (uint32_t)~(RCC_CFGR2_PREDIV2 | RCC_CFGR2_PLL2MUL |
+ 662:library/cmsis/system_stm32f10x.c ****                               RCC_CFGR2_PREDIV1 | RCC_CFGR2_PREDIV1SRC);
+ 663:library/cmsis/system_stm32f10x.c ****     RCC->CFGR2 |= (uint32_t)(RCC_CFGR2_PREDIV2_DIV5 | RCC_CFGR2_PLL2MUL8 |
+ 664:library/cmsis/system_stm32f10x.c ****                              RCC_CFGR2_PREDIV1SRC_PLL2 | RCC_CFGR2_PREDIV1_DIV10);
+ 665:library/cmsis/system_stm32f10x.c ****   
+ 666:library/cmsis/system_stm32f10x.c ****     /* Enable PLL2 */
+ 667:library/cmsis/system_stm32f10x.c ****     RCC->CR |= RCC_CR_PLL2ON;
+ 668:library/cmsis/system_stm32f10x.c ****     /* Wait till PLL2 is ready */
+ 669:library/cmsis/system_stm32f10x.c ****     while((RCC->CR & RCC_CR_PLL2RDY) == 0)
+ 670:library/cmsis/system_stm32f10x.c ****     {
+ 671:library/cmsis/system_stm32f10x.c ****     }
+ 672:library/cmsis/system_stm32f10x.c ****     
+ 673:library/cmsis/system_stm32f10x.c **** #else    
+ 674:library/cmsis/system_stm32f10x.c ****     /*  PLL configuration: PLLCLK = (HSE / 2) * 9 = 36 MHz */
+ 675:library/cmsis/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_PLLSRC | RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLMULL));
+ 676:library/cmsis/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLSRC_HSE | RCC_CFGR_PLLXTPRE_HSE_Div2 | RCC_CFGR_PLLMULL9);
+ 677:library/cmsis/system_stm32f10x.c **** #endif /* STM32F10X_CL */
+ 678:library/cmsis/system_stm32f10x.c **** 
+ 679:library/cmsis/system_stm32f10x.c ****     /* Enable PLL */
+ 680:library/cmsis/system_stm32f10x.c ****     RCC->CR |= RCC_CR_PLLON;
+ 681:library/cmsis/system_stm32f10x.c **** 
+ 682:library/cmsis/system_stm32f10x.c ****     /* Wait till PLL is ready */
+ 683:library/cmsis/system_stm32f10x.c ****     while((RCC->CR & RCC_CR_PLLRDY) == 0)
+ 684:library/cmsis/system_stm32f10x.c ****     {
+ 685:library/cmsis/system_stm32f10x.c ****     }
+ 686:library/cmsis/system_stm32f10x.c **** 
+ 687:library/cmsis/system_stm32f10x.c ****     /* Select PLL as system clock source */
+ 688:library/cmsis/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_SW));
+ 689:library/cmsis/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_SW_PLL;    
+ 690:library/cmsis/system_stm32f10x.c **** 
+ 691:library/cmsis/system_stm32f10x.c ****     /* Wait till PLL is used as system clock source */
+ 692:library/cmsis/system_stm32f10x.c ****     while ((RCC->CFGR & (uint32_t)RCC_CFGR_SWS) != (uint32_t)0x08)
+ 693:library/cmsis/system_stm32f10x.c ****     {
+ 694:library/cmsis/system_stm32f10x.c ****     }
+ 695:library/cmsis/system_stm32f10x.c ****   }
+ 696:library/cmsis/system_stm32f10x.c ****   else
+ 697:library/cmsis/system_stm32f10x.c ****   { /* If HSE fails to start-up, the application will have wrong clock 
+ 698:library/cmsis/system_stm32f10x.c ****          configuration. User can add here some code to deal with this error */
+ 699:library/cmsis/system_stm32f10x.c ****   } 
+ 700:library/cmsis/system_stm32f10x.c **** }
+ 701:library/cmsis/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_48MHz
+ 702:library/cmsis/system_stm32f10x.c **** /**
+ 703:library/cmsis/system_stm32f10x.c ****   * @brief  Sets System clock frequency to 48MHz and configure HCLK, PCLK2 
+ 704:library/cmsis/system_stm32f10x.c ****   *          and PCLK1 prescalers. 
+ 705:library/cmsis/system_stm32f10x.c ****   * @note   This function should be used only after reset.
+ 706:library/cmsis/system_stm32f10x.c ****   * @param  None
+ 707:library/cmsis/system_stm32f10x.c ****   * @retval None
+ 708:library/cmsis/system_stm32f10x.c ****   */
+ 709:library/cmsis/system_stm32f10x.c **** static void SetSysClockTo48(void)
+ 710:library/cmsis/system_stm32f10x.c **** {
+ 711:library/cmsis/system_stm32f10x.c ****   __IO uint32_t StartUpCounter = 0, HSEStatus = 0;
+ 712:library/cmsis/system_stm32f10x.c ****   
+ 713:library/cmsis/system_stm32f10x.c ****   /* SYSCLK, HCLK, PCLK2 and PCLK1 configuration ---------------------------*/    
+ 714:library/cmsis/system_stm32f10x.c ****   /* Enable HSE */    
+ 715:library/cmsis/system_stm32f10x.c ****   RCC->CR |= ((uint32_t)RCC_CR_HSEON);
+ 716:library/cmsis/system_stm32f10x.c ****  
+ARM GAS  /tmp/cc9oiZ0O.s 			page 14
+
+
+ 717:library/cmsis/system_stm32f10x.c ****   /* Wait till HSE is ready and if Time out is reached exit */
+ 718:library/cmsis/system_stm32f10x.c ****   do
+ 719:library/cmsis/system_stm32f10x.c ****   {
+ 720:library/cmsis/system_stm32f10x.c ****     HSEStatus = RCC->CR & RCC_CR_HSERDY;
+ 721:library/cmsis/system_stm32f10x.c ****     StartUpCounter++;  
+ 722:library/cmsis/system_stm32f10x.c ****   } while((HSEStatus == 0) && (StartUpCounter != HSEStartUp_TimeOut));
+ 723:library/cmsis/system_stm32f10x.c **** 
+ 724:library/cmsis/system_stm32f10x.c ****   if ((RCC->CR & RCC_CR_HSERDY) != RESET)
+ 725:library/cmsis/system_stm32f10x.c ****   {
+ 726:library/cmsis/system_stm32f10x.c ****     HSEStatus = (uint32_t)0x01;
+ 727:library/cmsis/system_stm32f10x.c ****   }
+ 728:library/cmsis/system_stm32f10x.c ****   else
+ 729:library/cmsis/system_stm32f10x.c ****   {
+ 730:library/cmsis/system_stm32f10x.c ****     HSEStatus = (uint32_t)0x00;
+ 731:library/cmsis/system_stm32f10x.c ****   }  
+ 732:library/cmsis/system_stm32f10x.c **** 
+ 733:library/cmsis/system_stm32f10x.c ****   if (HSEStatus == (uint32_t)0x01)
+ 734:library/cmsis/system_stm32f10x.c ****   {
+ 735:library/cmsis/system_stm32f10x.c ****     /* Enable Prefetch Buffer */
+ 736:library/cmsis/system_stm32f10x.c ****     FLASH->ACR |= FLASH_ACR_PRFTBE;
+ 737:library/cmsis/system_stm32f10x.c **** 
+ 738:library/cmsis/system_stm32f10x.c ****     /* Flash 1 wait state */
+ 739:library/cmsis/system_stm32f10x.c ****     FLASH->ACR &= (uint32_t)((uint32_t)~FLASH_ACR_LATENCY);
+ 740:library/cmsis/system_stm32f10x.c ****     FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_1;    
+ 741:library/cmsis/system_stm32f10x.c ****  
+ 742:library/cmsis/system_stm32f10x.c ****     /* HCLK = SYSCLK */
+ 743:library/cmsis/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_HPRE_DIV1;
+ 744:library/cmsis/system_stm32f10x.c ****       
+ 745:library/cmsis/system_stm32f10x.c ****     /* PCLK2 = HCLK */
+ 746:library/cmsis/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE2_DIV1;
+ 747:library/cmsis/system_stm32f10x.c ****     
+ 748:library/cmsis/system_stm32f10x.c ****     /* PCLK1 = HCLK */
+ 749:library/cmsis/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE1_DIV2;
+ 750:library/cmsis/system_stm32f10x.c ****     
+ 751:library/cmsis/system_stm32f10x.c **** #ifdef STM32F10X_CL
+ 752:library/cmsis/system_stm32f10x.c ****     /* Configure PLLs ------------------------------------------------------*/
+ 753:library/cmsis/system_stm32f10x.c ****     /* PLL2 configuration: PLL2CLK = (HSE / 5) * 8 = 40 MHz */
+ 754:library/cmsis/system_stm32f10x.c ****     /* PREDIV1 configuration: PREDIV1CLK = PLL2 / 5 = 8 MHz */
+ 755:library/cmsis/system_stm32f10x.c ****         
+ 756:library/cmsis/system_stm32f10x.c ****     RCC->CFGR2 &= (uint32_t)~(RCC_CFGR2_PREDIV2 | RCC_CFGR2_PLL2MUL |
+ 757:library/cmsis/system_stm32f10x.c ****                               RCC_CFGR2_PREDIV1 | RCC_CFGR2_PREDIV1SRC);
+ 758:library/cmsis/system_stm32f10x.c ****     RCC->CFGR2 |= (uint32_t)(RCC_CFGR2_PREDIV2_DIV5 | RCC_CFGR2_PLL2MUL8 |
+ 759:library/cmsis/system_stm32f10x.c ****                              RCC_CFGR2_PREDIV1SRC_PLL2 | RCC_CFGR2_PREDIV1_DIV5);
+ 760:library/cmsis/system_stm32f10x.c ****   
+ 761:library/cmsis/system_stm32f10x.c ****     /* Enable PLL2 */
+ 762:library/cmsis/system_stm32f10x.c ****     RCC->CR |= RCC_CR_PLL2ON;
+ 763:library/cmsis/system_stm32f10x.c ****     /* Wait till PLL2 is ready */
+ 764:library/cmsis/system_stm32f10x.c ****     while((RCC->CR & RCC_CR_PLL2RDY) == 0)
+ 765:library/cmsis/system_stm32f10x.c ****     {
+ 766:library/cmsis/system_stm32f10x.c ****     }
+ 767:library/cmsis/system_stm32f10x.c ****     
+ 768:library/cmsis/system_stm32f10x.c ****    
+ 769:library/cmsis/system_stm32f10x.c ****     /* PLL configuration: PLLCLK = PREDIV1 * 6 = 48 MHz */ 
+ 770:library/cmsis/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)~(RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLSRC | RCC_CFGR_PLLMULL);
+ 771:library/cmsis/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLXTPRE_PREDIV1 | RCC_CFGR_PLLSRC_PREDIV1 | 
+ 772:library/cmsis/system_stm32f10x.c ****                             RCC_CFGR_PLLMULL6); 
+ 773:library/cmsis/system_stm32f10x.c **** #else    
+ARM GAS  /tmp/cc9oiZ0O.s 			page 15
+
+
+ 774:library/cmsis/system_stm32f10x.c ****     /*  PLL configuration: PLLCLK = HSE * 6 = 48 MHz */
+ 775:library/cmsis/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_PLLSRC | RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLMULL));
+ 776:library/cmsis/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLSRC_HSE | RCC_CFGR_PLLMULL6);
+ 777:library/cmsis/system_stm32f10x.c **** #endif /* STM32F10X_CL */
+ 778:library/cmsis/system_stm32f10x.c **** 
+ 779:library/cmsis/system_stm32f10x.c ****     /* Enable PLL */
+ 780:library/cmsis/system_stm32f10x.c ****     RCC->CR |= RCC_CR_PLLON;
+ 781:library/cmsis/system_stm32f10x.c **** 
+ 782:library/cmsis/system_stm32f10x.c ****     /* Wait till PLL is ready */
+ 783:library/cmsis/system_stm32f10x.c ****     while((RCC->CR & RCC_CR_PLLRDY) == 0)
+ 784:library/cmsis/system_stm32f10x.c ****     {
+ 785:library/cmsis/system_stm32f10x.c ****     }
+ 786:library/cmsis/system_stm32f10x.c **** 
+ 787:library/cmsis/system_stm32f10x.c ****     /* Select PLL as system clock source */
+ 788:library/cmsis/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_SW));
+ 789:library/cmsis/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_SW_PLL;    
+ 790:library/cmsis/system_stm32f10x.c **** 
+ 791:library/cmsis/system_stm32f10x.c ****     /* Wait till PLL is used as system clock source */
+ 792:library/cmsis/system_stm32f10x.c ****     while ((RCC->CFGR & (uint32_t)RCC_CFGR_SWS) != (uint32_t)0x08)
+ 793:library/cmsis/system_stm32f10x.c ****     {
+ 794:library/cmsis/system_stm32f10x.c ****     }
+ 795:library/cmsis/system_stm32f10x.c ****   }
+ 796:library/cmsis/system_stm32f10x.c ****   else
+ 797:library/cmsis/system_stm32f10x.c ****   { /* If HSE fails to start-up, the application will have wrong clock 
+ 798:library/cmsis/system_stm32f10x.c ****          configuration. User can add here some code to deal with this error */
+ 799:library/cmsis/system_stm32f10x.c ****   } 
+ 800:library/cmsis/system_stm32f10x.c **** }
+ 801:library/cmsis/system_stm32f10x.c **** 
+ 802:library/cmsis/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_56MHz
+ 803:library/cmsis/system_stm32f10x.c **** /**
+ 804:library/cmsis/system_stm32f10x.c ****   * @brief  Sets System clock frequency to 56MHz and configure HCLK, PCLK2 
+ 805:library/cmsis/system_stm32f10x.c ****   *          and PCLK1 prescalers. 
+ 806:library/cmsis/system_stm32f10x.c ****   * @note   This function should be used only after reset.
+ 807:library/cmsis/system_stm32f10x.c ****   * @param  None
+ 808:library/cmsis/system_stm32f10x.c ****   * @retval None
+ 809:library/cmsis/system_stm32f10x.c ****   */
+ 810:library/cmsis/system_stm32f10x.c **** static void SetSysClockTo56(void)
+ 811:library/cmsis/system_stm32f10x.c **** {
+ 812:library/cmsis/system_stm32f10x.c ****   __IO uint32_t StartUpCounter = 0, HSEStatus = 0;
+ 813:library/cmsis/system_stm32f10x.c ****   
+ 814:library/cmsis/system_stm32f10x.c ****   /* SYSCLK, HCLK, PCLK2 and PCLK1 configuration ---------------------------*/   
+ 815:library/cmsis/system_stm32f10x.c ****   /* Enable HSE */    
+ 816:library/cmsis/system_stm32f10x.c ****   RCC->CR |= ((uint32_t)RCC_CR_HSEON);
+ 817:library/cmsis/system_stm32f10x.c ****  
+ 818:library/cmsis/system_stm32f10x.c ****   /* Wait till HSE is ready and if Time out is reached exit */
+ 819:library/cmsis/system_stm32f10x.c ****   do
+ 820:library/cmsis/system_stm32f10x.c ****   {
+ 821:library/cmsis/system_stm32f10x.c ****     HSEStatus = RCC->CR & RCC_CR_HSERDY;
+ 822:library/cmsis/system_stm32f10x.c ****     StartUpCounter++;  
+ 823:library/cmsis/system_stm32f10x.c ****   } while((HSEStatus == 0) && (StartUpCounter != HSEStartUp_TimeOut));
+ 824:library/cmsis/system_stm32f10x.c **** 
+ 825:library/cmsis/system_stm32f10x.c ****   if ((RCC->CR & RCC_CR_HSERDY) != RESET)
+ 826:library/cmsis/system_stm32f10x.c ****   {
+ 827:library/cmsis/system_stm32f10x.c ****     HSEStatus = (uint32_t)0x01;
+ 828:library/cmsis/system_stm32f10x.c ****   }
+ 829:library/cmsis/system_stm32f10x.c ****   else
+ 830:library/cmsis/system_stm32f10x.c ****   {
+ARM GAS  /tmp/cc9oiZ0O.s 			page 16
+
+
+ 831:library/cmsis/system_stm32f10x.c ****     HSEStatus = (uint32_t)0x00;
+ 832:library/cmsis/system_stm32f10x.c ****   }  
+ 833:library/cmsis/system_stm32f10x.c **** 
+ 834:library/cmsis/system_stm32f10x.c ****   if (HSEStatus == (uint32_t)0x01)
+ 835:library/cmsis/system_stm32f10x.c ****   {
+ 836:library/cmsis/system_stm32f10x.c ****     /* Enable Prefetch Buffer */
+ 837:library/cmsis/system_stm32f10x.c ****     FLASH->ACR |= FLASH_ACR_PRFTBE;
+ 838:library/cmsis/system_stm32f10x.c **** 
+ 839:library/cmsis/system_stm32f10x.c ****     /* Flash 2 wait state */
+ 840:library/cmsis/system_stm32f10x.c ****     FLASH->ACR &= (uint32_t)((uint32_t)~FLASH_ACR_LATENCY);
+ 841:library/cmsis/system_stm32f10x.c ****     FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_2;    
+ 842:library/cmsis/system_stm32f10x.c ****  
+ 843:library/cmsis/system_stm32f10x.c ****     /* HCLK = SYSCLK */
+ 844:library/cmsis/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_HPRE_DIV1;
+ 845:library/cmsis/system_stm32f10x.c ****       
+ 846:library/cmsis/system_stm32f10x.c ****     /* PCLK2 = HCLK */
+ 847:library/cmsis/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE2_DIV1;
+ 848:library/cmsis/system_stm32f10x.c ****     
+ 849:library/cmsis/system_stm32f10x.c ****     /* PCLK1 = HCLK */
+ 850:library/cmsis/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE1_DIV2;
+ 851:library/cmsis/system_stm32f10x.c **** 
+ 852:library/cmsis/system_stm32f10x.c **** #ifdef STM32F10X_CL
+ 853:library/cmsis/system_stm32f10x.c ****     /* Configure PLLs ------------------------------------------------------*/
+ 854:library/cmsis/system_stm32f10x.c ****     /* PLL2 configuration: PLL2CLK = (HSE / 5) * 8 = 40 MHz */
+ 855:library/cmsis/system_stm32f10x.c ****     /* PREDIV1 configuration: PREDIV1CLK = PLL2 / 5 = 8 MHz */
+ 856:library/cmsis/system_stm32f10x.c ****         
+ 857:library/cmsis/system_stm32f10x.c ****     RCC->CFGR2 &= (uint32_t)~(RCC_CFGR2_PREDIV2 | RCC_CFGR2_PLL2MUL |
+ 858:library/cmsis/system_stm32f10x.c ****                               RCC_CFGR2_PREDIV1 | RCC_CFGR2_PREDIV1SRC);
+ 859:library/cmsis/system_stm32f10x.c ****     RCC->CFGR2 |= (uint32_t)(RCC_CFGR2_PREDIV2_DIV5 | RCC_CFGR2_PLL2MUL8 |
+ 860:library/cmsis/system_stm32f10x.c ****                              RCC_CFGR2_PREDIV1SRC_PLL2 | RCC_CFGR2_PREDIV1_DIV5);
+ 861:library/cmsis/system_stm32f10x.c ****   
+ 862:library/cmsis/system_stm32f10x.c ****     /* Enable PLL2 */
+ 863:library/cmsis/system_stm32f10x.c ****     RCC->CR |= RCC_CR_PLL2ON;
+ 864:library/cmsis/system_stm32f10x.c ****     /* Wait till PLL2 is ready */
+ 865:library/cmsis/system_stm32f10x.c ****     while((RCC->CR & RCC_CR_PLL2RDY) == 0)
+ 866:library/cmsis/system_stm32f10x.c ****     {
+ 867:library/cmsis/system_stm32f10x.c ****     }
+ 868:library/cmsis/system_stm32f10x.c ****     
+ 869:library/cmsis/system_stm32f10x.c ****    
+ 870:library/cmsis/system_stm32f10x.c ****     /* PLL configuration: PLLCLK = PREDIV1 * 7 = 56 MHz */ 
+ 871:library/cmsis/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)~(RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLSRC | RCC_CFGR_PLLMULL);
+ 872:library/cmsis/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLXTPRE_PREDIV1 | RCC_CFGR_PLLSRC_PREDIV1 | 
+ 873:library/cmsis/system_stm32f10x.c ****                             RCC_CFGR_PLLMULL7); 
+ 874:library/cmsis/system_stm32f10x.c **** #else     
+ 875:library/cmsis/system_stm32f10x.c ****     /* PLL configuration: PLLCLK = HSE * 7 = 56 MHz */
+ 876:library/cmsis/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_PLLSRC | RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLMULL));
+ 877:library/cmsis/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLSRC_HSE | RCC_CFGR_PLLMULL7);
+ 878:library/cmsis/system_stm32f10x.c **** 
+ 879:library/cmsis/system_stm32f10x.c **** #endif /* STM32F10X_CL */
+ 880:library/cmsis/system_stm32f10x.c **** 
+ 881:library/cmsis/system_stm32f10x.c ****     /* Enable PLL */
+ 882:library/cmsis/system_stm32f10x.c ****     RCC->CR |= RCC_CR_PLLON;
+ 883:library/cmsis/system_stm32f10x.c **** 
+ 884:library/cmsis/system_stm32f10x.c ****     /* Wait till PLL is ready */
+ 885:library/cmsis/system_stm32f10x.c ****     while((RCC->CR & RCC_CR_PLLRDY) == 0)
+ 886:library/cmsis/system_stm32f10x.c ****     {
+ 887:library/cmsis/system_stm32f10x.c ****     }
+ARM GAS  /tmp/cc9oiZ0O.s 			page 17
+
+
+ 888:library/cmsis/system_stm32f10x.c **** 
+ 889:library/cmsis/system_stm32f10x.c ****     /* Select PLL as system clock source */
+ 890:library/cmsis/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_SW));
+ 891:library/cmsis/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_SW_PLL;    
+ 892:library/cmsis/system_stm32f10x.c **** 
+ 893:library/cmsis/system_stm32f10x.c ****     /* Wait till PLL is used as system clock source */
+ 894:library/cmsis/system_stm32f10x.c ****     while ((RCC->CFGR & (uint32_t)RCC_CFGR_SWS) != (uint32_t)0x08)
+ 895:library/cmsis/system_stm32f10x.c ****     {
+ 896:library/cmsis/system_stm32f10x.c ****     }
+ 897:library/cmsis/system_stm32f10x.c ****   }
+ 898:library/cmsis/system_stm32f10x.c ****   else
+ 899:library/cmsis/system_stm32f10x.c ****   { /* If HSE fails to start-up, the application will have wrong clock 
+ 900:library/cmsis/system_stm32f10x.c ****          configuration. User can add here some code to deal with this error */
+ 901:library/cmsis/system_stm32f10x.c ****   } 
+ 902:library/cmsis/system_stm32f10x.c **** }
+ 903:library/cmsis/system_stm32f10x.c **** 
+ 904:library/cmsis/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_72MHz
+ 905:library/cmsis/system_stm32f10x.c **** /**
+ 906:library/cmsis/system_stm32f10x.c ****   * @brief  Sets System clock frequency to 72MHz and configure HCLK, PCLK2 
+ 907:library/cmsis/system_stm32f10x.c ****   *          and PCLK1 prescalers. 
+ 908:library/cmsis/system_stm32f10x.c ****   * @note   This function should be used only after reset.
+ 909:library/cmsis/system_stm32f10x.c ****   * @param  None
+ 910:library/cmsis/system_stm32f10x.c ****   * @retval None
+ 911:library/cmsis/system_stm32f10x.c ****   */
+ 912:library/cmsis/system_stm32f10x.c **** static void SetSysClockTo72(void)
+ 913:library/cmsis/system_stm32f10x.c **** {
+  27              		.loc 1 913 0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 8
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31              		@ link register save eliminated.
+  32 0000 82B0     		sub	sp, sp, #8
+  33              	.LCFI0:
+  34              		.cfi_def_cfa_offset 8
+ 914:library/cmsis/system_stm32f10x.c ****   __IO uint32_t StartUpCounter = 0, HSEStatus = 0;
+  35              		.loc 1 914 0
+  36 0002 0023     		movs	r3, #0
+  37 0004 0193     		str	r3, [sp, #4]
+  38 0006 0093     		str	r3, [sp]
+ 915:library/cmsis/system_stm32f10x.c ****   
+ 916:library/cmsis/system_stm32f10x.c ****   /* SYSCLK, HCLK, PCLK2 and PCLK1 configuration ---------------------------*/    
+ 917:library/cmsis/system_stm32f10x.c ****   /* Enable HSE */    
+ 918:library/cmsis/system_stm32f10x.c ****   RCC->CR |= ((uint32_t)RCC_CR_HSEON);
+  39              		.loc 1 918 0
+  40 0008 2C4A     		ldr	r2, .L10
+  41 000a 1368     		ldr	r3, [r2]
+  42 000c 43F48033 		orr	r3, r3, #65536
+  43 0010 1360     		str	r3, [r2]
+  44              	.L3:
+ 919:library/cmsis/system_stm32f10x.c ****  
+ 920:library/cmsis/system_stm32f10x.c ****   /* Wait till HSE is ready and if Time out is reached exit */
+ 921:library/cmsis/system_stm32f10x.c ****   do
+ 922:library/cmsis/system_stm32f10x.c ****   {
+ 923:library/cmsis/system_stm32f10x.c ****     HSEStatus = RCC->CR & RCC_CR_HSERDY;
+  45              		.loc 1 923 0 discriminator 2
+  46 0012 2A4B     		ldr	r3, .L10
+  47 0014 1B68     		ldr	r3, [r3]
+ARM GAS  /tmp/cc9oiZ0O.s 			page 18
+
+
+  48 0016 03F40033 		and	r3, r3, #131072
+  49 001a 0093     		str	r3, [sp]
+ 924:library/cmsis/system_stm32f10x.c ****     StartUpCounter++;  
+  50              		.loc 1 924 0 discriminator 2
+  51 001c 019B     		ldr	r3, [sp, #4]
+  52 001e 0133     		adds	r3, r3, #1
+  53 0020 0193     		str	r3, [sp, #4]
+ 925:library/cmsis/system_stm32f10x.c ****   } while((HSEStatus == 0) && (StartUpCounter != HSEStartUp_TimeOut));
+  54              		.loc 1 925 0 discriminator 2
+  55 0022 009B     		ldr	r3, [sp]
+  56 0024 1BB9     		cbnz	r3, .L2
+  57              		.loc 1 925 0 is_stmt 0 discriminator 1
+  58 0026 019B     		ldr	r3, [sp, #4]
+  59 0028 B3F5A06F 		cmp	r3, #1280
+  60 002c F1D1     		bne	.L3
+  61              	.L2:
+ 926:library/cmsis/system_stm32f10x.c **** 
+ 927:library/cmsis/system_stm32f10x.c ****   if ((RCC->CR & RCC_CR_HSERDY) != RESET)
+  62              		.loc 1 927 0 is_stmt 1
+  63 002e 234B     		ldr	r3, .L10
+  64 0030 1B68     		ldr	r3, [r3]
+  65 0032 13F4003F 		tst	r3, #131072
+  66 0036 02D0     		beq	.L4
+ 928:library/cmsis/system_stm32f10x.c ****   {
+ 929:library/cmsis/system_stm32f10x.c ****     HSEStatus = (uint32_t)0x01;
+  67              		.loc 1 929 0
+  68 0038 0123     		movs	r3, #1
+  69 003a 0093     		str	r3, [sp]
+  70 003c 01E0     		b	.L5
+  71              	.L4:
+ 930:library/cmsis/system_stm32f10x.c ****   }
+ 931:library/cmsis/system_stm32f10x.c ****   else
+ 932:library/cmsis/system_stm32f10x.c ****   {
+ 933:library/cmsis/system_stm32f10x.c ****     HSEStatus = (uint32_t)0x00;
+  72              		.loc 1 933 0
+  73 003e 0023     		movs	r3, #0
+  74 0040 0093     		str	r3, [sp]
+  75              	.L5:
+ 934:library/cmsis/system_stm32f10x.c ****   }  
+ 935:library/cmsis/system_stm32f10x.c **** 
+ 936:library/cmsis/system_stm32f10x.c ****   if (HSEStatus == (uint32_t)0x01)
+  76              		.loc 1 936 0
+  77 0042 009B     		ldr	r3, [sp]
+  78 0044 012B     		cmp	r3, #1
+  79 0046 36D1     		bne	.L1
+ 937:library/cmsis/system_stm32f10x.c ****   {
+ 938:library/cmsis/system_stm32f10x.c ****     /* Enable Prefetch Buffer */
+ 939:library/cmsis/system_stm32f10x.c ****     FLASH->ACR |= FLASH_ACR_PRFTBE;
+  80              		.loc 1 939 0
+  81 0048 1D4B     		ldr	r3, .L10+4
+  82 004a 1A68     		ldr	r2, [r3]
+  83 004c 42F01002 		orr	r2, r2, #16
+  84 0050 1A60     		str	r2, [r3]
+ 940:library/cmsis/system_stm32f10x.c **** 
+ 941:library/cmsis/system_stm32f10x.c ****     /* Flash 2 wait state */
+ 942:library/cmsis/system_stm32f10x.c ****     FLASH->ACR &= (uint32_t)((uint32_t)~FLASH_ACR_LATENCY);
+  85              		.loc 1 942 0
+ARM GAS  /tmp/cc9oiZ0O.s 			page 19
+
+
+  86 0052 1A68     		ldr	r2, [r3]
+  87 0054 22F00302 		bic	r2, r2, #3
+  88 0058 1A60     		str	r2, [r3]
+ 943:library/cmsis/system_stm32f10x.c ****     FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_2;    
+  89              		.loc 1 943 0
+  90 005a 1A68     		ldr	r2, [r3]
+  91 005c 42F00202 		orr	r2, r2, #2
+  92 0060 1A60     		str	r2, [r3]
+ 944:library/cmsis/system_stm32f10x.c **** 
+ 945:library/cmsis/system_stm32f10x.c ****  
+ 946:library/cmsis/system_stm32f10x.c ****     /* HCLK = SYSCLK */
+ 947:library/cmsis/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_HPRE_DIV1;
+  93              		.loc 1 947 0
+  94 0062 A3F58053 		sub	r3, r3, #4096
+  95 0066 5A68     		ldr	r2, [r3, #4]
+  96 0068 5A60     		str	r2, [r3, #4]
+ 948:library/cmsis/system_stm32f10x.c ****       
+ 949:library/cmsis/system_stm32f10x.c ****     /* PCLK2 = HCLK */
+ 950:library/cmsis/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE2_DIV1;
+  97              		.loc 1 950 0
+  98 006a 5A68     		ldr	r2, [r3, #4]
+  99 006c 5A60     		str	r2, [r3, #4]
+ 951:library/cmsis/system_stm32f10x.c ****     
+ 952:library/cmsis/system_stm32f10x.c ****     /* PCLK1 = HCLK */
+ 953:library/cmsis/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE1_DIV2;
+ 100              		.loc 1 953 0
+ 101 006e 5A68     		ldr	r2, [r3, #4]
+ 102 0070 42F48062 		orr	r2, r2, #1024
+ 103 0074 5A60     		str	r2, [r3, #4]
+ 954:library/cmsis/system_stm32f10x.c **** 
+ 955:library/cmsis/system_stm32f10x.c **** #ifdef STM32F10X_CL
+ 956:library/cmsis/system_stm32f10x.c ****     /* Configure PLLs ------------------------------------------------------*/
+ 957:library/cmsis/system_stm32f10x.c ****     /* PLL2 configuration: PLL2CLK = (HSE / 5) * 8 = 40 MHz */
+ 958:library/cmsis/system_stm32f10x.c ****     /* PREDIV1 configuration: PREDIV1CLK = PLL2 / 5 = 8 MHz */
+ 959:library/cmsis/system_stm32f10x.c ****         
+ 960:library/cmsis/system_stm32f10x.c ****     RCC->CFGR2 &= (uint32_t)~(RCC_CFGR2_PREDIV2 | RCC_CFGR2_PLL2MUL |
+ 961:library/cmsis/system_stm32f10x.c ****                               RCC_CFGR2_PREDIV1 | RCC_CFGR2_PREDIV1SRC);
+ 962:library/cmsis/system_stm32f10x.c ****     RCC->CFGR2 |= (uint32_t)(RCC_CFGR2_PREDIV2_DIV5 | RCC_CFGR2_PLL2MUL8 |
+ 963:library/cmsis/system_stm32f10x.c ****                              RCC_CFGR2_PREDIV1SRC_PLL2 | RCC_CFGR2_PREDIV1_DIV5);
+ 964:library/cmsis/system_stm32f10x.c ****   
+ 965:library/cmsis/system_stm32f10x.c ****     /* Enable PLL2 */
+ 966:library/cmsis/system_stm32f10x.c ****     RCC->CR |= RCC_CR_PLL2ON;
+ 967:library/cmsis/system_stm32f10x.c ****     /* Wait till PLL2 is ready */
+ 968:library/cmsis/system_stm32f10x.c ****     while((RCC->CR & RCC_CR_PLL2RDY) == 0)
+ 969:library/cmsis/system_stm32f10x.c ****     {
+ 970:library/cmsis/system_stm32f10x.c ****     }
+ 971:library/cmsis/system_stm32f10x.c ****     
+ 972:library/cmsis/system_stm32f10x.c ****    
+ 973:library/cmsis/system_stm32f10x.c ****     /* PLL configuration: PLLCLK = PREDIV1 * 9 = 72 MHz */ 
+ 974:library/cmsis/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)~(RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLSRC | RCC_CFGR_PLLMULL);
+ 975:library/cmsis/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLXTPRE_PREDIV1 | RCC_CFGR_PLLSRC_PREDIV1 | 
+ 976:library/cmsis/system_stm32f10x.c ****                             RCC_CFGR_PLLMULL9); 
+ 977:library/cmsis/system_stm32f10x.c **** #else    
+ 978:library/cmsis/system_stm32f10x.c ****     /*  PLL configuration: PLLCLK = HSE * 9 = 72 MHz */
+ 979:library/cmsis/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_PLLSRC | RCC_CFGR_PLLXTPRE |
+ 104              		.loc 1 979 0
+ 105 0076 5A68     		ldr	r2, [r3, #4]
+ARM GAS  /tmp/cc9oiZ0O.s 			page 20
+
+
+ 106 0078 22F47C12 		bic	r2, r2, #4128768
+ 107 007c 5A60     		str	r2, [r3, #4]
+ 980:library/cmsis/system_stm32f10x.c ****                                         RCC_CFGR_PLLMULL));
+ 981:library/cmsis/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLSRC_HSE | RCC_CFGR_PLLMULL9);
+ 108              		.loc 1 981 0
+ 109 007e 5A68     		ldr	r2, [r3, #4]
+ 110 0080 42F4E812 		orr	r2, r2, #1900544
+ 111 0084 5A60     		str	r2, [r3, #4]
+ 982:library/cmsis/system_stm32f10x.c **** #endif /* STM32F10X_CL */
+ 983:library/cmsis/system_stm32f10x.c **** 
+ 984:library/cmsis/system_stm32f10x.c ****     /* Enable PLL */
+ 985:library/cmsis/system_stm32f10x.c ****     RCC->CR |= RCC_CR_PLLON;
+ 112              		.loc 1 985 0
+ 113 0086 1A68     		ldr	r2, [r3]
+ 114 0088 42F08072 		orr	r2, r2, #16777216
+ 115 008c 1A60     		str	r2, [r3]
+ 116              	.L7:
+ 986:library/cmsis/system_stm32f10x.c **** 
+ 987:library/cmsis/system_stm32f10x.c ****     /* Wait till PLL is ready */
+ 988:library/cmsis/system_stm32f10x.c ****     while((RCC->CR & RCC_CR_PLLRDY) == 0)
+ 117              		.loc 1 988 0 discriminator 1
+ 118 008e 0B4B     		ldr	r3, .L10
+ 119 0090 1B68     		ldr	r3, [r3]
+ 120 0092 13F0007F 		tst	r3, #33554432
+ 121 0096 FAD0     		beq	.L7
+ 989:library/cmsis/system_stm32f10x.c ****     {
+ 990:library/cmsis/system_stm32f10x.c ****     }
+ 991:library/cmsis/system_stm32f10x.c ****     
+ 992:library/cmsis/system_stm32f10x.c ****     /* Select PLL as system clock source */
+ 993:library/cmsis/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_SW));
+ 122              		.loc 1 993 0
+ 123 0098 084B     		ldr	r3, .L10
+ 124 009a 5A68     		ldr	r2, [r3, #4]
+ 125 009c 22F00302 		bic	r2, r2, #3
+ 126 00a0 5A60     		str	r2, [r3, #4]
+ 994:library/cmsis/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_SW_PLL;    
+ 127              		.loc 1 994 0
+ 128 00a2 5A68     		ldr	r2, [r3, #4]
+ 129 00a4 42F00202 		orr	r2, r2, #2
+ 130 00a8 5A60     		str	r2, [r3, #4]
+ 131              	.L8:
+ 995:library/cmsis/system_stm32f10x.c **** 
+ 996:library/cmsis/system_stm32f10x.c ****     /* Wait till PLL is used as system clock source */
+ 997:library/cmsis/system_stm32f10x.c ****     while ((RCC->CFGR & (uint32_t)RCC_CFGR_SWS) != (uint32_t)0x08)
+ 132              		.loc 1 997 0 discriminator 1
+ 133 00aa 044B     		ldr	r3, .L10
+ 134 00ac 5B68     		ldr	r3, [r3, #4]
+ 135 00ae 03F00C03 		and	r3, r3, #12
+ 136 00b2 082B     		cmp	r3, #8
+ 137 00b4 F9D1     		bne	.L8
+ 138              	.L1:
+ 998:library/cmsis/system_stm32f10x.c ****     {
+ 999:library/cmsis/system_stm32f10x.c ****     }
+1000:library/cmsis/system_stm32f10x.c ****   }
+1001:library/cmsis/system_stm32f10x.c ****   else
+1002:library/cmsis/system_stm32f10x.c ****   { /* If HSE fails to start-up, the application will have wrong clock 
+1003:library/cmsis/system_stm32f10x.c ****          configuration. User can add here some code to deal with this error */
+ARM GAS  /tmp/cc9oiZ0O.s 			page 21
+
+
+1004:library/cmsis/system_stm32f10x.c ****   }
+1005:library/cmsis/system_stm32f10x.c **** }
+ 139              		.loc 1 1005 0
+ 140 00b6 02B0     		add	sp, sp, #8
+ 141              	.LCFI1:
+ 142              		.cfi_def_cfa_offset 0
+ 143              		@ sp needed
+ 144 00b8 7047     		bx	lr
+ 145              	.L11:
+ 146 00ba 00BF     		.align	2
+ 147              	.L10:
+ 148 00bc 00100240 		.word	1073876992
+ 149 00c0 00200240 		.word	1073881088
+ 150              		.cfi_endproc
+ 151              	.LFE32:
+ 153              		.section	.text.SetSysClock,"ax",%progbits
+ 154              		.align	2
+ 155              		.thumb
+ 156              		.thumb_func
+ 158              	SetSysClock:
+ 159              	.LFB31:
+ 345:library/cmsis/system_stm32f10x.c **** #ifdef SYSCLK_FREQ_HSE
+ 160              		.loc 1 345 0
+ 161              		.cfi_startproc
+ 162              		@ args = 0, pretend = 0, frame = 0
+ 163              		@ frame_needed = 0, uses_anonymous_args = 0
+ 164 0000 08B5     		push	{r3, lr}
+ 165              	.LCFI2:
+ 166              		.cfi_def_cfa_offset 8
+ 167              		.cfi_offset 3, -8
+ 168              		.cfi_offset 14, -4
+ 357:library/cmsis/system_stm32f10x.c **** #endif
+ 169              		.loc 1 357 0
+ 170 0002 FFF7FEFF 		bl	SetSysClockTo72
+ 171              	.LVL0:
+ 172 0006 08BD     		pop	{r3, pc}
+ 173              		.cfi_endproc
+ 174              	.LFE31:
+ 176              		.section	.text.SystemInit,"ax",%progbits
+ 177              		.align	2
+ 178              		.global	SystemInit
+ 179              		.thumb
+ 180              		.thumb_func
+ 182              	SystemInit:
+ 183              	.LFB29:
+ 173:library/cmsis/system_stm32f10x.c ****   /* Reset the RCC clock configuration to the default reset state(for debug purpose) */
+ 184              		.loc 1 173 0
+ 185              		.cfi_startproc
+ 186              		@ args = 0, pretend = 0, frame = 0
+ 187              		@ frame_needed = 0, uses_anonymous_args = 0
+ 188 0000 08B5     		push	{r3, lr}
+ 189              	.LCFI3:
+ 190              		.cfi_def_cfa_offset 8
+ 191              		.cfi_offset 3, -8
+ 192              		.cfi_offset 14, -4
+ 176:library/cmsis/system_stm32f10x.c **** 
+ 193              		.loc 1 176 0
+ARM GAS  /tmp/cc9oiZ0O.s 			page 22
+
+
+ 194 0002 0E4B     		ldr	r3, .L16
+ 195 0004 1A68     		ldr	r2, [r3]
+ 196 0006 42F00102 		orr	r2, r2, #1
+ 197 000a 1A60     		str	r2, [r3]
+ 180:library/cmsis/system_stm32f10x.c **** #else
+ 198              		.loc 1 180 0
+ 199 000c 5968     		ldr	r1, [r3, #4]
+ 200 000e 0C4A     		ldr	r2, .L16+4
+ 201 0010 0A40     		ands	r2, r2, r1
+ 202 0012 5A60     		str	r2, [r3, #4]
+ 186:library/cmsis/system_stm32f10x.c **** 
+ 203              		.loc 1 186 0
+ 204 0014 1A68     		ldr	r2, [r3]
+ 205 0016 22F08472 		bic	r2, r2, #17301504
+ 206 001a 22F48032 		bic	r2, r2, #65536
+ 207 001e 1A60     		str	r2, [r3]
+ 189:library/cmsis/system_stm32f10x.c **** 
+ 208              		.loc 1 189 0
+ 209 0020 1A68     		ldr	r2, [r3]
+ 210 0022 22F48022 		bic	r2, r2, #262144
+ 211 0026 1A60     		str	r2, [r3]
+ 192:library/cmsis/system_stm32f10x.c **** 
+ 212              		.loc 1 192 0
+ 213 0028 5A68     		ldr	r2, [r3, #4]
+ 214 002a 22F4FE02 		bic	r2, r2, #8323072
+ 215 002e 5A60     		str	r2, [r3, #4]
+ 211:library/cmsis/system_stm32f10x.c **** #endif /* STM32F10X_CL */
+ 216              		.loc 1 211 0
+ 217 0030 4FF41F02 		mov	r2, #10420224
+ 218 0034 9A60     		str	r2, [r3, #8]
+ 222:library/cmsis/system_stm32f10x.c **** }
+ 219              		.loc 1 222 0
+ 220 0036 FFF7FEFF 		bl	SetSysClock
+ 221              	.LVL1:
+ 222 003a 08BD     		pop	{r3, pc}
+ 223              	.L17:
+ 224              		.align	2
+ 225              	.L16:
+ 226 003c 00100240 		.word	1073876992
+ 227 0040 0000FFF8 		.word	-117506048
+ 228              		.cfi_endproc
+ 229              	.LFE29:
+ 231              		.section	.text.SystemCoreClockUpdate,"ax",%progbits
+ 232              		.align	2
+ 233              		.global	SystemCoreClockUpdate
+ 234              		.thumb
+ 235              		.thumb_func
+ 237              	SystemCoreClockUpdate:
+ 238              	.LFB30:
+ 232:library/cmsis/system_stm32f10x.c ****   uint32_t tmp = 0, pllmull = 0, pllsource = 0;
+ 239              		.loc 1 232 0
+ 240              		.cfi_startproc
+ 241              		@ args = 0, pretend = 0, frame = 0
+ 242              		@ frame_needed = 0, uses_anonymous_args = 0
+ 243              		@ link register save eliminated.
+ 244              	.LVL2:
+ 244:library/cmsis/system_stm32f10x.c ****   
+ARM GAS  /tmp/cc9oiZ0O.s 			page 23
+
+
+ 245              		.loc 1 244 0
+ 246 0000 1F4B     		ldr	r3, .L27
+ 247 0002 5B68     		ldr	r3, [r3, #4]
+ 248 0004 03F00C03 		and	r3, r3, #12
+ 249              	.LVL3:
+ 246:library/cmsis/system_stm32f10x.c ****   {
+ 250              		.loc 1 246 0
+ 251 0008 042B     		cmp	r3, #4
+ 252 000a 06D0     		beq	.L20
+ 253 000c 082B     		cmp	r3, #8
+ 254 000e 08D0     		beq	.L21
+ 255 0010 3BBB     		cbnz	r3, .L26
+ 249:library/cmsis/system_stm32f10x.c ****       break;
+ 256              		.loc 1 249 0
+ 257 0012 1C4A     		ldr	r2, .L27+4
+ 258 0014 1C4B     		ldr	r3, .L27+8
+ 259              	.LVL4:
+ 260 0016 1A60     		str	r2, [r3]
+ 250:library/cmsis/system_stm32f10x.c ****     case 0x04:  /* HSE used as system clock */
+ 261              		.loc 1 250 0
+ 262 0018 26E0     		b	.L23
+ 263              	.LVL5:
+ 264              	.L20:
+ 252:library/cmsis/system_stm32f10x.c ****       break;
+ 265              		.loc 1 252 0
+ 266 001a 1A4A     		ldr	r2, .L27+4
+ 267 001c 1A4B     		ldr	r3, .L27+8
+ 268              	.LVL6:
+ 269 001e 1A60     		str	r2, [r3]
+ 253:library/cmsis/system_stm32f10x.c ****     case 0x08:  /* PLL used as system clock */
+ 270              		.loc 1 253 0
+ 271 0020 22E0     		b	.L23
+ 272              	.LVL7:
+ 273              	.L21:
+ 257:library/cmsis/system_stm32f10x.c ****       pllsource = RCC->CFGR & RCC_CFGR_PLLSRC;
+ 274              		.loc 1 257 0
+ 275 0022 174A     		ldr	r2, .L27
+ 276 0024 5368     		ldr	r3, [r2, #4]
+ 277              	.LVL8:
+ 258:library/cmsis/system_stm32f10x.c ****       
+ 278              		.loc 1 258 0
+ 279 0026 5268     		ldr	r2, [r2, #4]
+ 280              	.LVL9:
+ 261:library/cmsis/system_stm32f10x.c ****       
+ 281              		.loc 1 261 0
+ 282 0028 C3F38343 		ubfx	r3, r3, #18, #4
+ 283              	.LVL10:
+ 284 002c 0233     		adds	r3, r3, #2
+ 285              	.LVL11:
+ 263:library/cmsis/system_stm32f10x.c ****       {
+ 286              		.loc 1 263 0
+ 287 002e 12F4803F 		tst	r2, #65536
+ 288 0032 05D1     		bne	.L24
+ 266:library/cmsis/system_stm32f10x.c ****       }
+ 289              		.loc 1 266 0
+ 290 0034 154A     		ldr	r2, .L27+12
+ 291              	.LVL12:
+ARM GAS  /tmp/cc9oiZ0O.s 			page 24
+
+
+ 292 0036 02FB03F3 		mul	r3, r2, r3
+ 293              	.LVL13:
+ 294 003a 134A     		ldr	r2, .L27+8
+ 295 003c 1360     		str	r3, [r2]
+ 296 003e 13E0     		b	.L23
+ 297              	.LVL14:
+ 298              	.L24:
+ 276:library/cmsis/system_stm32f10x.c ****         {/* HSE oscillator clock divided by 2 */
+ 299              		.loc 1 276 0
+ 300 0040 0F4A     		ldr	r2, .L27
+ 301              	.LVL15:
+ 302 0042 5268     		ldr	r2, [r2, #4]
+ 303 0044 12F4003F 		tst	r2, #131072
+ 304 0048 05D0     		beq	.L25
+ 278:library/cmsis/system_stm32f10x.c ****         }
+ 305              		.loc 1 278 0
+ 306 004a 104A     		ldr	r2, .L27+12
+ 307 004c 02FB03F3 		mul	r3, r2, r3
+ 308              	.LVL16:
+ 309 0050 0D4A     		ldr	r2, .L27+8
+ 310 0052 1360     		str	r3, [r2]
+ 311 0054 08E0     		b	.L23
+ 312              	.LVL17:
+ 313              	.L25:
+ 282:library/cmsis/system_stm32f10x.c ****         }
+ 314              		.loc 1 282 0
+ 315 0056 0B4A     		ldr	r2, .L27+4
+ 316 0058 02FB03F3 		mul	r3, r2, r3
+ 317              	.LVL18:
+ 318 005c 0A4A     		ldr	r2, .L27+8
+ 319 005e 1360     		str	r3, [r2]
+ 320 0060 02E0     		b	.L23
+ 321              	.LVL19:
+ 322              	.L26:
+ 328:library/cmsis/system_stm32f10x.c ****       break;
+ 323              		.loc 1 328 0
+ 324 0062 084A     		ldr	r2, .L27+4
+ 325 0064 084B     		ldr	r3, .L27+8
+ 326              	.LVL20:
+ 327 0066 1A60     		str	r2, [r3]
+ 328              	.LVL21:
+ 329              	.L23:
+ 334:library/cmsis/system_stm32f10x.c ****   /* HCLK clock frequency */
+ 330              		.loc 1 334 0
+ 331 0068 054B     		ldr	r3, .L27
+ 332 006a 5B68     		ldr	r3, [r3, #4]
+ 333 006c C3F30313 		ubfx	r3, r3, #4, #4
+ 334 0070 074A     		ldr	r2, .L27+16
+ 335 0072 D35C     		ldrb	r3, [r2, r3]	@ zero_extendqisi2
+ 336 0074 DAB2     		uxtb	r2, r3
+ 337              	.LVL22:
+ 336:library/cmsis/system_stm32f10x.c **** }
+ 338              		.loc 1 336 0
+ 339 0076 0449     		ldr	r1, .L27+8
+ 340 0078 0B68     		ldr	r3, [r1]
+ 341 007a D340     		lsrs	r3, r3, r2
+ 342 007c 0B60     		str	r3, [r1]
+ARM GAS  /tmp/cc9oiZ0O.s 			page 25
+
+
+ 343 007e 7047     		bx	lr
+ 344              	.L28:
+ 345              		.align	2
+ 346              	.L27:
+ 347 0080 00100240 		.word	1073876992
+ 348 0084 00127A00 		.word	8000000
+ 349 0088 00000000 		.word	.LANCHOR0
+ 350 008c 00093D00 		.word	4000000
+ 351 0090 00000000 		.word	.LANCHOR1
+ 352              		.cfi_endproc
+ 353              	.LFE30:
+ 355              		.global	AHBPrescTable
+ 356              		.global	SystemCoreClock
+ 357              		.section	.data.AHBPrescTable,"aw",%progbits
+ 358              		.align	2
+ 359              		.set	.LANCHOR1,. + 0
+ 362              	AHBPrescTable:
+ 363 0000 00       		.byte	0
+ 364 0001 00       		.byte	0
+ 365 0002 00       		.byte	0
+ 366 0003 00       		.byte	0
+ 367 0004 00       		.byte	0
+ 368 0005 00       		.byte	0
+ 369 0006 00       		.byte	0
+ 370 0007 00       		.byte	0
+ 371 0008 01       		.byte	1
+ 372 0009 02       		.byte	2
+ 373 000a 03       		.byte	3
+ 374 000b 04       		.byte	4
+ 375 000c 06       		.byte	6
+ 376 000d 07       		.byte	7
+ 377 000e 08       		.byte	8
+ 378 000f 09       		.byte	9
+ 379              		.section	.data.SystemCoreClock,"aw",%progbits
+ 380              		.align	2
+ 381              		.set	.LANCHOR0,. + 0
+ 384              	SystemCoreClock:
+ 385 0000 00A24A04 		.word	72000000
+ 386              		.text
+ 387              	.Letext0:
+ 388              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 389              		.file 3 "/usr/include/newlib/sys/_stdint.h"
+ 390              		.file 4 "library/cmsis/stm32f10x.h"
+ 391              		.file 5 "library/cmsis/core_cm3.h"
+ARM GAS  /tmp/cc9oiZ0O.s 			page 26
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 system_stm32f10x.c
+     /tmp/cc9oiZ0O.s:20     .text.SetSysClockTo72:0000000000000000 $t
+     /tmp/cc9oiZ0O.s:24     .text.SetSysClockTo72:0000000000000000 SetSysClockTo72
+     /tmp/cc9oiZ0O.s:148    .text.SetSysClockTo72:00000000000000bc $d
+     /tmp/cc9oiZ0O.s:154    .text.SetSysClock:0000000000000000 $t
+     /tmp/cc9oiZ0O.s:158    .text.SetSysClock:0000000000000000 SetSysClock
+     /tmp/cc9oiZ0O.s:177    .text.SystemInit:0000000000000000 $t
+     /tmp/cc9oiZ0O.s:182    .text.SystemInit:0000000000000000 SystemInit
+     /tmp/cc9oiZ0O.s:226    .text.SystemInit:000000000000003c $d
+     /tmp/cc9oiZ0O.s:232    .text.SystemCoreClockUpdate:0000000000000000 $t
+     /tmp/cc9oiZ0O.s:237    .text.SystemCoreClockUpdate:0000000000000000 SystemCoreClockUpdate
+     /tmp/cc9oiZ0O.s:347    .text.SystemCoreClockUpdate:0000000000000080 $d
+     /tmp/cc9oiZ0O.s:362    .data.AHBPrescTable:0000000000000000 AHBPrescTable
+     /tmp/cc9oiZ0O.s:384    .data.SystemCoreClock:0000000000000000 SystemCoreClock
+     /tmp/cc9oiZ0O.s:358    .data.AHBPrescTable:0000000000000000 $d
+     /tmp/cc9oiZ0O.s:380    .data.SystemCoreClock:0000000000000000 $d
+                     .debug_frame:0000000000000010 $d
+
+NO UNDEFINED SYMBOLS

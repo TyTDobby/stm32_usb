@@ -1,6 +1,6 @@
 #include "usb.h"
-
-/*
+#include "usb_reg.h"
+/* 
  ***********************************************************
  ********************** Variables **************************
  ***********************************************************
@@ -8,13 +8,13 @@
 uint8_t descDevice[USB_DESC_SIZE_DEVICE] = 
 {  
     0x12,                       /* bLength */
-    USB_SETUP_DESC_DEVICE & 0xff,/* bDescriptorType */
+    USB_DESC_DEVICE & 0xff,/* bDescriptorType */
     0x00,                       /* bcdUSB */  
     0x02,
     0x00,                       /* bDeviceClass */
     0x00,                       /* bDeviceSubClass */
     0x00,                       /* bDeviceProtocol */
-    USB_MAX_EP0_SIZE,           /* bMaxPacketSize */
+    MAX_EP0_SIZE,               /* bMaxPacketSize */
     LOBYTE(USB_VID),            /* idVendor */ 
     HIBYTE(USB_VID),            /* idVendor */
     LOBYTE(USB_PID),            /* idProduct */
@@ -30,70 +30,70 @@ uint8_t descDevice[USB_DESC_SIZE_DEVICE] =
 uint8_t descDeviceQualifier[USB_DESC_SIZE_DEVICE_QUALIFIER] = 
 {  
     USB_DESC_SIZE_DEVICE_QUALIFIER,/* bLength */
-    0x0A,                       /* bDescriptorType */
+    0x06,                       /* bDescriptorType */
     0x00,                       /* bcdUSB */  
     0x02,
     0x00,                       /* bDeviceClass */
     0x00,                       /* bDeviceSubClass */
     0x00,                       /* bDeviceProtocol */
-    USB_MAX_EP0_SIZE,           /* bMaxPacketSize */
+    MAX_EP0_SIZE,               /* bMaxPacketSize */
     USB_MAX_NUM_CONFIGURATION,  /* bNumConfigurations */
     0x0                         /* bReserve */ 
 };
 /************** Descriptor of configuration ****************/ 
 uint8_t descConfiguration[USB_DESC_SIZE_CONFIGURATION] =
 {
-  0x09,                           /* bLength: Configuration Descriptor size */
-  USB_SETUP_DESC_CONFIGURATION & 0xff,  /* bDescriptorType: Configuration */
-  USB_DESC_SIZE_CONFIGURATION,  /* wTotalLength: Bytes returned */
+  0x09,                                 /* bLength: Configuration Descriptor size */
+  USB_DESC_CONFIGURATION & 0xff,  /* bDescriptorType: Configuration */
+  USB_DESC_SIZE_CONFIGURATION,          /* wTotalLength: Bytes returned */
   0x00,
   0x01,                                 /* bNumInterfaces: 1 interface */
-  0x01,                               /* bConfigurationValue: Configuration value */
+  0x01,                                 /* bConfigurationValue: Configuration value */
   0x00,                                 /* iConfiguration: Index of string descriptor describing the configuration */
   0xC0,                                 /* bmAttributes: bus powered */
   0x32,                                 /* MaxPower 100 mA: this current is used for detecting Vbus */
 /************** Descriptor of interface ****************/
   0x09,                                 /* bLength: Interface Descriptor size */
-  USB_SETUP_DESC_INTERFACE & 0xff,         /* bDescriptorType: Interface descriptor type */
+  USB_DESC_INTERFACE & 0xff,         /* bDescriptorType: Interface descriptor type */
   0x00,                                 /* bInterfaceNumber: Number of Interface */
   0x00,                                 /* bAlternateSetting: Alternate setting */
-  0x02,                                 /* bNumEndpoints */
+  0x01,                                 /* bNumEndpoints */
   0x03,                                 /* bInterfaceClass: USB_HID */
   0x00,                                 /* bInterfaceSubClass : 1=BOOT, 0=no boot */
   0x00,                                 /* nInterfaceProtocol : 0=none, 1=keyboard, 2=mouse */
-  0,                                    /* iInterface: Index of string descriptor */
+  USB_IDX_INTERFACE_STR,                /* iInterface: Index of string descriptor */
   /******************** Descriptor of USB_HID *************************/
   0x09,                                 /* bLength: USB_HID Descriptor size */
-  USB_HID_DESCRIPTOR_TYPE,      /* bDescriptorType: USB_HID */ 
+  USB_HID_DESCRIPTOR_TYPE,              /* bDescriptorType: USB_HID */ 
   0x01,                                 /* bUSB_HIDUSTOM_HID: USB_HID Class Spec release number */
   0x01,
   0x00,                                 /* bCountryCode: Hardware target country */
   0x01,                                 /* bNumDescriptors: Number of USB_HID class descriptors to follow */
   0x22,                                 /* bDescriptorType */
-  USB_DESC_SIZE_HID_REPORT,       /* wItemLength: Total length of Report descriptor */ 
+  USB_DESC_SIZE_HID_REPORT,             /* wItemLength: Total length of Report descriptor */ 
   0x00,
   /******************** Descriptor of endpoint (IN) ********************/
   0x07,                                 /* bLength: Endpoint Descriptor size */
-  USB_SETUP_DESC_ENDPOINT & 0xff,          /* bDescriptorType: */
-  USB_HID_EPIN_ADDR,              /* bEndpointAddress: Endpoint Address (IN) */
+  USB_DESC_ENDPOINT & 0xff,       /* bDescriptorType: */
+  USB_HID_EPIN_ADDR,                    /* bEndpointAddress: Endpoint Address (IN) */
   0x03,                                 /* bmAttributes: Interrupt endpoint */
-  USB_HID_EPIN_SIZE,                /* wMaxPacketSize: 2 Byte max */
+  USB_HID_EPIN_SIZE,                    /* wMaxPacketSize: 2 Byte max */
   0x00,
   0x20,                                 /* bInterval: Polling Interval (20 ms) */
   /******************** Descriptor of endpoint (OUT) ********************/
   0x07,                                 /* bLength: Endpoint Descriptor size */
-  USB_SETUP_DESC_ENDPOINT & 0xff,      /* bDescriptorType: */
-  USB_HID_EPOUT_ADDR,             /* bEndpointAddress: Endpoint Address (OUT) */
-  0x03,                                     /* bmAttributes: Interrupt endpoint */
-  USB_HID_EPOUT_SIZE,             /* wMaxPacketSize: 2 Bytes max */
+  USB_DESC_ENDPOINT & 0xff,       /* bDescriptorType: */
+  USB_HID_EPOUT_ADDR,                   /* bEndpointAddress: Endpoint Address (OUT) */
+  0x03,                                 /* bmAttributes: Interrupt endpoint */
+  USB_HID_EPOUT_SIZE,                   /* wMaxPacketSize: 2 Bytes max */
   0x00,
-  0x20,                                     /* bInterval: Polling Interval (20 ms) */
+  0x20,                                 /* bInterval: Polling Interval (20 ms) */
 };
 
 uint8_t descStringLangID[USB_STR_SIZE_LANGID] = 
 {
     USB_STR_SIZE_LANGID,
-    USB_SETUP_DESC_STRING & 0xff,
+    USB_DESC_STRING & 0xff,
     LOBYTE(USB_LANGID_STRING),
     HIBYTE(USB_LANGID_STRING)
 };
@@ -101,35 +101,35 @@ uint8_t descStringLangID[USB_STR_SIZE_LANGID] =
 uint8_t descStringProduct[USB_STR_SIZE_PRODUCT] = 
 {
     USB_STR_SIZE_LANGID,
-    USB_SETUP_DESC_STRING & 0xff,
+    USB_DESC_STRING & 0xff,
     'S','T','M','3','2',' ','C','u','s','t','o','m',' ','H','I','D'
 };
 
 uint8_t descStringMFC[USB_STR_SIZE_MFC] = 
 {
     USB_STR_SIZE_MFC, 
-    USB_SETUP_DESC_STRING & 0xff,
+    USB_DESC_STRING & 0xff,
     'S','T','M','3','2',' ','D','e','v','i','c','e'
 };
  
 uint8_t descStringSerialNumber[USB_STR_SIZE_SERIALNUMBER] = 
 {
     USB_STR_SIZE_SERIALNUMBER,  
-    USB_SETUP_DESC_STRING & 0xff,
+    USB_DESC_STRING & 0xff,
     '0','0','0','0','0','0','0','0','0','0','1','A'
 };
 
 uint8_t descStringConfig[USB_STR_SIZE_CONFIG] = 
 {
     USB_STR_SIZE_CONFIG,  
-    USB_SETUP_DESC_STRING & 0xff, 
+    USB_DESC_STRING & 0xff, 
     'C','u','s','t','o','m',' ','H','I','D',' ','C','o','n','f','i','g'
 };
 
 uint8_t descStringInterface[USB_STR_SIZE_INTERFACE] = 
 {
     USB_STR_SIZE_INTERFACE,  
-    USB_SETUP_DESC_STRING & 0xff,
+    USB_DESC_STRING & 0xff,
     'C','u','s','t','o','m',' ','H','I','D',' ','I','n','t','e','r','f','a','c','e'
 };
 
@@ -188,13 +188,14 @@ uint8_t descHIDReport[USB_DESC_SIZE_HID_REPORT] =
   0xc0                           /* END_COLLECTION */
 };
 
-
+uint16_t cntBytes = 0;
 uint8_t devAddress = 0;
 USB_SETUP_PACKET SetupPacket;
 HEAP heap;
 uint8_t *bufferSetup[12];
 
-uint8_t over = 0;
+uint16_t over = 0;
+
 /*
  ***********************************************************
  ***************** Prototype functoin **********************
@@ -202,7 +203,7 @@ uint8_t over = 0;
  */
 void USBReset(void);
 void USBRequest(USB_SETUP_PACKET *req, uint8_t *pdata);
-void USBReadPMA(uint16_t *buff, uint16_t offset, uint16_t numBytes);
+void USBReadPMA(uint8_t *buff, uint16_t offset, uint16_t numBytes);
 void USBWritePMA(uint16_t *buff, uint16_t offset, uint16_t numBytes);
 void USBDataInEP0(void);
 void USBSetup(void);
@@ -215,47 +216,32 @@ void USBSetup(void);
  * Name: USBReset
  * Description: Reset USB device
  * Parametrs: none
+ * Returns: none
  */
 void USBReset(void){
     
-    USB->ISTR = 0x0;
+    ISTR &= ~ISTR_RESET;
 
-    USB->BTABLE = BTABLE_ADDRESS; /* Set a address table buffer in memory USB */
+    BTABLE = BTABLE_ADDRESS; /* Set a address table buffer in memory USB */
     
-    USB->CNTR = USB_CNTR_RESETM | USB_CNTR_SUSPM | USB_CNTR_WKUPM | USB_CNTR_CTRM;
+    CNTR = CNTR_RESETM | CNTR_CTRM;
     
     /* Set a address buffer */
-    USB_ADDR_RX(USB_EP0) = USB_EP0_RX;
-    USB_ADDR_TX(USB_EP0) = USB_EP0_TX;
-    // USB_COUNT_TX(USB_EP0) = 0x40;
-    USB_COUNT_RX(USB_EP0) = 0xbc00;
- 
-    USB_ADDR_RX(USB_EP1) = USB_EP1_RX;
-    USB_ADDR_TX(USB_EP1) = USB_EP1_TX;
-    // USB_COUNT_TX(USB_EP1) = 0x40;
-    USB_COUNT_RX(USB_EP1) = 0x8400;
+    EP_ADDR_TX(EP0) = EP0_TX; 
+    EP_ADDR_RX(EP0) = EP0_RX;
+    EP_COUNT_RX(EP0) = 0xbc00;
 
-    USB_ADDR_RX(USB_EP2) = USB_EP2_RX;
-    USB_ADDR_TX(USB_EP2) = USB_EP2_TX;
-    // USB_COUNT_TX(USB_EP2) = 0x40;
-    USB_COUNT_RX(USB_EP2) = 0x8400;
-
-    /* Endpoints 0; Type: CONTROL; RX: VALID; TX: NAK */
-    USB->EP0R = USB_EP_CONTROL | USB_EP_RX_VALID | USB_EP_TX_NAK | USB_EP_AE_0;
-    /* Endpoints 1; Type: BULK; RX: VALID; TX: NAK */
-    USB->EP1R = USB_EP_BULK | USB_EP_RX_VALID | USB_EP_TX_NAK | USB_HID_EPIN_ADDR;
-    /* Endpoints 2; Type: BULK; RX: NAK; TX: VALID */
-    USB->EP2R = USB_EP_BULK | USB_EP_RX_NAK | USB_EP_TX_VALID | USB_HID_EPOUT_ADDR;
-
-    USB->DADDR = USB_DADDR_EF;   /* Activation device */
-
-    USB->ISTR &= ~USB_ISTR_RESET;
+    EPxREG(EP0) = EP_CONTROL;
+    EPxREG(EP0) ^= 0xB0A0; /* RX: valid TX: nak */
+    
+    DADDR = 0x80;   /* Activation device */
 }
 /*
  * Name: USBRequest
  * Description: Send zero length packet to host
  * Parametrs: req - structure SETUP packet
  *            pdata - buffer SETUP packet
+ * Returns: none
  */
 void USBRequest(USB_SETUP_PACKET *req, uint8_t *pdata){
     req->bmRequestType     = *pdata;
@@ -267,74 +253,81 @@ void USBRequest(USB_SETUP_PACKET *req, uint8_t *pdata){
     req->wLength.low       = *(pdata + 6);
     req->wLength.high      = *(pdata + 7);
 }
-/*
+/* 
  * Name: USBReadPMA
  * Description: Read data of PMA
  * Parametrs: buff - buffer data
  *            offset - offset adress
  *            numBytes - number bytes for read
+ * Returns: none
  */
-void USBReadPMA(uint16_t *buff, uint16_t offset, uint16_t numBytes){
+void USBReadPMA(uint8_t *buff, uint16_t offset, uint16_t numBytes){
     uint32_t nBytes = (numBytes + 1) >> 1;
-    uint32_t *addrRx = (uint32_t *)(offset * 2 + USB_PMAADDR);
+    uint32_t *addrRx = (uint32_t *)(offset * 2 + USB_PMA_ADDR);
+    uint16_t *temp = (uint16_t *)buff;
     while(nBytes--)
-        *buff++ = *addrRx++;
+        *temp++ = *addrRx++;
 }
-/*
+/* 
  * Name: USBWritePMA
  * Description: Write data in PMA
  * Parametrs: buff - buffer data
  *            offset - offset adress
  *            numBytes - number bytes for write
+ * Returns: none
  */
 void USBWritePMA(uint16_t *buff, uint16_t offset, uint16_t numBytes){
     uint32_t nBytes = (numBytes + 1) >> 1;
-    uint32_t *addrTx = (uint32_t *)(offset * 2 + USB_PMAADDR);
+    uint32_t *addrTx = (uint32_t *)(offset * 2 + USB_PMA_ADDR);
+    // uint32_t *temp = (uint32_t *)(offset * 2 + USB_PMA_ADDR);
     while(nBytes--)
         *addrTx++ = *buff++;
-}
+} 
 
 void USBDataInEP0(void){
-    uint32_t cntBytes = 0;
-    if(heap.size > USB_MAX_EP0_SIZE){
-        cntBytes = USB_MAX_EP0_SIZE;
+    uint32_t cnt = 0;
+    if(heap.size > MAX_EP0_SIZE){
+        cnt = MAX_EP0_SIZE;
         over = 1;
     }else{
-        cntBytes = heap.size;
-    } 
+        cnt = heap.size;
+        over = 0;
+    }
 
-    USBWritePMA((uint16_t *)heap.buff, USB_EP0_TX, cntBytes);
-    USB_COUNT_TX(USB_EP0) = cntBytes;
-    USB->EP0R = USB_EP_TX_VALID;
-    while(!(USB->EP0R & USB_EP_CTR_TX));
-    // heap.buff += cntBytes;
-    // heap.size -= cntBytes;  
-}  
+    USBWritePMA((uint16_t *)heap.buff, EP0_TX, cnt);
+    EP_COUNT_TX(EP0) = cnt;
+    EP_TX_STATUS(0, EP_TX_VALID);
+    while(!(EPxREG(EP0) & EP_CTR_TX)){}
+
+    // heap.buff += cnt;
+    // heap.size -= cnt;    
+}
 /*
  * Name: USBSetup
  * Description: Hanbler SETUP packet
  * Parametrs: none
- */
+ * Returns: none
+ */ 
 void USBSetup(void){
-    USB->ISTR &= ~USB_ISTR_CTR;
-    USB->EP0R &= ~USB_EP_CTR_RX;
-    USB->EP0R |= USB_EP_DTOG_TX;
-    USBReadPMA((uint16_t *)bufferSetup, USB_EP0_RX, 8);
+    // ISTR &= ~ISTR_CTR;
+    // EPxREG(EP0) &= ~EP_CTR_RX;
+    // EPxREG(EP0) |= EP_DTOG_TX;
+    USBReadPMA((uint8_t *)bufferSetup, EP0_RX, 8);
     USBRequest(&SetupPacket, (uint8_t *)bufferSetup);
     switch((SetupPacket.bmRequestType << 16) | (SetupPacket.bRequest << 8) | SetupPacket.wValue.high){
-        case USB_SETUP_DESC_DEVICE:
+        case USB_DESC_DEVICE:
             heap.buff = descDevice;
             heap.size = USB_DESC_SIZE_DEVICE;
             break;
-        case USB_SETUP_DESC_DEVICE_QUALIFIER:
+        case USB_DESC_DEVICE_QUALIFIER:
             heap.buff = descDeviceQualifier;
             heap.size = USB_DESC_SIZE_DEVICE_QUALIFIER;
             break;
-        case USB_SETUP_DESC_CONFIGURATION:
+        case USB_DESC_CONFIGURATION:
             heap.buff = descConfiguration;
             heap.size = SetupPacket.wLength.low;
             break;
-        case USB_SETUP_DESC_STRING:
+        case USB_DESC_STRING:
             switch(SetupPacket.wValue.low){
                 case USB_IDX_LANGID_STR:
                     heap.buff = descStringLangID;
@@ -361,30 +354,31 @@ void USBSetup(void){
                     heap.size = USB_STR_SIZE_INTERFACE;
                     break;
             }
-        case USB_SETUP_SET_ADDRESS:
+        case USB_SET_ADDRESS:
             devAddress = SetupPacket.wValue.low;
             heap.buff = 0;
             heap.size = 0;
-        break;
-        case USB_SETUP_SET_CONFIGURATION:
+            break;
+        case USB_SET_CONFIGURATION:
             heap.buff = 0;
             heap.size = 0;
-        break;
-        case USB_SETUP_CLASS_REQ:
+            break;
+        case USB_CLASS_REQ:
             heap.buff = 0;
             heap.size = 0;
-        break;
+            break;
         case USB_DESC_HID_REPORT:
             heap.buff = descHIDReport;
             heap.size = USB_DESC_SIZE_HID_REPORT;
-        break;
+            break;
     }
+
     USBDataInEP0();
-    if(devAddress > 0 && SetupPacket.wLength.low == 0){
-        USB->DADDR = devAddress | USB_DADDR_EF;
-    }    
-	USB->EP0R = USB_EP_CONTROL | USB_EP_RX_VALID;
-}
+
+    // if(devAddress > 0 && SetupPacket.wLength.low == 0){
+    //     DADDR = devAddress | DADDR_EF;
+    // }
+} 
 /*
  ***********************************************************
  ******************* Public functoin ***********************
@@ -394,28 +388,26 @@ void USBSetup(void){
  * Name: USBConfig
  * Description: USB Configuration
  * Parametrs: none
+ * Returns: none
  */
 void USBConfig(void){
-    RCC->APB1ENR |= RCC_APB1ENR_USBEN; /* USB clock enable */
+   
 
-	USB->CNTR = USB_CNTR_FRES;/* CNTR_FRES = 1 */
+	CNTR = CNTR_FRES;/* CNTR_FRES = 1 */
      
-    USB->CNTR = 0; /* CNTR_FRES = 0 */
+    CNTR = 0; /* CNTR_FRES = 0 */
 
-	USB->CNTR |= USB_CNTR_PDWN; 
+	CNTR |= CNTR_PDWN; 
 
 	/* Reset driver */
-	USB->CNTR = 0x0;
+	CNTR = 0x0;
 
     /* Reset registr flag interrput */
-	USB->ISTR = 0x0;
+	ISTR = 0x0;
 
     /* Allow interrput */
-    //USB->CNTR |= USB_CNTR_RESETM | USB_CNTR_SUSPM | USB_CNTR_WKUPM | USB_CNTR_SOFM | USB_CNTR_ESOFM | USB_CNTR_CTRM | USB_CNTR_ERRM | USB_CNTR_PMAOVRM;
-	USB->CNTR = USB_CNTR_RESETM | USB_CNTR_SUSPM | USB_CNTR_WKUPM | USB_CNTR_CTRM;
-
-    /* Clean up buffer */
-	// for(uint16_t *i = USB_PMAADDR; i <= USB_PMAADDR + 0x3FF; i+=2) *i = 0;
+    //CNTR |= USB_CNTR_RESETM | USB_CNTR_SUSPM | USB_CNTR_WKUPM | USB_CNTR_SOFM | USB_CNTR_ESOFM | USB_CNTR_CTRM | USB_CNTR_ERRM | USB_CNTR_PMAOVRM;
+	CNTR = CNTR_RESETM | CNTR_SUSPM | CNTR_WKUPM | CNTR_CTRM;
 
    	/* Activation interrput */
 	NVIC_EnableIRQ(USBWakeUp_IRQn);
@@ -427,65 +419,78 @@ void USBConfig(void){
  * Name: USBSendData
  * Description: Send on host
  * Parametrs: buff - buffer data for send on host
+ * Returns: none
  */
 void USBSendData(uint8_t *buff){
     // USBWritePMA((uint16_t *)buff, USB_EP1_TX, sizeof(buff));
     // USB_COUNT_TX(USB_EP1) = sizeof(buff);
-    // while(!(USB->EP1R & USB_EP_CTR_TX)){}
+    // while(!(EP1R & USB_EP_CTR_TX)){}
 }
 /*
  ***********************************************************
  ********************** Interrput **************************
  ***********************************************************
  */
-void USB_LP_IRQHandler(void){
-    uint8_t num;
-    uint32_t istr = USB->ISTR;
-	if(USB->ISTR & USB_ISTR_RESET){ 
+void USB_LP_CAN1_RX0_IRQHandler(void){
+    uint32_t num;
+	if(ISTR & ISTR_RESET){ 
+        USBConfig();
     	USBReset();
 	}
-    if(istr & USB_ISTR_SUSP){
-        USB->CNTR |= USB_CNTR_FSUSP; /* Force Suspend */
-        USB->CNTR |= USB_CNTR_LP_MODE; /* Low Power Mode */
+    if(ISTR & ISTR_SUSP){ 
+        CNTR |= CNTR_FSUSP; /* Force Suspend */
+        CNTR |= CNTR_LPMODE; /* Low Power Mode */
     }
-    if(istr & USB_ISTR_WKUP){  
-        USB->CNTR &= ~USB_CNTR_FSUSP;
+    if(ISTR & ISTR_WKUP){  
+        CNTR &= ~CNTR_FSUSP;
     }
-    if(istr & USB_ISTR_CTR){
-        num = istr & USB_ISTR_EP_ID;
-        if(num == USB_EP0){ /* Endpoint 0 (Control)*/
-            if((istr & USB_ISTR_DIR) == 0){ /* IN */
-                USB->EP0R &= ~USB_EP_CTR_TX;
-                // if(over == 1)
-                    GPIOC->BSRR = GPIO_BSRR_BS13;
+    if(ISTR & ISTR_CTR){
+        num = ISTR & ISTR_EP_ID;
+        if(num == EP0){ /* Endpoint 0 (Control)*/
+            if((ISTR & USB_ISTR_DIR) == 0){ /* IN */
 
-                heap.size = USB_COUNT_TX(0) & USB_COUNT0_TX_COUNT0_TX;
-                heap.buff += heap.size;
+                EPxREG(EP0) &= ~EP_CTR_TX;
 
-                USBDataInEP0();
-            }else{
-                if((USB->EP0R & USB_EP_SETUP) != 0){
-                    USBSetup();
-                }else if ((USB->EP0R & USB_EP_CTR_RX) != 0){
-                    USB->EP0R &= ~USB_EP_CTR_RX;
+                if(over == 1){
+                    heap.size = EP_COUNT_TX(EP0) & EP_COUNT_MASK;
+                    heap.buff += heap.size;
 
-                    heap.size = USB_COUNT_TX(0) & USB_COUNT0_TX_COUNT0_TX;
-                    if(heap.size != 0)
-                        USBReadPMA((uint16_t *)heap.buff, USB_EP0_RX, heap.size);
+                    USBDataInEP0();
                 }
+                // EP_TX_STATUS(EP0, EP_TX_VALID); 
+                // EPxREG(EP0) |= EP_CONTROL;
+
+            }else{
+                if((EPxREG(EP0) & EP_SETUP) != 0){ /* SETUP */
+
+                    USBSetup();
+                    EP_RX_STATUS(EP0, EP_RX_VALID); 
+                    // EPxREG(EP0) |= EP_CONTROL;
+
+                }else if ((EPxREG(EP0) & EP_CTR_RX) != 0){ /* OUT */
+
+                    EPxREG(EP0) &= ~EP_CTR_RX;
+
+                    heap.size = EP_COUNT_TX(EP0) & EP_COUNT_MASK;
+
+                    if(heap.size != 0)
+                        USBReadPMA((uint8_t *)heap.buff, EP0_RX, heap.size);
+
+                    EP_RX_STATUS(EP0, EP_RX_VALID); 
+                    EPxREG(EP0) |= EP_CONTROL;   
+
+                } 
             }
-
-
-
-        }else if(num == USB_EP1){ /* Endpoint 1 (IN)*/
-            if((istr & USB_ISTR_DIR) == 0){
+        }else if(num == EP1){ /* Endpoint 1 (IN)*/
+            if((ISTR & ISTR_DIR) == 0){
 
             }
-        }else if(num == USB_EP2){ /* Endpoint 2 (OUT)*/
-            if((istr & USB_ISTR_DIR) != 0){
+        }else if(num == EP2){ /* Endpoint 2 (OUT)*/
+            if((ISTR & ISTR_DIR) != 0){
                 
             }
         }
+
     }
-    USB->ISTR = 0x0;
+    ISTR = 0x0;
 }

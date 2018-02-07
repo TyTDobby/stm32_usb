@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccRjXVjm.s 			page 1
+ARM GAS  /tmp/ccJ2wi6z.s 			page 1
 
 
    1              		.syntax unified
@@ -27,8 +27,8 @@ ARM GAS  /tmp/ccRjXVjm.s 			page 1
   25              	RCCConfig:
   26              	.LFB29:
   27              		.file 1 "main.c"
-   1:main.c        **** #include "library/cmsis/inc/stm32f103xb.h"
-   2:main.c        **** #include "library/cmsis/inc/system_stm32f1xx.h"
+   1:main.c        **** #include "library/cmsis/stm32f10x.h"
+   2:main.c        **** #include "library/cmsis/system_stm32f10x.h"
    3:main.c        **** #include "library/usb/usb.h"
    4:main.c        **** 
    5:main.c        **** uint16_t *buffSend[64];
@@ -46,24 +46,24 @@ ARM GAS  /tmp/ccRjXVjm.s 			page 1
   12:main.c        **** 
   13:main.c        ****  	RCC->CR |= RCC_CR_HSEON;               /* Run HSE */
   33              		.loc 1 13 0
-  34 0000 224A     		ldr	r2, .L5
+  34 0000 244A     		ldr	r2, .L5
   35 0002 1368     		ldr	r3, [r2]
   36 0004 43F48033 		orr	r3, r3, #65536
   37 0008 1360     		str	r3, [r2]
   38              	.L2:
   14:main.c        ****  	while((RCC->CR & RCC_CR_HSERDY) == 0); /* Waiting to switch to PLL HSE */
   39              		.loc 1 14 0 discriminator 1
-  40 000a 204B     		ldr	r3, .L5
+  40 000a 224B     		ldr	r3, .L5
   41 000c 1B68     		ldr	r3, [r3]
   42 000e 13F4003F 		tst	r3, #131072
   43 0012 FAD0     		beq	.L2
   15:main.c        ****  	
-ARM GAS  /tmp/ccRjXVjm.s 			page 2
+ARM GAS  /tmp/ccJ2wi6z.s 			page 2
 
 
   16:main.c        ****  	RCC->CFGR |= RCC_CFGR_HPRE_DIV1 | RCC_CFGR_PPRE2_DIV1 | RCC_CFGR_PPRE1_DIV1; /* HCLK = SYSCLK ;  
   44              		.loc 1 16 0
-  45 0014 1D4B     		ldr	r3, .L5
+  45 0014 1F4B     		ldr	r3, .L5
   46 0016 5A68     		ldr	r2, [r3, #4]
   47 0018 5A60     		str	r2, [r3, #4]
   17:main.c        ****  	RCC->CFGR &= ~((RCC_CFGR_PLLSRC | RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLMULL));    /* Clear */
@@ -90,14 +90,14 @@ ARM GAS  /tmp/ccRjXVjm.s 			page 1
   64              	.L3:
   22:main.c        **** 	while((RCC->CR & RCC_CR_PLLRDY) == 0); /* Waiting to switch to PLL */
   65              		.loc 1 22 0 discriminator 1
-  66 003a 144B     		ldr	r3, .L5
+  66 003a 164B     		ldr	r3, .L5
   67 003c 1B68     		ldr	r3, [r3]
   68 003e 13F0007F 		tst	r3, #33554432
   69 0042 FAD0     		beq	.L3
   23:main.c        **** 	
   24:main.c        **** 	RCC->CFGR &= ~RCC_CFGR_SW; 							 /* Clear bits SW0, SW1 */
   70              		.loc 1 24 0
-  71 0044 114B     		ldr	r3, .L5
+  71 0044 134B     		ldr	r3, .L5
   72 0046 5A68     		ldr	r2, [r3, #4]
   73 0048 22F00302 		bic	r2, r2, #3
   74 004c 5A60     		str	r2, [r3, #4]
@@ -109,7 +109,7 @@ ARM GAS  /tmp/ccRjXVjm.s 			page 1
   79              	.L4:
   26:main.c        **** 	while((RCC->CFGR & RCC_CFGR_SWS) != RCC_CFGR_SWS_1); /* Waiting to switch to PLL */
   80              		.loc 1 26 0 discriminator 1
-  81 0056 0D4B     		ldr	r3, .L5
+  81 0056 0F4B     		ldr	r3, .L5
   82 0058 5B68     		ldr	r3, [r3, #4]
   83 005a 03F00C03 		and	r3, r3, #12
   84 005e 082B     		cmp	r3, #8
@@ -117,8 +117,8 @@ ARM GAS  /tmp/ccRjXVjm.s 			page 1
   27:main.c        **** 	
   28:main.c        **** 	FLASH->ACR |= FLASH_ACR_PRFTBE;      /* On prefetch buffer */
   86              		.loc 1 28 0
-  87 0062 0B4B     		ldr	r3, .L5+4
-ARM GAS  /tmp/ccRjXVjm.s 			page 3
+  87 0062 0D4B     		ldr	r3, .L5+4
+ARM GAS  /tmp/ccJ2wi6z.s 			page 3
 
 
   88 0064 1A68     		ldr	r2, [r3]
@@ -127,7 +127,7 @@ ARM GAS  /tmp/ccRjXVjm.s 			page 1
   29:main.c        ****  	FLASH->ACR |= FLASH_ACR_LATENCY_2;   /* Skip 2 measures */
   91              		.loc 1 29 0
   92 006c 1A68     		ldr	r2, [r3]
-  93 006e 42F00402 		orr	r2, r2, #4
+  93 006e 42F00202 		orr	r2, r2, #2
   94 0072 1A60     		str	r2, [r3]
   30:main.c        **** 
   31:main.c        **** 	RCC->CFGR &= ~RCC_CFGR_USBPRE; 	  		/* Prescaler USB 1.5 */
@@ -141,23 +141,27 @@ ARM GAS  /tmp/ccRjXVjm.s 			page 1
  101 0080 9A69     		ldr	r2, [r3, #24]
  102 0082 42F01502 		orr	r2, r2, #21
  103 0086 9A61     		str	r2, [r3, #24]
- 104 0088 7047     		bx	lr
- 105              	.L6:
- 106 008a 00BF     		.align	2
- 107              	.L5:
- 108 008c 00100240 		.word	1073876992
- 109 0090 00200240 		.word	1073881088
- 110              		.cfi_endproc
- 111              	.LFE29:
- 113              		.section	.text.GPIOConfig,"ax",%progbits
- 114              		.align	2
- 115              		.global	GPIOConfig
- 116              		.thumb
- 117              		.thumb_func
- 119              	GPIOConfig:
- 120              	.LFB30:
   33:main.c        **** 
-  34:main.c        **** 
+  34:main.c        **** 	RCC->APB1ENR |= RCC_APB1ENR_USBEN; /* USB clock enable */
+ 104              		.loc 1 34 0
+ 105 0088 DA69     		ldr	r2, [r3, #28]
+ 106 008a 42F40002 		orr	r2, r2, #8388608
+ 107 008e DA61     		str	r2, [r3, #28]
+ 108 0090 7047     		bx	lr
+ 109              	.L6:
+ 110 0092 00BF     		.align	2
+ 111              	.L5:
+ 112 0094 00100240 		.word	1073876992
+ 113 0098 00200240 		.word	1073881088
+ 114              		.cfi_endproc
+ 115              	.LFE29:
+ 117              		.section	.text.GPIOConfig,"ax",%progbits
+ 118              		.align	2
+ 119              		.global	GPIOConfig
+ 120              		.thumb
+ 121              		.thumb_func
+ 123              	GPIOConfig:
+ 124              	.LFB30:
   35:main.c        **** }
   36:main.c        **** /*
   37:main.c        ****  * Name: GPIOConfig
@@ -165,42 +169,42 @@ ARM GAS  /tmp/ccRjXVjm.s 			page 1
   39:main.c        ****  * Parametrs: none
   40:main.c        ****  */
   41:main.c        **** void GPIOConfig(void){
- 121              		.loc 1 41 0
- 122              		.cfi_startproc
- 123              		@ args = 0, pretend = 0, frame = 0
- 124              		@ frame_needed = 0, uses_anonymous_args = 0
- 125              		@ link register save eliminated.
+ 125              		.loc 1 41 0
+ 126              		.cfi_startproc
+ 127              		@ args = 0, pretend = 0, frame = 0
+ 128              		@ frame_needed = 0, uses_anonymous_args = 0
+ 129              		@ link register save eliminated.
   42:main.c        **** 	GPIOA->CRH |= GPIO_CRH_MODE11_1 | GPIO_CRH_MODE12_1 
- 126              		.loc 1 42 0
- 127 0000 054A     		ldr	r2, .L8
- 128 0002 5368     		ldr	r3, [r2, #4]
- 129 0004 43F42A23 		orr	r3, r3, #696320
- 130 0008 5360     		str	r3, [r2, #4]
+ 130              		.loc 1 42 0
+ 131 0000 054A     		ldr	r2, .L8
+ 132 0002 5368     		ldr	r3, [r2, #4]
+ARM GAS  /tmp/ccJ2wi6z.s 			page 4
+
+
+ 133 0004 43F42A23 		orr	r3, r3, #696320
+ 134 0008 5360     		str	r3, [r2, #4]
   43:main.c        **** 			   |  GPIO_CRH_CNF11_1  | GPIO_CRH_CNF12_1;
   44:main.c        **** 	
-ARM GAS  /tmp/ccRjXVjm.s 			page 4
-
-
   45:main.c        **** 	GPIOC->CRH |= GPIO_CRH_MODE13 | GPIO_CRH_CNF13_0; 
- 131              		.loc 1 45 0
- 132 000a 02F50062 		add	r2, r2, #2048
- 133 000e 5368     		ldr	r3, [r2, #4]
- 134 0010 43F4E003 		orr	r3, r3, #7340032
- 135 0014 5360     		str	r3, [r2, #4]
- 136 0016 7047     		bx	lr
- 137              	.L9:
- 138              		.align	2
- 139              	.L8:
- 140 0018 00080140 		.word	1073809408
- 141              		.cfi_endproc
- 142              	.LFE30:
- 144              		.section	.text.Config,"ax",%progbits
- 145              		.align	2
- 146              		.global	Config
- 147              		.thumb
- 148              		.thumb_func
- 150              	Config:
- 151              	.LFB31:
+ 135              		.loc 1 45 0
+ 136 000a 02F50062 		add	r2, r2, #2048
+ 137 000e 5368     		ldr	r3, [r2, #4]
+ 138 0010 43F4E003 		orr	r3, r3, #7340032
+ 139 0014 5360     		str	r3, [r2, #4]
+ 140 0016 7047     		bx	lr
+ 141              	.L9:
+ 142              		.align	2
+ 143              	.L8:
+ 144 0018 00080140 		.word	1073809408
+ 145              		.cfi_endproc
+ 146              	.LFE30:
+ 148              		.section	.text.Config,"ax",%progbits
+ 149              		.align	2
+ 150              		.global	Config
+ 151              		.thumb
+ 152              		.thumb_func
+ 154              	Config:
+ 155              	.LFB31:
   46:main.c        **** }
   47:main.c        **** 
   48:main.c        **** /*
@@ -209,85 +213,84 @@ ARM GAS  /tmp/ccRjXVjm.s 			page 1
   51:main.c        ****  * Parametrs: none
   52:main.c        ****  */
   53:main.c        **** void Config(void){
- 152              		.loc 1 53 0
- 153              		.cfi_startproc
- 154              		@ args = 0, pretend = 0, frame = 0
- 155              		@ frame_needed = 0, uses_anonymous_args = 0
- 156 0000 08B5     		push	{r3, lr}
- 157              	.LCFI0:
- 158              		.cfi_def_cfa_offset 8
- 159              		.cfi_offset 3, -8
- 160              		.cfi_offset 14, -4
+ 156              		.loc 1 53 0
+ 157              		.cfi_startproc
+ 158              		@ args = 0, pretend = 0, frame = 0
+ 159              		@ frame_needed = 0, uses_anonymous_args = 0
+ 160 0000 08B5     		push	{r3, lr}
+ 161              	.LCFI0:
+ 162              		.cfi_def_cfa_offset 8
+ 163              		.cfi_offset 3, -8
+ 164              		.cfi_offset 14, -4
   54:main.c        **** 	RCCConfig();
- 161              		.loc 1 54 0
- 162 0002 FFF7FEFF 		bl	RCCConfig
- 163              	.LVL0:
+ 165              		.loc 1 54 0
+ 166 0002 FFF7FEFF 		bl	RCCConfig
+ 167              	.LVL0:
   55:main.c        **** 	GPIOConfig();
- 164              		.loc 1 55 0
- 165 0006 FFF7FEFF 		bl	GPIOConfig
- 166              	.LVL1:
+ 168              		.loc 1 55 0
+ 169 0006 FFF7FEFF 		bl	GPIOConfig
+ 170              	.LVL1:
   56:main.c        **** 	USBConfig();
- 167              		.loc 1 56 0
- 168 000a FFF7FEFF 		bl	USBConfig
- 169              	.LVL2:
- 170 000e 08BD     		pop	{r3, pc}
- 171              		.cfi_endproc
- 172              	.LFE31:
- 174              		.section	.text.main,"ax",%progbits
- 175              		.align	2
- 176              		.global	main
- 177              		.thumb
- 178              		.thumb_func
-ARM GAS  /tmp/ccRjXVjm.s 			page 5
+ 171              		.loc 1 56 0
+ 172 000a FFF7FEFF 		bl	USBConfig
+ 173              	.LVL2:
+ 174 000e 08BD     		pop	{r3, pc}
+ 175              		.cfi_endproc
+ 176              	.LFE31:
+ 178              		.section	.text.main,"ax",%progbits
+ARM GAS  /tmp/ccJ2wi6z.s 			page 5
 
 
- 180              	main:
- 181              	.LFB32:
-  57:main.c        **** 
-  58:main.c        **** }
-  59:main.c        **** 
-  60:main.c        **** int main(void){
- 182              		.loc 1 60 0
- 183              		.cfi_startproc
- 184              		@ Volatile: function does not return.
- 185              		@ args = 0, pretend = 0, frame = 0
- 186              		@ frame_needed = 0, uses_anonymous_args = 0
- 187 0000 08B5     		push	{r3, lr}
- 188              	.LCFI1:
- 189              		.cfi_def_cfa_offset 8
- 190              		.cfi_offset 3, -8
- 191              		.cfi_offset 14, -4
-  61:main.c        **** 	Config(); 
- 192              		.loc 1 61 0
- 193 0002 FFF7FEFF 		bl	Config
- 194              	.LVL3:
- 195              	.L13:
- 196 0006 FEE7     		b	.L13
- 197              		.cfi_endproc
- 198              	.LFE32:
- 200              		.comm	buffSend,256,4
- 201              		.text
- 202              	.Letext0:
- 203              		.file 2 "/usr/include/newlib/machine/_default_types.h"
- 204              		.file 3 "/usr/include/newlib/sys/_stdint.h"
- 205              		.file 4 "library/cmsis/inc/stm32f103xb.h"
- 206              		.file 5 "library/cmsis/inc/core_cm3.h"
- 207              		.file 6 "library/usb/usb.h"
-ARM GAS  /tmp/ccRjXVjm.s 			page 6
+ 179              		.align	2
+ 180              		.global	main
+ 181              		.thumb
+ 182              		.thumb_func
+ 184              	main:
+ 185              	.LFB32:
+  57:main.c        **** }
+  58:main.c        **** 
+  59:main.c        **** int main(void){
+ 186              		.loc 1 59 0
+ 187              		.cfi_startproc
+ 188              		@ Volatile: function does not return.
+ 189              		@ args = 0, pretend = 0, frame = 0
+ 190              		@ frame_needed = 0, uses_anonymous_args = 0
+ 191 0000 08B5     		push	{r3, lr}
+ 192              	.LCFI1:
+ 193              		.cfi_def_cfa_offset 8
+ 194              		.cfi_offset 3, -8
+ 195              		.cfi_offset 14, -4
+  60:main.c        **** 	Config(); 
+ 196              		.loc 1 60 0
+ 197 0002 FFF7FEFF 		bl	Config
+ 198              	.LVL3:
+ 199              	.L13:
+ 200 0006 FEE7     		b	.L13
+ 201              		.cfi_endproc
+ 202              	.LFE32:
+ 204              		.comm	buffSend,256,4
+ 205              		.text
+ 206              	.Letext0:
+ 207              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 208              		.file 3 "/usr/include/newlib/sys/_stdint.h"
+ 209              		.file 4 "library/cmsis/stm32f10x.h"
+ 210              		.file 5 "library/cmsis/core_cm3.h"
+ 211              		.file 6 "library/usb/usb.h"
+ARM GAS  /tmp/ccJ2wi6z.s 			page 6
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 main.c
-     /tmp/ccRjXVjm.s:20     .text.RCCConfig:0000000000000000 $t
-     /tmp/ccRjXVjm.s:25     .text.RCCConfig:0000000000000000 RCCConfig
-     /tmp/ccRjXVjm.s:108    .text.RCCConfig:000000000000008c $d
-     /tmp/ccRjXVjm.s:114    .text.GPIOConfig:0000000000000000 $t
-     /tmp/ccRjXVjm.s:119    .text.GPIOConfig:0000000000000000 GPIOConfig
-     /tmp/ccRjXVjm.s:140    .text.GPIOConfig:0000000000000018 $d
-     /tmp/ccRjXVjm.s:145    .text.Config:0000000000000000 $t
-     /tmp/ccRjXVjm.s:150    .text.Config:0000000000000000 Config
-     /tmp/ccRjXVjm.s:175    .text.main:0000000000000000 $t
-     /tmp/ccRjXVjm.s:180    .text.main:0000000000000000 main
+     /tmp/ccJ2wi6z.s:20     .text.RCCConfig:0000000000000000 $t
+     /tmp/ccJ2wi6z.s:25     .text.RCCConfig:0000000000000000 RCCConfig
+     /tmp/ccJ2wi6z.s:112    .text.RCCConfig:0000000000000094 $d
+     /tmp/ccJ2wi6z.s:118    .text.GPIOConfig:0000000000000000 $t
+     /tmp/ccJ2wi6z.s:123    .text.GPIOConfig:0000000000000000 GPIOConfig
+     /tmp/ccJ2wi6z.s:144    .text.GPIOConfig:0000000000000018 $d
+     /tmp/ccJ2wi6z.s:149    .text.Config:0000000000000000 $t
+     /tmp/ccJ2wi6z.s:154    .text.Config:0000000000000000 Config
+     /tmp/ccJ2wi6z.s:179    .text.main:0000000000000000 $t
+     /tmp/ccJ2wi6z.s:184    .text.main:0000000000000000 main
                             *COM*:0000000000000100 buffSend
                      .debug_frame:0000000000000010 $d
 
