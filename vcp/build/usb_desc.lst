@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccr23VbC.s 			page 1
+ARM GAS  /tmp/ccJS9snV.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  /tmp/ccr23VbC.s 			page 1
   59              	descStringLangID:
   60 0000 04       		.byte	4
   61 0001 03       		.byte	3
-ARM GAS  /tmp/ccr23VbC.s 			page 2
+ARM GAS  /tmp/ccJS9snV.s 			page 2
 
 
   62 0002 09       		.byte	9
@@ -118,7 +118,7 @@ ARM GAS  /tmp/ccr23VbC.s 			page 1
  120 0020 05       		.byte	5
  121 0021 24       		.byte	36
  122 0022 06       		.byte	6
-ARM GAS  /tmp/ccr23VbC.s 			page 3
+ARM GAS  /tmp/ccJS9snV.s 			page 3
 
 
  123 0023 00       		.byte	0
@@ -178,7 +178,7 @@ ARM GAS  /tmp/ccr23VbC.s 			page 1
  181 0006 32       		.byte	50
  182 0007 20       		.byte	32
  183 0008 43       		.byte	67
-ARM GAS  /tmp/ccr23VbC.s 			page 4
+ARM GAS  /tmp/ccJS9snV.s 			page 4
 
 
  184 0009 75       		.byte	117
@@ -238,7 +238,7 @@ ARM GAS  /tmp/ccr23VbC.s 			page 1
  244 0003 02       		.byte	2
  245 0004 02       		.byte	2
  246 0005 00       		.byte	0
-ARM GAS  /tmp/ccr23VbC.s 			page 5
+ARM GAS  /tmp/ccJS9snV.s 			page 5
 
 
  247 0006 00       		.byte	0
@@ -259,28 +259,28 @@ ARM GAS  /tmp/ccr23VbC.s 			page 1
  262              		.file 2 "/usr/include/newlib/sys/_stdint.h"
  263              		.file 3 "library/usb/../cmsis/inc/core_cm3.h"
  264              		.file 4 "library/usb/usb_desc.c"
-ARM GAS  /tmp/ccr23VbC.s 			page 6
+ARM GAS  /tmp/ccJS9snV.s 			page 6
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 usb_desc.c
-     /tmp/ccr23VbC.s:32     .data.descStringInterface:0000000000000000 descStringInterface
-     /tmp/ccr23VbC.s:216    .data.descStringConfig:0000000000000000 descStringConfig
-     /tmp/ccr23VbC.s:197    .data.descStringSerialNumber:0000000000000000 descStringSerialNumber
-     /tmp/ccr23VbC.s:68     .data.descStringMFC:0000000000000000 descStringMFC
-     /tmp/ccr23VbC.s:174    .data.descStringProduct:0000000000000000 descStringProduct
-     /tmp/ccr23VbC.s:59     .data.descStringLangID:0000000000000000 descStringLangID
-     /tmp/ccr23VbC.s:87     .data.descConfiguration:0000000000000000 descConfiguration
-     /tmp/ccr23VbC.s:159    .data.descDeviceQualifier:0000000000000000 descDeviceQualifier
-     /tmp/ccr23VbC.s:240    .data.descDevice:0000000000000000 descDevice
-     /tmp/ccr23VbC.s:29     .data.descStringInterface:0000000000000000 $d
-     /tmp/ccr23VbC.s:56     .data.descStringLangID:0000000000000000 $d
-     /tmp/ccr23VbC.s:65     .data.descStringMFC:0000000000000000 $d
-     /tmp/ccr23VbC.s:84     .data.descConfiguration:0000000000000000 $d
-     /tmp/ccr23VbC.s:156    .data.descDeviceQualifier:0000000000000000 $d
-     /tmp/ccr23VbC.s:171    .data.descStringProduct:0000000000000000 $d
-     /tmp/ccr23VbC.s:194    .data.descStringSerialNumber:0000000000000000 $d
-     /tmp/ccr23VbC.s:213    .data.descStringConfig:0000000000000000 $d
-     /tmp/ccr23VbC.s:237    .data.descDevice:0000000000000000 $d
+     /tmp/ccJS9snV.s:32     .data.descStringInterface:0000000000000000 descStringInterface
+     /tmp/ccJS9snV.s:216    .data.descStringConfig:0000000000000000 descStringConfig
+     /tmp/ccJS9snV.s:197    .data.descStringSerialNumber:0000000000000000 descStringSerialNumber
+     /tmp/ccJS9snV.s:68     .data.descStringMFC:0000000000000000 descStringMFC
+     /tmp/ccJS9snV.s:174    .data.descStringProduct:0000000000000000 descStringProduct
+     /tmp/ccJS9snV.s:59     .data.descStringLangID:0000000000000000 descStringLangID
+     /tmp/ccJS9snV.s:87     .data.descConfiguration:0000000000000000 descConfiguration
+     /tmp/ccJS9snV.s:159    .data.descDeviceQualifier:0000000000000000 descDeviceQualifier
+     /tmp/ccJS9snV.s:240    .data.descDevice:0000000000000000 descDevice
+     /tmp/ccJS9snV.s:29     .data.descStringInterface:0000000000000000 $d
+     /tmp/ccJS9snV.s:56     .data.descStringLangID:0000000000000000 $d
+     /tmp/ccJS9snV.s:65     .data.descStringMFC:0000000000000000 $d
+     /tmp/ccJS9snV.s:84     .data.descConfiguration:0000000000000000 $d
+     /tmp/ccJS9snV.s:156    .data.descDeviceQualifier:0000000000000000 $d
+     /tmp/ccJS9snV.s:171    .data.descStringProduct:0000000000000000 $d
+     /tmp/ccJS9snV.s:194    .data.descStringSerialNumber:0000000000000000 $d
+     /tmp/ccJS9snV.s:213    .data.descStringConfig:0000000000000000 $d
+     /tmp/ccJS9snV.s:237    .data.descDevice:0000000000000000 $d
 
 NO UNDEFINED SYMBOLS

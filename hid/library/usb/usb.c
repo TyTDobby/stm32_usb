@@ -206,6 +206,7 @@ void USBReadPMA(uint16_t *buff, uint16_t offset, uint16_t numBytes);
 void USBWritePMA(uint16_t *buff, uint16_t offset, uint16_t numBytes);
 void USBDataInEP0(void);
 void USBSetup(void);
+void USBCtrHandler(void);
 /*
  ***********************************************************
  ****************** Private functoin ***********************
@@ -301,14 +302,15 @@ void USBDataInEP0(void){
         over = 1;
     }else{
         cntBytes = heap.size;
+        over = 0;
     } 
 
     USBWritePMA((uint16_t *)heap.buff, USB_EP0_TX, cntBytes);
     USB_COUNT_TX(USB_EP0) = cntBytes;
     USB->EP0R = USB_EP_TX_VALID;
     while(!(USB->EP0R & USB_EP_CTR_TX));
-    // heap.buff += cntBytes;
-    // heap.size -= cntBytes;  
+    heap.buff += cntBytes;
+    heap.size -= cntBytes;  
 }  
 /*
  * Name: USBSetup
@@ -317,8 +319,8 @@ void USBDataInEP0(void){
  */
 void USBSetup(void){
     USB->ISTR &= ~USB_ISTR_CTR;
-    USB->EP0R &= ~USB_EP_CTR_RX;
-    USB->EP0R |= USB_EP_DTOG_TX;
+    // USB->EP0R &= ~USB_EP_CTR_RX;
+    // USB->EP0R |= USB_EP_DTOG_TX;
     USBReadPMA((uint16_t *)bufferSetup, USB_EP0_RX, 8);
     USBRequest(&SetupPacket, (uint8_t *)bufferSetup);
     switch((SetupPacket.bmRequestType << 16) | (SetupPacket.bRequest << 8) | SetupPacket.wValue.high){
@@ -386,6 +388,48 @@ void USBSetup(void){
 	USB->EP0R = USB_EP_CONTROL | USB_EP_RX_VALID;
 }
 /*
+ * Name: USBCtrHandler
+ * Description: Handler event CTR
+ * Parametrs: none
+ */
+void USBCtrHandler(void){
+    uint8_t numEP = USB->ISTR & USB_ISTR_EP_ID;
+    if(numEP == USB_EP0){ /* Endpoint 0 (Control)*/
+        if(USB->ISTR & USB_ISTR_DIR){ /* IN */
+            USB->EP0R &= ~USB_EP_CTR_TX;
+            if(over == 1){
+                GPIOC->BSRR = GPIO_BSRR_BS13;
+                heap.size = USB_COUNT_TX(0) & USB_COUNT0_TX_COUNT0_TX;
+                heap.buff += heap.size;
+                
+            }
+            USBDataInEP0();
+        }else{
+            if(USB->EP0R & USB_EP_SETUP){
+                USBSetup();
+            }else if (USB->EP0R & USB_EP_CTR_RX){
+                USB->EP0R &= ~USB_EP_CTR_RX;
+
+                heap.size = USB_COUNT_RX(0) & USB_COUNT0_RX_COUNT0_RX;
+                if(heap.size != 0)
+                    USBReadPMA((uint16_t *)heap.buff, USB_EP0_RX, heap.size);
+            }
+        }
+
+
+
+    }else if(numEP == USB_EP1){ /* Endpoint 1 (IN)*/
+        if((USB->ISTR & USB_ISTR_DIR) == 0){
+
+        }
+    }else if(numEP == USB_EP2){ /* Endpoint 2 (OUT)*/
+        if((USB->ISTR & USB_ISTR_DIR) != 0){
+            
+        }
+    }
+}
+
+/*
  ***********************************************************
  ******************* Public functoin ***********************
  ***********************************************************
@@ -397,26 +441,15 @@ void USBSetup(void){
  */
 void USBConfig(void){
     RCC->APB1ENR |= RCC_APB1ENR_USBEN; /* USB clock enable */
-
 	USB->CNTR = USB_CNTR_FRES;/* CNTR_FRES = 1 */
-     
     USB->CNTR = 0; /* CNTR_FRES = 0 */
-
 	USB->CNTR |= USB_CNTR_PDWN; 
-
 	/* Reset driver */
 	USB->CNTR = 0x0;
-
     /* Reset registr flag interrput */
 	USB->ISTR = 0x0;
-
     /* Allow interrput */
-    //USB->CNTR |= USB_CNTR_RESETM | USB_CNTR_SUSPM | USB_CNTR_WKUPM | USB_CNTR_SOFM | USB_CNTR_ESOFM | USB_CNTR_CTRM | USB_CNTR_ERRM | USB_CNTR_PMAOVRM;
 	USB->CNTR = USB_CNTR_RESETM | USB_CNTR_SUSPM | USB_CNTR_WKUPM | USB_CNTR_CTRM;
-
-    /* Clean up buffer */
-	// for(uint16_t *i = USB_PMAADDR; i <= USB_PMAADDR + 0x3FF; i+=2) *i = 0;
-
    	/* Activation interrput */
 	NVIC_EnableIRQ(USBWakeUp_IRQn);
 	// NVIC_EnableIRQ(USB_HP_CAN1_TX_IRQn);
@@ -439,53 +472,21 @@ void USBSendData(uint8_t *buff){
  ***********************************************************
  */
 void USB_LP_IRQHandler(void){
-    uint8_t num;
-    uint32_t istr = USB->ISTR;
 	if(USB->ISTR & USB_ISTR_RESET){ 
     	USBReset();
+        return;
 	}
-    if(istr & USB_ISTR_SUSP){
+    if(USB->ISTR & USB_ISTR_SUSP){
         USB->CNTR |= USB_CNTR_FSUSP; /* Force Suspend */
         USB->CNTR |= USB_CNTR_LP_MODE; /* Low Power Mode */
+        return;
     }
-    if(istr & USB_ISTR_WKUP){  
+    if(USB->ISTR & USB_ISTR_WKUP){  
         USB->CNTR &= ~USB_CNTR_FSUSP;
+        return;
     }
-    if(istr & USB_ISTR_CTR){
-        num = istr & USB_ISTR_EP_ID;
-        if(num == USB_EP0){ /* Endpoint 0 (Control)*/
-            if((istr & USB_ISTR_DIR) == 0){ /* IN */
-                USB->EP0R &= ~USB_EP_CTR_TX;
-                // if(over == 1)
-                    GPIOC->BSRR = GPIO_BSRR_BS13;
-
-                heap.size = USB_COUNT_TX(0) & USB_COUNT0_TX_COUNT0_TX;
-                heap.buff += heap.size;
-
-                USBDataInEP0();
-            }else{
-                if((USB->EP0R & USB_EP_SETUP) != 0){
-                    USBSetup();
-                }else if ((USB->EP0R & USB_EP_CTR_RX) != 0){
-                    USB->EP0R &= ~USB_EP_CTR_RX;
-
-                    heap.size = USB_COUNT_TX(0) & USB_COUNT0_TX_COUNT0_TX;
-                    if(heap.size != 0)
-                        USBReadPMA((uint16_t *)heap.buff, USB_EP0_RX, heap.size);
-                }
-            }
-
-
-
-        }else if(num == USB_EP1){ /* Endpoint 1 (IN)*/
-            if((istr & USB_ISTR_DIR) == 0){
-
-            }
-        }else if(num == USB_EP2){ /* Endpoint 2 (OUT)*/
-            if((istr & USB_ISTR_DIR) != 0){
-                
-            }
-        }
+    if(USB->ISTR & USB_ISTR_CTR){
+        USBCtrHandler();
+        return;
     }
-    USB->ISTR = 0x0;
 }

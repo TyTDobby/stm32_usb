@@ -58,12 +58,12 @@
 #define USB_STR_SIZE_CONFIG 	     				   0x13
 #define USB_STR_SIZE_INTERFACE 					       0x16
 
-#define USB_IDX_LANGID_STR                            0x00 
-#define USB_IDX_MFC_STR                               0x01 
-#define USB_IDX_PRODUCT_STR                           0x02
-#define USB_IDX_SERIAL_STR                            0x03 
-#define USB_IDX_CONFIG_STR                            0x04 
-#define USB_IDX_INTERFACE_STR                         0x05 
+#define USB_IDX_LANGID_STR                             0x00 
+#define USB_IDX_MFC_STR                                0x01 
+#define USB_IDX_PRODUCT_STR                            0x02
+#define USB_IDX_SERIAL_STR                             0x03 
+#define USB_IDX_CONFIG_STR                             0x04 
+#define USB_IDX_INTERFACE_STR                          0x05 
 
 #define USB_MAX_NUM_CONFIGURATION     				   0x01
 

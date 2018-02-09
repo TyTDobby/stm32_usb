@@ -1,4 +1,4 @@
-ARM GAS  /tmp/cc4G1Wky.s 			page 1
+ARM GAS  /tmp/ccnriLtb.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  /tmp/cc4G1Wky.s 			page 1
   42 000e 13F4003F 		tst	r3, #131072
   43 0012 FAD0     		beq	.L2
   15:main.c        ****  	
-ARM GAS  /tmp/cc4G1Wky.s 			page 2
+ARM GAS  /tmp/ccnriLtb.s 			page 2
 
 
   16:main.c        ****  	RCC->CFGR |= RCC_CFGR_HPRE_DIV1 | RCC_CFGR_PPRE2_DIV1 | RCC_CFGR_PPRE1_DIV1; /* HCLK = SYSCLK ;  
@@ -118,7 +118,7 @@ ARM GAS  /tmp/cc4G1Wky.s 			page 1
   28:main.c        **** 	FLASH->ACR |= FLASH_ACR_PRFTBE;      /* On prefetch buffer */
   86              		.loc 1 28 0
   87 0062 0B4B     		ldr	r3, .L5+4
-ARM GAS  /tmp/cc4G1Wky.s 			page 3
+ARM GAS  /tmp/ccnriLtb.s 			page 3
 
 
   88 0064 1A68     		ldr	r2, [r3]
@@ -178,7 +178,7 @@ ARM GAS  /tmp/cc4G1Wky.s 			page 1
  130 0008 5360     		str	r3, [r2, #4]
   43:main.c        **** 			   |  GPIO_CRH_CNF11_1  | GPIO_CRH_CNF12_1;
   44:main.c        **** 	
-ARM GAS  /tmp/cc4G1Wky.s 			page 4
+ARM GAS  /tmp/ccnriLtb.s 			page 4
 
 
   45:main.c        **** 	GPIOC->CRH |= GPIO_CRH_MODE13 | GPIO_CRH_CNF13_0; 
@@ -238,7 +238,7 @@ ARM GAS  /tmp/cc4G1Wky.s 			page 1
  176              		.global	main
  177              		.thumb
  178              		.thumb_func
-ARM GAS  /tmp/cc4G1Wky.s 			page 5
+ARM GAS  /tmp/ccnriLtb.s 			page 5
 
 
  180              	main:
@@ -298,7 +298,7 @@ ARM GAS  /tmp/cc4G1Wky.s 			page 1
  222              		.loc 1 68 0 discriminator 1
  223 0024 024A     		ldr	r2, .L17+4
  224 0026 9342     		cmp	r3, r2
-ARM GAS  /tmp/cc4G1Wky.s 			page 6
+ARM GAS  /tmp/ccnriLtb.s 			page 6
 
 
  225 0028 FBDD     		ble	.L14
@@ -319,22 +319,22 @@ ARM GAS  /tmp/cc4G1Wky.s 			page 1
  241              		.file 4 "library/cmsis/inc/stm32f103xb.h"
  242              		.file 5 "library/cmsis/inc/core_cm3.h"
  243              		.file 6 "library/usb/usb.h"
-ARM GAS  /tmp/cc4G1Wky.s 			page 7
+ARM GAS  /tmp/ccnriLtb.s 			page 7
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 main.c
-     /tmp/cc4G1Wky.s:20     .text.RCCConfig:0000000000000000 $t
-     /tmp/cc4G1Wky.s:25     .text.RCCConfig:0000000000000000 RCCConfig
-     /tmp/cc4G1Wky.s:108    .text.RCCConfig:000000000000008c $d
-     /tmp/cc4G1Wky.s:114    .text.GPIOConfig:0000000000000000 $t
-     /tmp/cc4G1Wky.s:119    .text.GPIOConfig:0000000000000000 GPIOConfig
-     /tmp/cc4G1Wky.s:140    .text.GPIOConfig:0000000000000018 $d
-     /tmp/cc4G1Wky.s:145    .text.Config:0000000000000000 $t
-     /tmp/cc4G1Wky.s:150    .text.Config:0000000000000000 Config
-     /tmp/cc4G1Wky.s:175    .text.main:0000000000000000 $t
-     /tmp/cc4G1Wky.s:180    .text.main:0000000000000000 main
-     /tmp/cc4G1Wky.s:230    .text.main:000000000000002c $d
+     /tmp/ccnriLtb.s:20     .text.RCCConfig:0000000000000000 $t
+     /tmp/ccnriLtb.s:25     .text.RCCConfig:0000000000000000 RCCConfig
+     /tmp/ccnriLtb.s:108    .text.RCCConfig:000000000000008c $d
+     /tmp/ccnriLtb.s:114    .text.GPIOConfig:0000000000000000 $t
+     /tmp/ccnriLtb.s:119    .text.GPIOConfig:0000000000000000 GPIOConfig
+     /tmp/ccnriLtb.s:140    .text.GPIOConfig:0000000000000018 $d
+     /tmp/ccnriLtb.s:145    .text.Config:0000000000000000 $t
+     /tmp/ccnriLtb.s:150    .text.Config:0000000000000000 Config
+     /tmp/ccnriLtb.s:175    .text.main:0000000000000000 $t
+     /tmp/ccnriLtb.s:180    .text.main:0000000000000000 main
+     /tmp/ccnriLtb.s:230    .text.main:000000000000002c $d
                             *COM*:0000000000000100 buffSend
                      .debug_frame:0000000000000010 $d
 
