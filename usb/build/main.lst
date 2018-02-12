@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccXnmLeC.s 			page 1
+ARM GAS  /tmp/ccvjp81n.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  /tmp/ccXnmLeC.s 			page 1
   40 000a 204B     		ldr	r3, .L5
   41 000c 1B68     		ldr	r3, [r3]
   42 000e 13F4003F 		tst	r3, #131072
-ARM GAS  /tmp/ccXnmLeC.s 			page 2
+ARM GAS  /tmp/ccvjp81n.s 			page 2
 
 
   43 0012 FAD0     		beq	.L2
@@ -118,7 +118,7 @@ ARM GAS  /tmp/ccXnmLeC.s 			page 1
   85 0060 F9D1     		bne	.L4
   29:main.c        **** 	
   30:main.c        **** 	FLASH->ACR |= FLASH_ACR_PRFTBE;      /* On prefetch buffer */
-ARM GAS  /tmp/ccXnmLeC.s 			page 3
+ARM GAS  /tmp/ccvjp81n.s 			page 3
 
 
   86              		.loc 1 30 0
@@ -178,7 +178,7 @@ ARM GAS  /tmp/ccXnmLeC.s 			page 1
  128 0002 5368     		ldr	r3, [r2, #4]
  129 0004 43F42A23 		orr	r3, r3, #696320
  130 0008 5360     		str	r3, [r2, #4]
-ARM GAS  /tmp/ccXnmLeC.s 			page 4
+ARM GAS  /tmp/ccvjp81n.s 			page 4
 
 
   45:main.c        **** 			   |  GPIO_CRH_CNF11_1  | GPIO_CRH_CNF12_1;
@@ -238,7 +238,7 @@ ARM GAS  /tmp/ccXnmLeC.s 			page 1
  174              		.section	.text.main,"ax",%progbits
  175              		.align	2
  176              		.global	main
-ARM GAS  /tmp/ccXnmLeC.s 			page 5
+ARM GAS  /tmp/ccvjp81n.s 			page 5
 
 
  177              		.thumb
@@ -275,21 +275,21 @@ ARM GAS  /tmp/ccXnmLeC.s 			page 1
  205              		.file 4 "cmsis/stm32f10x.h"
  206              		.file 5 "cmsis/core_cm3.h"
  207              		.file 6 "usb/usb.h"
-ARM GAS  /tmp/ccXnmLeC.s 			page 6
+ARM GAS  /tmp/ccvjp81n.s 			page 6
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 main.c
-     /tmp/ccXnmLeC.s:20     .text.RCCConfig:0000000000000000 $t
-     /tmp/ccXnmLeC.s:25     .text.RCCConfig:0000000000000000 RCCConfig
-     /tmp/ccXnmLeC.s:108    .text.RCCConfig:000000000000008c $d
-     /tmp/ccXnmLeC.s:114    .text.GPIOConfig:0000000000000000 $t
-     /tmp/ccXnmLeC.s:119    .text.GPIOConfig:0000000000000000 GPIOConfig
-     /tmp/ccXnmLeC.s:140    .text.GPIOConfig:0000000000000018 $d
-     /tmp/ccXnmLeC.s:145    .text.Config:0000000000000000 $t
-     /tmp/ccXnmLeC.s:150    .text.Config:0000000000000000 Config
-     /tmp/ccXnmLeC.s:175    .text.main:0000000000000000 $t
-     /tmp/ccXnmLeC.s:180    .text.main:0000000000000000 main
+     /tmp/ccvjp81n.s:20     .text.RCCConfig:0000000000000000 $t
+     /tmp/ccvjp81n.s:25     .text.RCCConfig:0000000000000000 RCCConfig
+     /tmp/ccvjp81n.s:108    .text.RCCConfig:000000000000008c $d
+     /tmp/ccvjp81n.s:114    .text.GPIOConfig:0000000000000000 $t
+     /tmp/ccvjp81n.s:119    .text.GPIOConfig:0000000000000000 GPIOConfig
+     /tmp/ccvjp81n.s:140    .text.GPIOConfig:0000000000000018 $d
+     /tmp/ccvjp81n.s:145    .text.Config:0000000000000000 $t
+     /tmp/ccvjp81n.s:150    .text.Config:0000000000000000 Config
+     /tmp/ccvjp81n.s:175    .text.main:0000000000000000 $t
+     /tmp/ccvjp81n.s:180    .text.main:0000000000000000 main
                             *COM*:0000000000000100 buffSend
                      .debug_frame:0000000000000010 $d
 

@@ -118,7 +118,7 @@ uint8_t descConfiguration[] =
  	0x00,		/* bCountryCode: Hardware target country */
  	0x01,		/* bNumDescriptors: Number of USB_HID class descriptors to follow */
  	0x22,		/* bDescriptorType */
- 	0x02,		/* wItemLength: Total length of Report descriptor */ 
+ 	0x29,		/* wItemLength: Total length of Report descriptor */ 
  	0x00,
 /*
  * Descriptor of endpoint (IN) 
@@ -160,7 +160,7 @@ uint8_t descStringMFC[] =
 {
 	0x0e, 
 	USB_STR_DESC_TYPE,
-	'S','T','M','3','2',' ','D','e','v','i','c','e'
+	0x30,'T','M','3','2',' ','D','e','v','i','c','e'
 };
  
 uint8_t descStringSerialNumber[] = 
@@ -183,6 +183,49 @@ uint8_t descStringInterface[] =
 	USB_STR_DESC_TYPE,
 	'C','u','s','t','o','m',' ','H','I','D',' ','I','n','t','e','r','f','a','c','e'
 };
+uint8_t descHIDReport[] = 
+{
+  0x06, 0x00, 0xff,              /* USAGE_PAGE (Generic Desktop) */
+  0x09, 0x01,                    /* USAGE (Vendor Usage 1) */
+  0xa1, 0x01,                    /* COLLECTION (Application) */
+  0x85, 0x01,                    /* REPORT_ID (1) */
+  0x09, 0x01,                    /* USAGE (Vendor Usage 1) */
+  0x15, 0x00,                    /* LOGICAL_MINIMUM (0) */
+  0x25, 0x01,                    /* LOGICAL_MAXIMUM (1) */
+  0x75, 0x08,                    /* REPORT_SIZE (8) */
+  0x95, 0x01,                    /* REPORT_COUNT (1) */
+  0xb1, 0x82,                    /* FEATURE (Data,Var,Abs,Vol) */
+  0x85, 0x01,                    /* REPORT_ID (1) */
+  0x09, 0x01,                    /* USAGE (Vendor Usage 1) */
+  0x91, 0x82,                    /* OUTPUT (Data,Var,Abs,Vol) */
+  0x85, 0x02,                    /* REPORT_ID (2) */
+  0x09, 0x02,                    /* USAGE (Vendor Usage 2) */
+  0x15, 0x00,                    /* LOGICAL_MINIMUM (0) */
+  0x25, 0x01,                    /* LOGICAL_MAXIMUM (1) */
+  0x75, 0x08,                    /* REPORT_SIZE (8) */
+  0x95, 0x01,                    /* REPORT_COUNT (1) */
+  0xb1, 0x82,                    /* FEATURE (Data,Var,Abs,Vol) */
+  0x85, 0x02,                    /* REPORT_ID (2) */
+  0x09, 0x02,                    /* USAGE (Vendor Usage 2) */
+  0x91, 0x82,                    /* OUTPUT (Data,Var,Abs,Vol) */
+  0x85, 0x03,                    /* REPORT_ID (3) */
+  0x09, 0x03,                    /* USAGE (Vendor Usage 3) */
+  0x15, 0x00,                    /* LOGICAL_MINIMUM (0) */
+  0x26, 0xff, 0x00,              /* LOGICAL_MAXIMUM (255) */
+  0x75, 0x08,                    /* REPORT_SIZE (8) */
+  0x95, 0x01,                    /* REPORT_COUNT (N) */
+  0xb1, 0x82,                    /* FEATURE (Data,Var,Abs,Vol) */
+  0x85, 0x03,                    /* REPORT_ID (3) */
+  0x09, 0x03,                    /* USAGE (Vendor Usage 3) */
+  0x91, 0x82,                    /* OUTPUT (Data,Var,Abs,Vol) */
+  0x85, 0x04,                    /* REPORT_ID (4) */
+  0x09, 0x04,                    /* USAGE (Vendor Usage 4) */
+  0x75, 0x08,                    /* REPORT_SIZE (8) */
+  0x95, 0x04,                    /* REPORT_COUNT (N) */
+  0x81, 0x82,                    /* INPUT (Data,Var,Abs,Vol) */
+  0xc0                           /* END_COLLECTION */
+};
+
 /* Prototype functoin */
 void USBWriteEP(uint8_t number);
 void USBReadEP(uint8_t *buffer, uint16_t len, uint8_t number);
@@ -272,35 +315,45 @@ void USBReset(void){
     USB->DADDR  = USB_DADDR_EF;
 }
 void USBGetDescriptor(void){
+	uint16_t len = 0;
 	switch(SetupPacket.wValue.high){
 		case USB_DEVICE_DESC_TYPE:
-			USBSendData(descDevice, sizeof(descDevice), 0);
+			len = SetupPacket.wLength.low > sizeof(descDevice) ? sizeof(descDevice) : SetupPacket.wLength.low;
+			USBSendData(descDevice, len, 0);
 			break;
 		case USB_DEVICE_QR_DESC_TYPE:
-			USBSendData(descDeviceQualifier, sizeof(descDeviceQualifier), 0);
+			len = SetupPacket.wLength.low > sizeof(descDeviceQualifier) ? sizeof(descDeviceQualifier) : SetupPacket.wLength.low;
+			USBSendData(descDeviceQualifier, len, 0);
 			break;
 		case USB_CFG_DESC_TYPE:
-			USBSendData(descConfiguration, SetupPacket.wLength.low, 0);
+			len = SetupPacket.wLength.low > sizeof(descConfiguration) ? sizeof(descConfiguration) : SetupPacket.wLength.low;
+			USBSendData(descConfiguration, len, 0);
 			break;
 		case USB_STR_DESC_TYPE:
 			switch(SetupPacket.wValue.low){
 				case USB_IDX_LANGID_STR:
-					USBSendData(descStringLangID, sizeof(descStringLangID), 0);
+					len = SetupPacket.wLength.low > sizeof(descStringLangID) ? sizeof(descStringLangID) : SetupPacket.wLength.low;
+					USBSendData(descStringLangID, len, 0);
 					break;
 				case USB_IDX_MFC_STR:
-					USBSendData(descStringMFC, sizeof(descStringMFC), 0);
+					len = SetupPacket.wLength.low > sizeof(descStringMFC) ? sizeof(descStringMFC) : SetupPacket.wLength.low;
+					USBSendData(descStringMFC, len, 0);
 					break;
 				case USB_IDX_PRODUCT_STR:
-					USBSendData(descStringProduct, sizeof(descStringProduct), 0);
+					len = SetupPacket.wLength.low > sizeof(descStringProduct) ? sizeof(descStringProduct) : SetupPacket.wLength.low;
+					USBSendData(descStringProduct, len, 0);
 					break;
 				case USB_IDX_SERIAL_STR:
-					USBSendData(descStringSerialNumber, sizeof(descStringSerialNumber), 0);
+					len = SetupPacket.wLength.low > sizeof(descStringSerialNumber) ? sizeof(descStringSerialNumber) : SetupPacket.wLength.low;
+					USBSendData(descStringSerialNumber, len, 0);
 					break;
 				case USB_IDX_CONFIG_STR:
-					USBSendData(descStringConfig, sizeof(descStringConfig), 0);
+					len = SetupPacket.wLength.low > sizeof(descStringConfig) ? sizeof(descStringConfig) : SetupPacket.wLength.low;
+					USBSendData(descStringConfig, len, 0);
 					break;
 				case USB_IDX_INTERFACE_STR:
-					USBSendData(descStringInterface, sizeof(descStringInterface), 0);
+					len = SetupPacket.wLength.low > sizeof(descStringInterface) ? sizeof(descStringInterface) : SetupPacket.wLength.low;
+					USBSendData(descStringInterface, len, 0);
 					break;
 			}
 			break;

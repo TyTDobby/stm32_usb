@@ -1,0 +1,22 @@
+{
+    "config": {
+        "linux": [
+            {
+                "name": "api",
+                "build_dir": "build",
+                "compiler": "g++",
+                "extensionFiles": ".cpp|.h",
+                "flags": " -Wall -I/usr/include/ -lusb-1.0 `pkg-config gtkmm-3.0 --cflags --libs` "
+            }
+        ],
+        "windows": [
+            {
+                "name": "api",
+                "build_dir": "build",
+                "compiler": "g++",
+                "extensionFiles": ".cpp|.h",
+                "flags": " -Wall -I/usr/include/libusb-1.0 -lusb-1.0 "
+            }
+        ]
+    }
+}
