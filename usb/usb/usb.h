@@ -5,6 +5,7 @@
 
 #define LOBYTE(x) ((uint8_t)(x & 0x00FF))
 #define HIBYTE(x) ((uint8_t)((x & 0xFF00) >> 8))
+#define MIN(num_1, num_2) num_1 > num_2 ? num_2 : num_1;
 
 #define USB_BASE		0x40005C00
 #define USB_PMA_ADDR	0x40006000
@@ -56,24 +57,34 @@
 
 #define USB_EP_MASK (USB_EP_CTR_RX | USB_EP_SETUP | USB_EP_TYPE | USB_EP_KIND |USB_EP_CTR_TX | USB_EP_EA)
 
+#define USB_EP_RX_DTOGMASK 		(USB_EP_MASK | USB_EP_STAT_RX)
+#define USB_EP_TX_DTOGMASK 		(USB_EP_MASK | USB_EP_STAT_TX)
 #define USB_EP0                 0
 #define USB_EP1                 1
 #define USB_EP2                 2
 
 #define USB_COUNT0_TX   *(uint32_t *)(USB_PMA_ADDR + 0x04)
 
+/* USB Request Types */
+#define USB_DEVICE 		0x00
+#define USB_INTERFACE 	0x01
+#define USB_ENDPOINT 	0x02
+#define USB_OTHER 		0x03
+
 /* USB Standard Request Codes */
-#define USB_REQUEST_GET_STATUS      	0x00
-#define USB_REQUEST_CLEAR_FEATURE 		0x01
-#define USB_REQUEST_SET_FEATURE 		0x03
-#define USB_REQUEST_SET_ADDRESS 		0x05
-#define USB_REQUEST_GET_DESCRIPTOR 		0x06
-#define USB_REQUEST_SET_DESCRIPTOR 		0x07
-#define USB_REQUEST_GET_CONFIGURATION	0x08
-#define USB_REQUEST_SET_CONFIGURATION	0x09
-#define USB_REQUEST_GET_INTERFACE 		0x0a
-#define USB_REQUEST_SET_INTERFACE 		0x0b
-#define USB_REQUEST_SYNC_FRAME          0x0c
+#define USB_GET_STATUS      	0x00
+#define USB_CLEAR_FEATURE 		0x01
+#define USB_SET_FEATURE 		0x03
+#define USB_SET_ADDRESS 		0x05
+#define USB_GET_DESCRIPTOR 		0x06
+#define USB_SET_DESCRIPTOR 		0x07
+#define USB_GET_CONFIGURATION	0x08
+#define USB_SET_CONFIGURATION	0x09
+#define USB_GET_INTERFACE 		0x0a
+#define USB_SET_INTERFACE 		0x0b
+#define USB_SYNC_FRAME          0x0c
+
+
 
 /* USB Descriptor Types */
 #define USB_DEVICE_DESC_TYPE      0x01
@@ -84,7 +95,7 @@
 #define USB_DEVICE_QR_DESC_TYPE   0x06
 #define USB_OSPEED_CFG_DESC_TYPE  0x07
 #define USB_IFACE_PWR_DESC_TYPE   0x08
-
+#define USB_HID_DESC_TYPE 		  0x22
 /* USB Device Classes */
 #define USB_RESERVED 		0x00
 #define USB_AUDIO 			0x01
@@ -111,9 +122,7 @@
 #define USB_PID     			  22352
 #define USB_LANGID_STRING    	  1033
 
-#define USB_STR "STM32 Device"
 
-#define STR_BYTE(str) printf("%s", USB_STR);
 
 typedef struct
 {
@@ -141,13 +150,14 @@ typedef struct
 	uint8_t 	*buffTx;
 	uint16_t 	cntTx;
 
-	uint8_t 	*buffRx;
+	uint8_t 	*buffRx[64];
 	uint16_t 	cntRx;
 	
 	uint8_t 	*buffSetup[12];
 	uint16_t 	cntMaxEp0;
 	uint8_t 	devAddress;
- 
+ 	uint16_t	ep;
+ 	uint16_t 	istr;
 
 } USBHeap;
 
@@ -171,5 +181,6 @@ typedef struct {
 /* Functions */
 
 void USBConfig(void);
-
+void USBRead(uint8_t *buff);
+void USBWrite(uint8_t *buff);
 #endif /* USB_H */

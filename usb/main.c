@@ -1,10 +1,12 @@
+
 #include "cmsis/stm32f10x.h"
 #include "cmsis/system_stm32f10x.h"
 #include "usb/usb.h"
 
+ 
 
-
-uint16_t *buffSend[64];
+uint8_t *buffSend[64];
+uint8_t *buffRead[64];
 /*
  * Name: RCCConfig
  * Description: System Clock Configuration
@@ -61,16 +63,20 @@ void Config(void){
 
 int main(void){
 	Config(); 
-	// *buffSend = 0x30;
-	// *(buffSend + 1) = 0x31;
-	// *(buffSend + 2) = 0x32;
-	// *(buffSend + 3) = 0x33;
+	*buffSend = 0x30;
+	*(buffSend + 1) = 0x31;
+	*(buffSend + 2) = 0x32;
+	*(buffSend + 3) = 0x33;
 	while(1) {
-		// USBSendData(buffSend);
-		// for (int i = 0; i < 0xfffff; ++i)
-		// {
-		// 	/* code */
-		// }
+		USBRead((uint8_t *)buffRead);
+		if(buffRead[0] == 0x10){
+			GPIOC->BSRR = GPIO_BSRR_BS13;
+		}
+		// USBSendData(buffSend, sizeof(buffSend), 1);
+		for (int i = 0; i < 0xfffff; ++i)
+		{
+			/* code */
+		}
 	}
 	return 0;
 

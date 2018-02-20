@@ -38,6 +38,16 @@ PERIFLIB_SOURCES =
 
 # Инструменты
 #-------------------------------------------------------------------------------
+# BINPATH = "C:\Program Files\GNU Tools ARM Embedded\7 2017-q4-major\bin
+# PREFIX = arm-none-eabi-
+# CC = $(BINPATH)/$(PREFIX)gcc.exe"
+# AS = $(BINPATH)/$(PREFIX)gcc.exe" -x assembler-with-cpp
+# CP = $(BINPATH)/$(PREFIX)objcopy.exe"
+# AR = $(BINPATH)/$(PREFIX)ar.exe"
+# SZ = $(BINPATH)/$(PREFIX)size.exe"
+# HEX = $(CP) -O ihex
+# BIN = $(CP) -O binary -S
+
 BINPATH = /usr/bin
 PREFIX = arm-none-eabi-
 CC = $(BINPATH)/$(PREFIX)gcc
@@ -47,7 +57,7 @@ AR = $(BINPATH)/$(PREFIX)ar
 SZ = $(BINPATH)/$(PREFIX)size
 HEX = $(CP) -O ihex
 BIN = $(CP) -O binary -S
- 
+
 #######################################
 # CFLAGS
 #######################################

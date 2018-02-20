@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccvjp81n.s 			page 1
+ARM GAS  /tmp/cc3UfueT.s 			page 1
 
 
    1              		.syntax unified
@@ -27,119 +27,121 @@ ARM GAS  /tmp/ccvjp81n.s 			page 1
   25              	RCCConfig:
   26              	.LFB29:
   27              		.file 1 "main.c"
-   1:main.c        **** #include "cmsis/stm32f10x.h"
-   2:main.c        **** #include "cmsis/system_stm32f10x.h"
-   3:main.c        **** #include "usb/usb.h"
-   4:main.c        **** 
+   1:main.c        **** 
+   2:main.c        **** #include "cmsis/stm32f10x.h"
+   3:main.c        **** #include "cmsis/system_stm32f10x.h"
+   4:main.c        **** #include "usb/usb.h"
    5:main.c        **** 
-   6:main.c        **** 
-   7:main.c        **** uint16_t *buffSend[64];
-   8:main.c        **** /*
-   9:main.c        ****  * Name: RCCConfig
-  10:main.c        ****  * Description: System Clock Configuration
-  11:main.c        ****  * Parametrs: none
-  12:main.c        ****  */
-  13:main.c        **** void RCCConfig(void){
-  28              		.loc 1 13 0
+   6:main.c        ****  
+   7:main.c        **** 
+   8:main.c        **** uint8_t *buffSend[64];
+   9:main.c        **** uint8_t *buffRead[64];
+  10:main.c        **** /*
+  11:main.c        ****  * Name: RCCConfig
+  12:main.c        ****  * Description: System Clock Configuration
+  13:main.c        ****  * Parametrs: none
+  14:main.c        ****  */
+  15:main.c        **** void RCCConfig(void){
+  28              		.loc 1 15 0
   29              		.cfi_startproc
   30              		@ args = 0, pretend = 0, frame = 0
   31              		@ frame_needed = 0, uses_anonymous_args = 0
   32              		@ link register save eliminated.
-  14:main.c        **** 
-  15:main.c        ****  	RCC->CR |= RCC_CR_HSEON;               /* Run HSE */
-  33              		.loc 1 15 0
+  16:main.c        **** 
+  17:main.c        ****  	RCC->CR |= RCC_CR_HSEON;               /* Run HSE */
+  33              		.loc 1 17 0
   34 0000 224A     		ldr	r2, .L5
   35 0002 1368     		ldr	r3, [r2]
   36 0004 43F48033 		orr	r3, r3, #65536
   37 0008 1360     		str	r3, [r2]
   38              	.L2:
-  16:main.c        ****  	while((RCC->CR & RCC_CR_HSERDY) == 0); /* Waiting to switch to PLL HSE */
-  39              		.loc 1 16 0 discriminator 1
+  18:main.c        ****  	while((RCC->CR & RCC_CR_HSERDY) == 0); /* Waiting to switch to PLL HSE */
+  39              		.loc 1 18 0 discriminator 1
   40 000a 204B     		ldr	r3, .L5
+ARM GAS  /tmp/cc3UfueT.s 			page 2
+
+
   41 000c 1B68     		ldr	r3, [r3]
   42 000e 13F4003F 		tst	r3, #131072
-ARM GAS  /tmp/ccvjp81n.s 			page 2
-
-
   43 0012 FAD0     		beq	.L2
-  17:main.c        ****  	
-  18:main.c        ****  	RCC->CFGR |= RCC_CFGR_HPRE_DIV1 | RCC_CFGR_PPRE2_DIV1 | RCC_CFGR_PPRE1_DIV1; /* HCLK = SYSCLK ;  
-  44              		.loc 1 18 0
+  19:main.c        ****  	
+  20:main.c        ****  	RCC->CFGR |= RCC_CFGR_HPRE_DIV1 | RCC_CFGR_PPRE2_DIV1 | RCC_CFGR_PPRE1_DIV1; /* HCLK = SYSCLK ;  
+  44              		.loc 1 20 0
   45 0014 1D4B     		ldr	r3, .L5
   46 0016 5A68     		ldr	r2, [r3, #4]
   47 0018 5A60     		str	r2, [r3, #4]
-  19:main.c        ****  	RCC->CFGR &= ~((RCC_CFGR_PLLSRC | RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLMULL));    /* Clear */
-  48              		.loc 1 19 0
+  21:main.c        ****  	RCC->CFGR &= ~((RCC_CFGR_PLLSRC | RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLMULL));    /* Clear */
+  48              		.loc 1 21 0
   49 001a 5A68     		ldr	r2, [r3, #4]
   50 001c 22F47C12 		bic	r2, r2, #4128768
   51 0020 5A60     		str	r2, [r3, #4]
-  20:main.c        ****  	
-  21:main.c        ****  	RCC->CFGR |= RCC_CFGR_PLLSRC; 		   /* Clock PLL to HSE (8 MHz) */
-  52              		.loc 1 21 0
+  22:main.c        ****  	
+  23:main.c        ****  	RCC->CFGR |= RCC_CFGR_PLLSRC; 		   /* Clock PLL to HSE (8 MHz) */
+  52              		.loc 1 23 0
   53 0022 5A68     		ldr	r2, [r3, #4]
   54 0024 42F48032 		orr	r2, r2, #65536
   55 0028 5A60     		str	r2, [r3, #4]
-  22:main.c        **** 	RCC->CFGR |= RCC_CFGR_PLLMULL9;        /* Multiply frequency on 9 (8*9=72 MHz) */
-  56              		.loc 1 22 0
+  24:main.c        **** 	RCC->CFGR |= RCC_CFGR_PLLMULL9;        /* Multiply frequency on 9 (8*9=72 MHz) */
+  56              		.loc 1 24 0
   57 002a 5A68     		ldr	r2, [r3, #4]
   58 002c 42F4E012 		orr	r2, r2, #1835008
   59 0030 5A60     		str	r2, [r3, #4]
-  23:main.c        **** 	RCC->CR |= RCC_CR_PLLON; 			   /* Run PLL */
-  60              		.loc 1 23 0
+  25:main.c        **** 	RCC->CR |= RCC_CR_PLLON; 			   /* Run PLL */
+  60              		.loc 1 25 0
   61 0032 1A68     		ldr	r2, [r3]
   62 0034 42F08072 		orr	r2, r2, #16777216
   63 0038 1A60     		str	r2, [r3]
   64              	.L3:
-  24:main.c        **** 	while((RCC->CR & RCC_CR_PLLRDY) == 0); /* Waiting to switch to PLL */
-  65              		.loc 1 24 0 discriminator 1
+  26:main.c        **** 	while((RCC->CR & RCC_CR_PLLRDY) == 0); /* Waiting to switch to PLL */
+  65              		.loc 1 26 0 discriminator 1
   66 003a 144B     		ldr	r3, .L5
   67 003c 1B68     		ldr	r3, [r3]
   68 003e 13F0007F 		tst	r3, #33554432
   69 0042 FAD0     		beq	.L3
-  25:main.c        **** 	
-  26:main.c        **** 	RCC->CFGR &= ~RCC_CFGR_SW; 							 /* Clear bits SW0, SW1 */
-  70              		.loc 1 26 0
+  27:main.c        **** 	
+  28:main.c        **** 	RCC->CFGR &= ~RCC_CFGR_SW; 							 /* Clear bits SW0, SW1 */
+  70              		.loc 1 28 0
   71 0044 114B     		ldr	r3, .L5
   72 0046 5A68     		ldr	r2, [r3, #4]
   73 0048 22F00302 		bic	r2, r2, #3
   74 004c 5A60     		str	r2, [r3, #4]
-  27:main.c        **** 	RCC->CFGR |= RCC_CFGR_SW_PLL; 						 /* PLL selected as system clock */
-  75              		.loc 1 27 0
+  29:main.c        **** 	RCC->CFGR |= RCC_CFGR_SW_PLL; 						 /* PLL selected as system clock */
+  75              		.loc 1 29 0
   76 004e 5A68     		ldr	r2, [r3, #4]
   77 0050 42F00202 		orr	r2, r2, #2
   78 0054 5A60     		str	r2, [r3, #4]
   79              	.L4:
-  28:main.c        **** 	while((RCC->CFGR & RCC_CFGR_SWS) != RCC_CFGR_SWS_1); /* Waiting to switch to PLL */
-  80              		.loc 1 28 0 discriminator 1
+  30:main.c        **** 	while((RCC->CFGR & RCC_CFGR_SWS) != RCC_CFGR_SWS_1); /* Waiting to switch to PLL */
+  80              		.loc 1 30 0 discriminator 1
   81 0056 0D4B     		ldr	r3, .L5
   82 0058 5B68     		ldr	r3, [r3, #4]
   83 005a 03F00C03 		and	r3, r3, #12
   84 005e 082B     		cmp	r3, #8
   85 0060 F9D1     		bne	.L4
-  29:main.c        **** 	
-  30:main.c        **** 	FLASH->ACR |= FLASH_ACR_PRFTBE;      /* On prefetch buffer */
-ARM GAS  /tmp/ccvjp81n.s 			page 3
+ARM GAS  /tmp/cc3UfueT.s 			page 3
 
 
-  86              		.loc 1 30 0
+  31:main.c        **** 	
+  32:main.c        **** 	FLASH->ACR |= FLASH_ACR_PRFTBE;      /* On prefetch buffer */
+  86              		.loc 1 32 0
   87 0062 0B4B     		ldr	r3, .L5+4
   88 0064 1A68     		ldr	r2, [r3]
   89 0066 42F01002 		orr	r2, r2, #16
   90 006a 1A60     		str	r2, [r3]
-  31:main.c        ****  	FLASH->ACR |= FLASH_ACR_LATENCY_2;   /* Skip 2 measures */
-  91              		.loc 1 31 0
+  33:main.c        ****  	FLASH->ACR |= FLASH_ACR_LATENCY_2;   /* Skip 2 measures */
+  91              		.loc 1 33 0
   92 006c 1A68     		ldr	r2, [r3]
   93 006e 42F00202 		orr	r2, r2, #2
   94 0072 1A60     		str	r2, [r3]
-  32:main.c        **** 
-  33:main.c        **** 	RCC->CFGR &= ~RCC_CFGR_USBPRE; 	  		/* Prescaler USB 1.5 */
-  95              		.loc 1 33 0
+  34:main.c        **** 
+  35:main.c        **** 	RCC->CFGR &= ~RCC_CFGR_USBPRE; 	  		/* Prescaler USB 1.5 */
+  95              		.loc 1 35 0
   96 0074 A3F58053 		sub	r3, r3, #4096
   97 0078 5A68     		ldr	r2, [r3, #4]
   98 007a 22F48002 		bic	r2, r2, #4194304
   99 007e 5A60     		str	r2, [r3, #4]
-  34:main.c        **** 	RCC->APB2ENR |= RCC_APB2ENR_IOPAEN | RCC_APB2ENR_IOPCEN | RCC_APB2ENR_AFIOEN; /* GPIO clock enable
- 100              		.loc 1 34 0
+  36:main.c        **** 	RCC->APB2ENR |= RCC_APB2ENR_IOPAEN | RCC_APB2ENR_IOPCEN | RCC_APB2ENR_AFIOEN; /* GPIO clock enable
+ 100              		.loc 1 36 0
  101 0080 9A69     		ldr	r2, [r3, #24]
  102 0082 42F01502 		orr	r2, r2, #21
  103 0086 9A61     		str	r2, [r3, #24]
@@ -158,33 +160,33 @@ ARM GAS  /tmp/ccvjp81n.s 			page 1
  117              		.thumb_func
  119              	GPIOConfig:
  120              	.LFB30:
-  35:main.c        **** 
-  36:main.c        **** 
-  37:main.c        **** }
-  38:main.c        **** /*
-  39:main.c        ****  * Name: GPIOConfig
-  40:main.c        ****  * Description: GPIO Configuration
-  41:main.c        ****  * Parametrs: none
-  42:main.c        ****  */
-  43:main.c        **** void GPIOConfig(void){
- 121              		.loc 1 43 0
+  37:main.c        **** 
+  38:main.c        **** 
+  39:main.c        **** }
+  40:main.c        **** /*
+  41:main.c        ****  * Name: GPIOConfig
+  42:main.c        ****  * Description: GPIO Configuration
+  43:main.c        ****  * Parametrs: none
+  44:main.c        ****  */
+  45:main.c        **** void GPIOConfig(void){
+ 121              		.loc 1 45 0
  122              		.cfi_startproc
  123              		@ args = 0, pretend = 0, frame = 0
  124              		@ frame_needed = 0, uses_anonymous_args = 0
  125              		@ link register save eliminated.
-  44:main.c        **** 	GPIOA->CRH |= GPIO_CRH_MODE11_1 | GPIO_CRH_MODE12_1 
- 126              		.loc 1 44 0
+  46:main.c        **** 	GPIOA->CRH |= GPIO_CRH_MODE11_1 | GPIO_CRH_MODE12_1 
+ 126              		.loc 1 46 0
  127 0000 054A     		ldr	r2, .L8
  128 0002 5368     		ldr	r3, [r2, #4]
+ARM GAS  /tmp/cc3UfueT.s 			page 4
+
+
  129 0004 43F42A23 		orr	r3, r3, #696320
  130 0008 5360     		str	r3, [r2, #4]
-ARM GAS  /tmp/ccvjp81n.s 			page 4
-
-
-  45:main.c        **** 			   |  GPIO_CRH_CNF11_1  | GPIO_CRH_CNF12_1;
-  46:main.c        **** 	
-  47:main.c        **** 	GPIOC->CRH |= GPIO_CRH_MODE13 | GPIO_CRH_CNF13_0; 
- 131              		.loc 1 47 0
+  47:main.c        **** 			   |  GPIO_CRH_CNF11_1  | GPIO_CRH_CNF12_1;
+  48:main.c        **** 	
+  49:main.c        **** 	GPIOC->CRH |= GPIO_CRH_MODE13 | GPIO_CRH_CNF13_0; 
+ 131              		.loc 1 49 0
  132 000a 02F50062 		add	r2, r2, #2048
  133 000e 5368     		ldr	r3, [r2, #4]
  134 0010 43F4E003 		orr	r3, r3, #7340032
@@ -203,15 +205,15 @@ ARM GAS  /tmp/ccvjp81n.s 			page 1
  148              		.thumb_func
  150              	Config:
  151              	.LFB31:
-  48:main.c        **** }
-  49:main.c        **** 
-  50:main.c        **** /*
-  51:main.c        ****  * Name: Config
-  52:main.c        ****  * Description: STM32 Configuration
-  53:main.c        ****  * Parametrs: none
-  54:main.c        ****  */
-  55:main.c        **** void Config(void){
- 152              		.loc 1 55 0
+  50:main.c        **** }
+  51:main.c        **** 
+  52:main.c        **** /*
+  53:main.c        ****  * Name: Config
+  54:main.c        ****  * Description: STM32 Configuration
+  55:main.c        ****  * Parametrs: none
+  56:main.c        ****  */
+  57:main.c        **** void Config(void){
+ 152              		.loc 1 57 0
  153              		.cfi_startproc
  154              		@ args = 0, pretend = 0, frame = 0
  155              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -220,78 +222,145 @@ ARM GAS  /tmp/ccvjp81n.s 			page 1
  158              		.cfi_def_cfa_offset 8
  159              		.cfi_offset 3, -8
  160              		.cfi_offset 14, -4
-  56:main.c        **** 	RCCConfig();
- 161              		.loc 1 56 0
+  58:main.c        **** 	RCCConfig();
+ 161              		.loc 1 58 0
  162 0002 FFF7FEFF 		bl	RCCConfig
  163              	.LVL0:
-  57:main.c        **** 	GPIOConfig();
- 164              		.loc 1 57 0
+  59:main.c        **** 	GPIOConfig();
+ 164              		.loc 1 59 0
  165 0006 FFF7FEFF 		bl	GPIOConfig
  166              	.LVL1:
-  58:main.c        **** 	USBConfig();
- 167              		.loc 1 58 0
+  60:main.c        **** 	USBConfig();
+ 167              		.loc 1 60 0
  168 000a FFF7FEFF 		bl	USBConfig
  169              	.LVL2:
  170 000e 08BD     		pop	{r3, pc}
  171              		.cfi_endproc
  172              	.LFE31:
  174              		.section	.text.main,"ax",%progbits
+ARM GAS  /tmp/cc3UfueT.s 			page 5
+
+
  175              		.align	2
  176              		.global	main
-ARM GAS  /tmp/ccvjp81n.s 			page 5
-
-
  177              		.thumb
  178              		.thumb_func
  180              	main:
  181              	.LFB32:
-  59:main.c        **** 
-  60:main.c        **** }
   61:main.c        **** 
-  62:main.c        **** int main(void){
- 182              		.loc 1 62 0
+  62:main.c        **** }
+  63:main.c        **** 
+  64:main.c        **** int main(void){
+ 182              		.loc 1 64 0
  183              		.cfi_startproc
- 184              		@ Volatile: function does not return.
- 185              		@ args = 0, pretend = 0, frame = 0
- 186              		@ frame_needed = 0, uses_anonymous_args = 0
- 187 0000 08B5     		push	{r3, lr}
- 188              	.LCFI1:
- 189              		.cfi_def_cfa_offset 8
- 190              		.cfi_offset 3, -8
- 191              		.cfi_offset 14, -4
-  63:main.c        **** 	Config(); 
- 192              		.loc 1 63 0
- 193 0002 FFF7FEFF 		bl	Config
- 194              	.LVL3:
- 195              	.L13:
- 196 0006 FEE7     		b	.L13
- 197              		.cfi_endproc
- 198              	.LFE32:
- 200              		.comm	buffSend,256,4
- 201              		.text
- 202              	.Letext0:
- 203              		.file 2 "/usr/include/newlib/machine/_default_types.h"
- 204              		.file 3 "/usr/include/newlib/sys/_stdint.h"
- 205              		.file 4 "cmsis/stm32f10x.h"
- 206              		.file 5 "cmsis/core_cm3.h"
- 207              		.file 6 "usb/usb.h"
-ARM GAS  /tmp/ccvjp81n.s 			page 6
+ 184              		@ args = 0, pretend = 0, frame = 0
+ 185              		@ frame_needed = 0, uses_anonymous_args = 0
+ 186 0000 10B5     		push	{r4, lr}
+ 187              	.LCFI1:
+ 188              		.cfi_def_cfa_offset 8
+ 189              		.cfi_offset 4, -8
+ 190              		.cfi_offset 14, -4
+  65:main.c        **** 	Config(); 
+ 191              		.loc 1 65 0
+ 192 0002 FFF7FEFF 		bl	Config
+ 193              	.LVL3:
+  66:main.c        **** 	*buffSend = 0x30;
+ 194              		.loc 1 66 0
+ 195 0006 0D4B     		ldr	r3, .L18
+ 196 0008 3022     		movs	r2, #48
+ 197 000a 1A60     		str	r2, [r3]
+  67:main.c        **** 	*(buffSend + 1) = 0x31;
+ 198              		.loc 1 67 0
+ 199 000c 3122     		movs	r2, #49
+ 200 000e 5A60     		str	r2, [r3, #4]
+  68:main.c        **** 	*(buffSend + 2) = 0x32;
+ 201              		.loc 1 68 0
+ 202 0010 3222     		movs	r2, #50
+ 203 0012 9A60     		str	r2, [r3, #8]
+  69:main.c        **** 	*(buffSend + 3) = 0x33;
+ 204              		.loc 1 69 0
+ 205 0014 3322     		movs	r2, #51
+ 206 0016 DA60     		str	r2, [r3, #12]
+ 207              	.L16:
+  70:main.c        **** 	while(1) {
+  71:main.c        **** 		USBRead((uint8_t *)buffRead);
+ 208              		.loc 1 71 0
+ 209 0018 094C     		ldr	r4, .L18+4
+ 210 001a 2046     		mov	r0, r4
+ 211 001c FFF7FEFF 		bl	USBRead
+ 212              	.LVL4:
+  72:main.c        **** 		if(buffRead[0] == 0x10){
+ 213              		.loc 1 72 0
+ 214 0020 2368     		ldr	r3, [r4]
+ 215 0022 102B     		cmp	r3, #16
+ 216 0024 03D1     		bne	.L13
+  73:main.c        **** 			GPIOC->BSRR = GPIO_BSRR_BS13;
+ 217              		.loc 1 73 0
+ 218 0026 4FF40052 		mov	r2, #8192
+ 219 002a 064B     		ldr	r3, .L18+8
+ARM GAS  /tmp/cc3UfueT.s 			page 6
+
+
+ 220 002c 1A61     		str	r2, [r3, #16]
+ 221              	.L13:
+ 222              	.LVL5:
+ 223              	.LBB2:
+  74:main.c        **** 		}
+  75:main.c        **** 		// USBSendData(buffSend, sizeof(buffSend), 1);
+  76:main.c        **** 		for (int i = 0; i < 0xfffff; ++i)
+ 224              		.loc 1 76 0
+ 225 002e 0023     		movs	r3, #0
+ 226 0030 00E0     		b	.L14
+ 227              	.LVL6:
+ 228              	.L15:
+ 229              		.loc 1 76 0 is_stmt 0 discriminator 3
+ 230 0032 0133     		adds	r3, r3, #1
+ 231              	.LVL7:
+ 232              	.L14:
+ 233              		.loc 1 76 0 discriminator 1
+ 234 0034 044A     		ldr	r2, .L18+12
+ 235 0036 9342     		cmp	r3, r2
+ 236 0038 FBDD     		ble	.L15
+ 237 003a EDE7     		b	.L16
+ 238              	.L19:
+ 239              		.align	2
+ 240              	.L18:
+ 241 003c 00000000 		.word	buffSend
+ 242 0040 00000000 		.word	buffRead
+ 243 0044 00100140 		.word	1073811456
+ 244 0048 FEFF0F00 		.word	1048574
+ 245              	.LBE2:
+ 246              		.cfi_endproc
+ 247              	.LFE32:
+ 249              		.comm	buffRead,256,4
+ 250              		.comm	buffSend,256,4
+ 251              		.text
+ 252              	.Letext0:
+ 253              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 254              		.file 3 "/usr/include/newlib/sys/_stdint.h"
+ 255              		.file 4 "cmsis/stm32f10x.h"
+ 256              		.file 5 "cmsis/core_cm3.h"
+ 257              		.file 6 "usb/usb.h"
+ARM GAS  /tmp/cc3UfueT.s 			page 7
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 main.c
-     /tmp/ccvjp81n.s:20     .text.RCCConfig:0000000000000000 $t
-     /tmp/ccvjp81n.s:25     .text.RCCConfig:0000000000000000 RCCConfig
-     /tmp/ccvjp81n.s:108    .text.RCCConfig:000000000000008c $d
-     /tmp/ccvjp81n.s:114    .text.GPIOConfig:0000000000000000 $t
-     /tmp/ccvjp81n.s:119    .text.GPIOConfig:0000000000000000 GPIOConfig
-     /tmp/ccvjp81n.s:140    .text.GPIOConfig:0000000000000018 $d
-     /tmp/ccvjp81n.s:145    .text.Config:0000000000000000 $t
-     /tmp/ccvjp81n.s:150    .text.Config:0000000000000000 Config
-     /tmp/ccvjp81n.s:175    .text.main:0000000000000000 $t
-     /tmp/ccvjp81n.s:180    .text.main:0000000000000000 main
+     /tmp/cc3UfueT.s:20     .text.RCCConfig:0000000000000000 $t
+     /tmp/cc3UfueT.s:25     .text.RCCConfig:0000000000000000 RCCConfig
+     /tmp/cc3UfueT.s:108    .text.RCCConfig:000000000000008c $d
+     /tmp/cc3UfueT.s:114    .text.GPIOConfig:0000000000000000 $t
+     /tmp/cc3UfueT.s:119    .text.GPIOConfig:0000000000000000 GPIOConfig
+     /tmp/cc3UfueT.s:140    .text.GPIOConfig:0000000000000018 $d
+     /tmp/cc3UfueT.s:145    .text.Config:0000000000000000 $t
+     /tmp/cc3UfueT.s:150    .text.Config:0000000000000000 Config
+     /tmp/cc3UfueT.s:175    .text.main:0000000000000000 $t
+     /tmp/cc3UfueT.s:180    .text.main:0000000000000000 main
+     /tmp/cc3UfueT.s:241    .text.main:000000000000003c $d
                             *COM*:0000000000000100 buffSend
+                            *COM*:0000000000000100 buffRead
                      .debug_frame:0000000000000010 $d
 
 UNDEFINED SYMBOLS
 USBConfig
+USBRead
